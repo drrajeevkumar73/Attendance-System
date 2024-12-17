@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { validateRequest } from "@/auth";
 import { formSchema } from "@/lib/vallidation";
+import { toZonedTime } from 'date-fns-tz';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,7 +11,9 @@ export async function POST(req: NextRequest) {
 
     const { content } = await req.json();
     const data = formSchema.parse({ content });
-    const currentDate = new Date();
+    const timeZone = 'Asia/Kolkata'; // Set your timezone
+    const zonedDate = new Date();
+    const currentDate = toZonedTime(zonedDate, timeZone);
     const currentHour = currentDate.getHours();
 
     // Define time ranges, including 6 PM - 8 PM
