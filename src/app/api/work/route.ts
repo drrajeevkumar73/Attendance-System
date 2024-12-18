@@ -153,9 +153,9 @@
 
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import moment from "moment-timezone"; // Import moment with timezone support
 import { validateRequest } from "@/auth";
 import { formSchema } from "@/lib/vallidation";
+import moment from "moment-timezone";
 
 export async function POST(req: NextRequest) {
   try {
@@ -169,7 +169,7 @@ export async function POST(req: NextRequest) {
     const currentDate = moment().tz('Asia/Kolkata').toDate();
     const currentHour = moment(currentDate).hour();
 
-    // Define time ranges, including 6 PM - 8 PM
+    // Define time ranges
     const timeRanges = [
       { start: 10, end: 12 }, // 10 AM to 12 PM
       { start: 12, end: 14 }, // 12 PM to 2 PM
@@ -178,6 +178,7 @@ export async function POST(req: NextRequest) {
       { start: 18, end: 20 }, // 6 PM to 8 PM
     ];
 
+    // Find current time range
     const timeRange = timeRanges.find(
       (range) => currentHour >= range.start && currentHour < range.end
     );
@@ -215,11 +216,11 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         content: data.content,
-        createdAt: currentDate, // Store in Indian Time
+        createdAt: currentDate,
       },
     });
 
-    // Attendance logic remains the same
+    // 4 PM - 6 PM attendance logic
     if (currentHour >= 16 && currentHour < 18) {
       let isPresent = true;
 
@@ -244,7 +245,7 @@ export async function POST(req: NextRequest) {
       await prisma.attendance.create({
         data: {
           userId: user.id,
-          createdAt: currentDate, // Save in Indian Time
+          createdAt: currentDate,
           status: isPresent ? "present" : "absent",
         },
       });
