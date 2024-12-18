@@ -109,7 +109,6 @@
 
 
 
-
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -117,29 +116,30 @@ export async function POST(req: NextRequest) {
   try {
     const { idx, attendance } = await req.json();
 
-    // Get current date in Indian time zone
-    const currentDate = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+    // Current Date
+    const currentDate = new Date();
 
-    // 4 PM to 6 PM time range (India timezone)
-    const todayStart = new Date(currentDate).setHours(16, 0, 0, 0); // 4 PM
-    const todayEnd = new Date(currentDate).setHours(18, 0, 0, 0); // 6 PM
+    // Adjusted to IST timezone
+    const todayStart = new Date(currentDate.setHours(16, 0, 0, 0)); // 4 PM IST
+    const todayEnd = new Date(currentDate.setHours(18, 0, 0, 0)); // 6 PM IST
 
-    console.log("Today's start time:", new Date(todayStart).toISOString());
-    console.log("Today's end time:", new Date(todayEnd).toISOString());
+    console.log("Today's start time:", todayStart.toISOString());
+    console.log("Today's end time:", todayEnd.toISOString());
 
     // Fetch attendance record created between 4 PM and 6 PM today
     const record = await prisma.attendance.findFirst({
       where: {
         userId: idx,
         createdAt: {
-          gte: new Date(todayStart), // Greater than or equal to 4 PM
-          lt: new Date(todayEnd),    // Less than 6 PM
+          gte: todayStart, // Greater than or equal to 4 PM
+          lt: todayEnd,    // Less than 6 PM
         },
       },
     });
 
-    console.log("Fetched Record:", record); // Debugging log to check fetched record
+    console.log("Fetched Record:", record);
 
+    // If no record found
     if (!record) {
       return NextResponse.json(
         { success: false, message: "No attendance record found for 4 PM to 6 PM today." },
@@ -147,6 +147,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Update the attendance status
     const updatedRecord = await prisma.attendance.update({
       where: { id: record.id }, // Attendance record ID
       data: { status: attendance }, // Update status
