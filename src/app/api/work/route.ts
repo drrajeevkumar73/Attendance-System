@@ -1,8 +1,9 @@
-import prisma from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import { validateRequest } from "@/auth";
-import { formSchema } from "@/lib/vallidation";
 import { toZonedTime } from 'date-fns-tz';
+import { format } from 'date-fns';
+import { NextRequest, NextResponse } from 'next/server';
+import { validateRequest } from '@/auth';
+import { formSchema } from '@/lib/vallidation';
+import prisma from '@/lib/prisma';
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,10 +12,11 @@ export async function POST(req: NextRequest) {
 
     const { content } = await req.json();
     const data = formSchema.parse({ content });
+
     const timeZone = 'Asia/Kolkata'; // Set your timezone
-    const zonedDate = new Date();
-    const currentDate = toZonedTime(zonedDate, timeZone);
-    const currentHour = currentDate.getHours();
+    const currentDate = new Date();
+    const zonedDate = toZonedTime(currentDate, timeZone); // Convert to 'Asia/Kolkata' timezone
+    const currentHour = zonedDate.getHours();
 
     // Define time ranges, including 6 PM - 8 PM
     const timeRanges = [
@@ -46,15 +48,15 @@ export async function POST(req: NextRequest) {
         userId: user.id,
         createdAt: {
           gte: new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate(),
+            zonedDate.getFullYear(),
+            zonedDate.getMonth(),
+            zonedDate.getDate(),
             timeRange.start,
           ),
           lte: new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate(),
+            zonedDate.getFullYear(),
+            zonedDate.getMonth(),
+            zonedDate.getDate(),
             timeRange.end,
           ),
         },
@@ -76,7 +78,7 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         content: data.content,
-        createdAt: currentDate,
+        createdAt: zonedDate, // Store in the given time zone
       },
     });
 
@@ -91,15 +93,15 @@ export async function POST(req: NextRequest) {
             userId: user.id,
             createdAt: {
               gte: new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                currentDate.getDate(),
+                zonedDate.getFullYear(),
+                zonedDate.getMonth(),
+                zonedDate.getDate(),
                 start,
               ),
               lte: new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                currentDate.getDate(),
+                zonedDate.getFullYear(),
+                zonedDate.getMonth(),
+                zonedDate.getDate(),
                 end,
               ),
             },
@@ -125,7 +127,7 @@ export async function POST(req: NextRequest) {
       await prisma.attendance.create({
         data: {
           userId: user.id,
-          createdAt: currentDate,
+          createdAt: zonedDate, // Save in the zoned time
           status: isPresent ? "present" : "absent",
         },
       });
