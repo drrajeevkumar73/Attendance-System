@@ -1,4 +1,4 @@
-// import { toZonedTime } from "date-fns-tz";
+
 // import prisma from "@/lib/prisma";
 // import { NextRequest, NextResponse } from "next/server";
 // import { validateRequest } from "@/auth";
@@ -151,9 +151,9 @@
 
 
 
-import moment from 'moment-timezone';
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import moment from "moment-timezone"; // Import moment with timezone support
 import { validateRequest } from "@/auth";
 import { formSchema } from "@/lib/vallidation";
 
@@ -215,11 +215,11 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         content: data.content,
-        createdAt: currentDate,
+        createdAt: currentDate, // Store in Indian Time
       },
     });
 
-    // Attendance logic remains same
+    // Attendance logic remains the same
     if (currentHour >= 16 && currentHour < 18) {
       let isPresent = true;
 
@@ -244,7 +244,7 @@ export async function POST(req: NextRequest) {
       await prisma.attendance.create({
         data: {
           userId: user.id,
-          createdAt: currentDate,
+          createdAt: currentDate, // Save in Indian Time
           status: isPresent ? "present" : "absent",
         },
       });
@@ -259,6 +259,7 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
 
 
 
