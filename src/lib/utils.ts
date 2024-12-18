@@ -23,10 +23,13 @@ export function formatRelativeMonthDate(from: Date) {
 }
 
 export function formatRelativeTime(from: Date) {
-  // Define options for the IST time zone conversion
+  // Ensure that the date is in UTC
+  const date = new Date(from);
+
+  // Convert UTC time to IST
   const options:any = {
-    timeZone: 'Asia/Kolkata', // Specify IST time zone
-    hour12: true,             // 12-hour clock format
+    timeZone: 'Asia/Kolkata', // Specify IST (Indian Standard Time)
+    hour12: true,             // Use 12-hour clock format
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -35,10 +38,10 @@ export function formatRelativeTime(from: Date) {
     second: 'numeric'
   };
 
-  // Convert the UTC time to IST (Indian Standard Time)
-  const istTime = new Date(from).toLocaleString('en-IN', options);
+  // Convert the date to IST using toLocaleString
+  const istTime = date.toLocaleString('en-IN', options);
 
-  // Return the formatted IST time
+  // Return the IST formatted time
   return istTime;
 }
 
