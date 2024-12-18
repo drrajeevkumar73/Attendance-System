@@ -138,8 +138,6 @@
 
 
 
-
-
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import moment from "moment-timezone";
@@ -158,24 +156,24 @@ function getTimeSlots(currentDate: Date) {
   const date = currentDate.toISOString().split("T")[0]; // YYYY-MM-DD
   return {
     tentwe: [
-      moment(`${date}T10:00:00`).tz('Asia/Kolkata').toDate(),
-      moment(`${date}T12:00:00`).tz('Asia/Kolkata').toDate(),
+      moment.tz(`${date}T10:00:00`, 'Asia/Kolkata').toDate(),
+      moment.tz(`${date}T12:00:00`, 'Asia/Kolkata').toDate(),
     ],
     twetwo: [
-      moment(`${date}T12:00:00`).tz('Asia/Kolkata').toDate(),
-      moment(`${date}T14:00:00`).tz('Asia/Kolkata').toDate(),
+      moment.tz(`${date}T12:00:00`, 'Asia/Kolkata').toDate(),
+      moment.tz(`${date}T14:00:00`, 'Asia/Kolkata').toDate(),
     ],
     twofour: [
-      moment(`${date}T14:00:00`).tz('Asia/Kolkata').toDate(),
-      moment(`${date}T16:00:00`).tz('Asia/Kolkata').toDate(),
+      moment.tz(`${date}T14:00:00`, 'Asia/Kolkata').toDate(),
+      moment.tz(`${date}T16:00:00`, 'Asia/Kolkata').toDate(),
     ],
     foursix: [
-      moment(`${date}T16:00:00`).tz('Asia/Kolkata').toDate(),
-      moment(`${date}T18:00:00`).tz('Asia/Kolkata').toDate(),
+      moment.tz(`${date}T16:00:00`, 'Asia/Kolkata').toDate(),
+      moment.tz(`${date}T18:00:00`, 'Asia/Kolkata').toDate(),
     ],
     sixeigh: [
-      moment(`${date}T18:00:00`).tz('Asia/Kolkata').toDate(),
-      moment(`${date}T20:00:00`).tz('Asia/Kolkata').toDate(),
+      moment.tz(`${date}T18:00:00`, 'Asia/Kolkata').toDate(),
+      moment.tz(`${date}T20:00:00`, 'Asia/Kolkata').toDate(),
     ],
   };
 }
