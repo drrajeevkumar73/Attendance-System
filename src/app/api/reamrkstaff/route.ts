@@ -67,45 +67,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -115,6 +76,8 @@ export async function POST(req: NextRequest) {
 
     // Current Date in UTC
     const currentDate = new Date();
+
+    console.log("Current Date (UTC):", currentDate);
 
     // Time range for 4 PM to 6 PM today in UTC
     const todayStart = new Date(
@@ -132,6 +95,9 @@ export async function POST(req: NextRequest) {
       0, 0
     );
 
+    console.log("Today's Start Time (UTC):", todayStart);
+    console.log("Today's End Time (UTC):", todayEnd);
+
     // Fetch attendance record created between 4 PM and 6 PM today
     const record = await prisma.attendance.findFirst({
       where: {
@@ -142,6 +108,8 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+
+    console.log("Fetched Record:", record);
 
     // If no record found
     if (!record) {
