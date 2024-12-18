@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     console.log("Converted Boolean Value:", trueBoolean);
 
 
-    const userdaat = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id: username,
       },

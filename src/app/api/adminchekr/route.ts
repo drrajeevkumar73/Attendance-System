@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { toZonedTime } from "date-fns-tz";
 
 // Define type for data
 interface DataType {
@@ -9,6 +10,9 @@ interface DataType {
   userId: string;
   createdAt: Date;
 }
+
+// Timezone for `Asia/Kolkata`
+const TIMEZONE = "Asia/Kolkata";
 
 // Function to define time slots
 function getTimeSlots(currentDate: Date) {
@@ -39,9 +43,10 @@ function getTimeSlots(currentDate: Date) {
 
 // Function to check if it's reset time
 function isResetTime(currentDate: Date): boolean {
-  const hour = currentDate.getHours();
-  const minute = currentDate.getMinutes();
-  return hour === 9 && minute < 59;
+  const zonedDate = toZonedTime(currentDate, TIMEZONE);
+  const hour = zonedDate.getHours();
+  const minute = zonedDate.getMinutes();
+  return hour === 9 && minute < 59; // Between 9:00 AM and 9:59 AM IST
 }
 
 // Function to fetch data for all slots
@@ -92,9 +97,10 @@ export async function POST(req: NextRequest) {
     });
 
     const currentDate = new Date();
+    const zonedDate = toZonedTime(currentDate, TIMEZONE); // Convert to IST
 
     // Check if reset time, return empty data
-    if (isResetTime(currentDate)) {
+    if (isResetTime(zonedDate)) {
       return NextResponse.json({
         success: true,
         data: {
@@ -109,7 +115,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Get time slots
-    const timeSlots:any = getTimeSlots(currentDate);
+    const timeSlots:any = getTimeSlots(zonedDate);
 
     // Fetch data for all slots
     const slotData = await fetchDataForSlots(username, timeSlots);
