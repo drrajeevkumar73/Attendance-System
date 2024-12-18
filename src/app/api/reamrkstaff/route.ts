@@ -67,6 +67,15 @@
 
 
 
+
+
+
+
+
+
+
+
+import moment from "moment-timezone";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -74,44 +83,35 @@ export async function POST(req: NextRequest) {
   try {
     const { idx, attendance } = await req.json();
 
-    // Current Date in UTC
-    const currentDate = new Date();
+    // Set current time in UTC
+    const currentUTC = moment.utc();
 
-    console.log("Current Date (UTC):", currentDate);
+    // Define time range for 4 PM to 6 PM (India time)
+    const todayStartUTC = moment
+      .tz([currentUTC.year(), currentUTC.month(), currentUTC.date(), 16, 0], "Asia/Kolkata")
+      .utc()
+      .toDate();
+    const todayEndUTC = moment
+      .tz([currentUTC.year(), currentUTC.month(), currentUTC.date(), 18, 0], "Asia/Kolkata")
+      .utc()
+      .toDate();
 
-    // Time range for 4 PM to 6 PM today in UTC
-    const todayStart = new Date(
-      currentDate.getUTCFullYear(),
-      currentDate.getUTCMonth(),
-      currentDate.getUTCDate(),
-      16, // 4 PM UTC
-      0, 0
-    );
-    const todayEnd = new Date(
-      currentDate.getUTCFullYear(),
-      currentDate.getUTCMonth(),
-      currentDate.getUTCDate(),
-      18, // 6 PM UTC
-      0, 0
-    );
+    console.log("Today Start (UTC):", todayStartUTC);
+    console.log("Today End (UTC):", todayEndUTC);
 
-    console.log("Today's Start Time (UTC):", todayStart);
-    console.log("Today's End Time (UTC):", todayEnd);
-
-    // Fetch attendance record created between 4 PM and 6 PM today
+    // Fetch attendance record
     const record = await prisma.attendance.findFirst({
       where: {
         userId: idx,
         createdAt: {
-          gte: todayStart, // Greater than or equal to 4 PM (UTC)
-          lt: todayEnd,    // Less than 6 PM (UTC)
+          gte: todayStartUTC,
+          lt: todayEndUTC,
         },
       },
     });
 
     console.log("Fetched Record:", record);
 
-    // If no record found
     if (!record) {
       return NextResponse.json(
         { success: false, message: "No attendance record found for 4 PM to 6 PM today." },
@@ -121,8 +121,8 @@ export async function POST(req: NextRequest) {
 
     // Update the attendance status
     const updatedRecord = await prisma.attendance.update({
-      where: { id: record.id }, // Attendance record ID
-      data: { status: attendance }, // Update status
+      where: { id: record.id },
+      data: { status: attendance },
     });
 
     return NextResponse.json({
