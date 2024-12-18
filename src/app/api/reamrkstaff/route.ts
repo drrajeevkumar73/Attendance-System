@@ -64,6 +64,53 @@
 //     );
 //   }
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -89,7 +136,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // If no record found
+    console.log("Record Found:", record); // Debug log to check fetched record
+
     if (!record) {
       return NextResponse.json(
         { success: false, message: "No attendance record found for 4 PM to 6 PM today." },
@@ -97,7 +145,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Update the attendance status
     const updatedRecord = await prisma.attendance.update({
       where: { id: record.id }, // Attendance record ID
       data: { status: attendance }, // Update status
