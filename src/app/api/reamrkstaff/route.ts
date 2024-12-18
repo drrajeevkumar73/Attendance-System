@@ -110,7 +110,6 @@
 
 
 
-
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -118,12 +117,15 @@ export async function POST(req: NextRequest) {
   try {
     const { idx, attendance } = await req.json();
 
-    // Current Date in Indian Time Zone
+    // Get current date in Indian time zone
     const currentDate = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
 
-    // 4 PM to 6 PM time range (today)
-    const todayStart = new Date(currentDate).setHours(16, 0, 0, 0); // 4 PM in India
-    const todayEnd = new Date(currentDate).setHours(18, 0, 0, 0); // 6 PM in India
+    // 4 PM to 6 PM time range (India timezone)
+    const todayStart = new Date(currentDate).setHours(16, 0, 0, 0); // 4 PM
+    const todayEnd = new Date(currentDate).setHours(18, 0, 0, 0); // 6 PM
+
+    console.log("Today's start time:", new Date(todayStart).toISOString());
+    console.log("Today's end time:", new Date(todayEnd).toISOString());
 
     // Fetch attendance record created between 4 PM and 6 PM today
     const record = await prisma.attendance.findFirst({
@@ -136,7 +138,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    console.log("Record Found:", record); // Debug log to check fetched record
+    console.log("Fetched Record:", record); // Debugging log to check fetched record
 
     if (!record) {
       return NextResponse.json(
