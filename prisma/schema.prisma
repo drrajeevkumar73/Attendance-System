@@ -19,8 +19,8 @@ model User {
   admin        Boolean @default(false)
   permisionToggal Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   sessions   Session[]
   Todayswork Todayswork[]
@@ -49,8 +49,8 @@ model Todayswork {
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   @@map("todayswork")
 }
@@ -81,7 +81,7 @@ model StaffWork {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz
 
   @@map("staffWork")
 }
@@ -112,7 +112,7 @@ model Reting {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz
 
   @@map("reting")
 }
@@ -124,7 +124,7 @@ model Attendance {
 
   User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
   @@map("attendance")
 }
