@@ -65,9 +65,6 @@
 //   }
 // }
 
-
-
-
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -75,23 +72,23 @@ export async function POST(req: NextRequest) {
   try {
     const { idx, attendance } = await req.json();
 
-    // Current Date
-    const currentDate = new Date();
+    // Current Date (Converted to IST)
+    const currentDate = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
 
-    // 4 PM to 6 PM time range for today
+    // 4 PM to 6 PM time range for today in IST
     const todayStart = new Date(currentDate);
     todayStart.setHours(16, 0, 0); // 4 PM
     
     const todayEnd = new Date(currentDate);
     todayEnd.setHours(18, 0, 0); // 6 PM
 
-    // Fetch attendance record created between 4 PM and 6 PM today
+    // Fetch attendance record created between 4 PM and 6 PM today in IST
     const record = await prisma.attendance.findFirst({
       where: {
         userId: idx,
         createdAt: {
-          gte: todayStart, // Greater than or equal to 4 PM
-          lt: todayEnd,    // Less than 6 PM
+          gte: todayStart, // Greater than or equal to 4 PM IST
+          lt: todayEnd,    // Less than 6 PM IST
         },
       },
     });
