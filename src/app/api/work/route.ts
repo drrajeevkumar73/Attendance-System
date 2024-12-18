@@ -235,6 +235,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    console.log(savedTask.createdAt)
+
     // Attendance remains tied to the 4 PM - 6 PM slot only
     if (currentHour >= 16 && currentHour < 18) {
       let isPresent = true;
