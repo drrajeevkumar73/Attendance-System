@@ -1,5 +1,4 @@
-import { toZonedTime } from 'date-fns-tz';
-import { format } from 'date-fns';
+import { toZonedTime, format } from 'date-fns-tz';
 import { NextRequest, NextResponse } from 'next/server';
 import { validateRequest } from '@/auth';
 import { formSchema } from '@/lib/vallidation';
@@ -13,9 +12,10 @@ export async function POST(req: NextRequest) {
     const { content } = await req.json();
     const data = formSchema.parse({ content });
 
-    const timeZone = 'Asia/Kolkata'; // Set your timezone
+    const timeZone = 'Asia/Kolkata'; // India Timezone
     const currentDate = new Date();
-    const zonedDate = toZonedTime(currentDate, timeZone); // Convert to 'Asia/Kolkata' timezone
+    const zonedDate = toZonedTime(currentDate, timeZone); // Convert current UTC time to IST (Asia/Kolkata)
+
     const currentHour = zonedDate.getHours();
 
     // Define time ranges, including 6 PM - 8 PM
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         content: data.content,
-        createdAt: zonedDate, // Store in the given time zone
+        createdAt: zonedDate, // Store in IST timezone
       },
     });
 
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
       await prisma.attendance.create({
         data: {
           userId: user.id,
-          createdAt: zonedDate, // Save in the zoned time
+          createdAt: zonedDate, // Save attendance with the same IST time
           status: isPresent ? "present" : "absent",
         },
       });
