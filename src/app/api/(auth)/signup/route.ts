@@ -8,11 +8,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { displayname, email, dipartment, passwordHash } = await req.json();
+    const { displayname, email, dipartment,cityR, passwordHash } = await req.json();
     const data = signupSchema.parse({
       displayname,
       email,
       dipartment,
+      cityR,
       passwordHash,
     });
     const userId = generateIdFromEntropySize(10);
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
         displayname: data.displayname,
         email: data.email,
         dipartment: data.dipartment,
+        city:data.cityR,
         passwordHash: hashP,
       },
     });

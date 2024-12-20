@@ -48,20 +48,32 @@ export default function Atendace() {
 
   const { toast } = useToast();
   const [ispending, setispending] = useState(false);
-  const [client, setclient] = useState<[]>();
+  const [client, setclient] = useState({
+    Patna: [],
+    Kolkata: [],
+    Delhi: [],
+    Ranchi: [],
+  });
+
   const selctor = async () => {
     const { data } = await axios.get("/api/allclient");
-    setclient(data);
+
+    setclient({
+      Patna: data.Patna,
+      Kolkata: data.Kolkata,
+      Delhi: data.Delhi,
+      Ranchi: data.Ranchi,
+    });
   };
   useEffect(() => {
     selctor();
   }, []);
-
   const [userdate,setuserdat]=useState({
     Totalwork:[],
     Atendace:"",
     dipartment:"",
-    displayname:""
+    displayname:"",
+    city:""
   })
   const onSubmit = async (value: SerchValue) => {
     try {
@@ -74,7 +86,8 @@ export default function Atendace() {
         Totalwork:data.data.Totalwork,
         Atendace:data.data.Atendace,
         dipartment:data.data.dipartment,
-        displayname:data.data.displayname
+        displayname:data.data.displayname,
+        city:data.data.city
       })
 
     } catch (error) {
@@ -107,9 +120,36 @@ export default function Atendace() {
                       <SelectValue placeholder="Select by name" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Staff name</SelectLabel>
-                        {client?.map((v: any, i) => (
+                    <SelectGroup>
+                        <SelectLabel className="text-green-500">
+                          Ranchi Staff name
+                        </SelectLabel>
+                        {client?.Ranchi.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          Patna Staff name
+                        </SelectLabel>
+                        {client?.Patna.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          Kolkata Staff name
+                        </SelectLabel>
+                        {client?.Kolkata.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+
+                        <SelectLabel className="text-green-500">
+                          Delhi Staff name
+                        </SelectLabel>
+                        {client?.Delhi.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
@@ -189,11 +229,20 @@ export default function Atendace() {
         <CardFooter>
           <p className="flex items-center gap-4">
             <span className="text-[2rem] font-bold text-muted-foreground">
+              City:
+            </span>
+            <span className="text-[1rem] font-semibold  text-red-500">{userdate.city}</span>
+          </p>
+        </CardFooter>
+        <CardFooter>
+          <p className="flex items-center gap-4">
+            <span className="text-[2rem] font-bold text-muted-foreground">
               Total Present In This Month:
             </span>
             <span className="text-[1rem] font-semibold  text-red-500">{userdate.Atendace}</span>
           </p>
         </CardFooter>
+        
       </Card>
 
 

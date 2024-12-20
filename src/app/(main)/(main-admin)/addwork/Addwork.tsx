@@ -274,42 +274,43 @@ export default function Addwork() {
                       <SelectValue placeholder="Select a dipartment" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Department</SelectLabel>
-                        <SelectItem value="HR">1) HR</SelectItem>
-                        <SelectItem value="BRANCH MANAGER / HR EXE">
-                          2) BRANCH MANAGER / HR EXE
-                        </SelectItem>
-                        <SelectItem value="RECEPTIONS">
-                          3) RECEPTIONS
-                        </SelectItem>
-                        <SelectItem value="CASHIER">4) CASHIER</SelectItem>
-                        <SelectItem value="MEDICINE COUNTER + HD / OD">
-                          5) MEDICINE COUNTER + HD / OD
-                        </SelectItem>
-                        <SelectItem value="(HD /OD + BOOKING) TELECALLER">
-                          6) (HD /OD + BOOKING) TELECALLER
-                        </SelectItem>
-                        <SelectItem value="MIXER">7) MIXER</SelectItem>
-                        <SelectItem value="E-COMMERCE + DIGITAL">
-                          8) E-COMMERCE + DIGITAL
-                        </SelectItem>
-                        <SelectItem value="DOCTOR">9) DOCTOR</SelectItem>
-                        <SelectItem value="MAID">10) MAID</SelectItem>
-                        <SelectItem value="GUARD">11) GUARD</SelectItem>
-                        <SelectItem value="DRIVER">12) DRIVER</SelectItem>
-                        <SelectItem value="ACCOUNTANT / INVENTORY">
-                          13) ACCOUNTANT / INVENTORY
-                        </SelectItem>
-                        <SelectItem value="TRUST">14) TRUST</SelectItem>
-                        <SelectItem value="DIGITAL HEAD">
-                          15) DIGITAL HEAD
-                        </SelectItem>
-                        <SelectItem value="MARKETING MANAGER">
-                          16) MARKETING MANAGER
-                        </SelectItem>
-                        <SelectItem value="STAFF">17) STAFF</SelectItem>
-                      </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Dipartment</SelectLabel>
+                      <SelectItem value="CENTER OPS MANAGER">
+                        1) CENTER OPS MANAGER
+                      </SelectItem>
+                      <SelectItem value="HR">2) HR</SelectItem>
+                      <SelectItem value="CASHIER">3) CASHIER</SelectItem>
+                      <SelectItem value="RECEPTIONS">4) RECEPTIONS</SelectItem>
+                      <SelectItem value="MEDICINE COUNTER">
+                        5) MEDICINE COUNTER
+                      </SelectItem>
+                      <SelectItem value="HD / OD">6) HD / OD</SelectItem>
+                      <SelectItem value="TELECALLER DEPT">
+                        7) TELECALLER DEPT
+                      </SelectItem>
+                      <SelectItem value="MIXER">8) MIXER</SelectItem>
+                      <SelectItem value="ECART">9) ECART</SelectItem>
+                      <SelectItem value="DESIGNER">10) DESIGNER</SelectItem>
+                      <SelectItem value="DIGITAL MARKETING">
+                        11) DIGITAL MARKETING
+                      </SelectItem>
+                      <SelectItem value="DOCTOR">12) DOCTOR</SelectItem>
+                      <SelectItem value="MAID / OFFICE BOY">
+                        13) MAID / OFFICE BOY
+                      </SelectItem>
+                      <SelectItem value="GUARD">14) GUARD</SelectItem>
+                      <SelectItem value="DRIVER">15) DRIVER</SelectItem>
+                      <SelectItem value="ACCOUNTANT / INVENTORY">
+                        16) ACCOUNTANT / INVENTORY
+                      </SelectItem>
+                      <SelectItem value="TRUST MARKETING">
+                        17) TRUST MARKETING
+                      </SelectItem>
+                      <SelectItem value="SHOP RANCHI">
+                        18) SHOP RANCHI
+                      </SelectItem>
+                    </SelectGroup>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -337,42 +338,43 @@ export default function Addwork() {
                       <SelectValue placeholder="Select a dipartment" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Dipartment</SelectLabel>
-                        <SelectItem value="HR">1) HR</SelectItem>
-                        <SelectItem value="BRANCH MANAGER / HR EXE">
-                          2) BRANCH MANAGER / HR EXE
-                        </SelectItem>
-                        <SelectItem value="RECEPTIONS">
-                          3) RECEPTIONS
-                        </SelectItem>
-                        <SelectItem value="CASHIER">4) CASHIER</SelectItem>
-                        <SelectItem value="MEDICINE COUNTER + HD / OD">
-                          5) MEDICINE COUNTER + HD / OD
-                        </SelectItem>
-                        <SelectItem value="(HD /OD + BOOKING) TELECALLER">
-                          6) (HD /OD + BOOKING) TELECALLER
-                        </SelectItem>
-                        <SelectItem value="MIXER">7) MIXER</SelectItem>
-                        <SelectItem value="E-COMMERCE + DIGITAL">
-                          8) E-COMMERCE + DIGITAL
-                        </SelectItem>
-                        <SelectItem value="DOCTOR">9) DOCTOR</SelectItem>
-                        <SelectItem value="MAID">10) MAID</SelectItem>
-                        <SelectItem value="GUARD">11) GUARD</SelectItem>
-                        <SelectItem value="DRIVER">12) DRIVER</SelectItem>
-                        <SelectItem value="ACCOUNTANT / INVENTORY">
-                          13) ACCOUNTANT / INVENTORY
-                        </SelectItem>
-                        <SelectItem value="TRUST">14) TRUST</SelectItem>
-                        <SelectItem value="DIGITAL HEAD">
-                          15) DIGITAL HEAD
-                        </SelectItem>
-                        <SelectItem value="MARKETING MANAGER">
-                          16) MARKETING MANAGER
-                        </SelectItem>
-                        <SelectItem value="STAFF">17) STAFF</SelectItem>
-                      </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Dipartment</SelectLabel>
+                      <SelectItem value="CENTER OPS MANAGER">
+                        1) CENTER OPS MANAGER
+                      </SelectItem>
+                      <SelectItem value="HR">2) HR</SelectItem>
+                      <SelectItem value="CASHIER">3) CASHIER</SelectItem>
+                      <SelectItem value="RECEPTIONS">4) RECEPTIONS</SelectItem>
+                      <SelectItem value="MEDICINE COUNTER">
+                        5) MEDICINE COUNTER
+                      </SelectItem>
+                      <SelectItem value="HD / OD">6) HD / OD</SelectItem>
+                      <SelectItem value="TELECALLER DEPT">
+                        7) TELECALLER DEPT
+                      </SelectItem>
+                      <SelectItem value="MIXER">8) MIXER</SelectItem>
+                      <SelectItem value="ECART">9) ECART</SelectItem>
+                      <SelectItem value="DESIGNER">10) DESIGNER</SelectItem>
+                      <SelectItem value="DIGITAL MARKETING">
+                        11) DIGITAL MARKETING
+                      </SelectItem>
+                      <SelectItem value="DOCTOR">12) DOCTOR</SelectItem>
+                      <SelectItem value="MAID / OFFICE BOY">
+                        13) MAID / OFFICE BOY
+                      </SelectItem>
+                      <SelectItem value="GUARD">14) GUARD</SelectItem>
+                      <SelectItem value="DRIVER">15) DRIVER</SelectItem>
+                      <SelectItem value="ACCOUNTANT / INVENTORY">
+                        16) ACCOUNTANT / INVENTORY
+                      </SelectItem>
+                      <SelectItem value="TRUST MARKETING">
+                        17) TRUST MARKETING
+                      </SelectItem>
+                      <SelectItem value="SHOP RANCHI">
+                        18) SHOP RANCHI
+                      </SelectItem>
+                    </SelectGroup>
                     </SelectContent>
                   </Select>
                 </FormControl>

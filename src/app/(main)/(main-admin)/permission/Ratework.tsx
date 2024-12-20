@@ -51,10 +51,22 @@ export default function Ratework() {
       monthname: "",
     },
   });
-  const [client, setclient] = useState<[]>();
+  const [client, setclient] = useState({
+    Patna: [],
+    Kolkata: [],
+    Delhi: [],
+    Ranchi: [],
+  });
+
   const selctor = async () => {
     const { data } = await axios.get("/api/allclient");
-    setclient(data);
+
+    setclient({
+      Patna: data.Patna,
+      Kolkata: data.Kolkata,
+      Delhi: data.Delhi,
+      Ranchi: data.Ranchi,
+    });
   };
   useEffect(() => {
     selctor();
@@ -102,9 +114,36 @@ export default function Ratework() {
                       <SelectValue placeholder="Select by name" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Staff name</SelectLabel>
-                        {client?.map((v: any, i) => (
+                    <SelectGroup>
+                        <SelectLabel className="text-green-500">
+                          Ranchi Staff name
+                        </SelectLabel>
+                        {client?.Ranchi.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          Patna Staff name
+                        </SelectLabel>
+                        {client?.Patna.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          Kolkata Staff name
+                        </SelectLabel>
+                        {client?.Kolkata.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+
+                        <SelectLabel className="text-green-500">
+                          Delhi Staff name
+                        </SelectLabel>
+                        {client?.Delhi.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>

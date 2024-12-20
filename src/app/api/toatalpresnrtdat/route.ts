@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
       select: {
         dipartment:true,
         displayname:true,
+        city:true,
         Todayswork: {
           select: {
             content: true,
@@ -56,7 +57,8 @@ export async function POST(req: NextRequest) {
         Totalwork: filteredTodaysWork,
         Atendace: totalAdence.length,
         dipartment:userdata.dipartment,
-        displayname:userdata.displayname
+        displayname:userdata.displayname,
+        city:userdata.city
       },
     });
   } catch (error) {

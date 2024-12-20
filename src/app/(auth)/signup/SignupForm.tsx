@@ -38,6 +38,7 @@ export default function SignupForm() {
       displayname: "",
       email: "",
       dipartment: "",
+      cityR: "",
       passwordHash: "",
     },
   });
@@ -49,6 +50,7 @@ export default function SignupForm() {
         displayname: value.displayname,
         email: value.email,
         dipartment: value.dipartment,
+        cityR:value.cityR,
         passwordHash: value.passwordHash,
       });
       router.push("/");
@@ -114,37 +116,70 @@ export default function SignupForm() {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Dipartment</SelectLabel>
-                      <SelectItem value="HR">1) HR</SelectItem>
-                      <SelectItem value="BRANCH MANAGER / HR EXE">
-                        2) BRANCH MANAGER / HR EXE
+                      <SelectItem value="CENTER OPS MANAGER">
+                        1) CENTER OPS MANAGER
                       </SelectItem>
-                      <SelectItem value="RECEPTIONS">3) RECEPTIONS</SelectItem>
-                      <SelectItem value="CASHIER">4) CASHIER</SelectItem>
-                      <SelectItem value="MEDICINE COUNTER + HD / OD">
-                        5) MEDICINE COUNTER + HD / OD
+                      <SelectItem value="HR">2) HR</SelectItem>
+                      <SelectItem value="CASHIER">3) CASHIER</SelectItem>
+                      <SelectItem value="RECEPTIONS">4) RECEPTIONS</SelectItem>
+                      <SelectItem value="MEDICINE COUNTER">
+                        5) MEDICINE COUNTER
                       </SelectItem>
-                      <SelectItem value="(HD /OD + BOOKING) TELECALLER">
-                        6) (HD /OD + BOOKING) TELECALLER
+                      <SelectItem value="HD / OD">6) HD / OD</SelectItem>
+                      <SelectItem value="TELECALLER DEPT">
+                        7) TELECALLER DEPT
                       </SelectItem>
-                      <SelectItem value="MIXER">7) MIXER</SelectItem>
-                      <SelectItem value="E-COMMERCE + DIGITAL">
-                        8) E-COMMERCE + DIGITAL
+                      <SelectItem value="MIXER">8) MIXER</SelectItem>
+                      <SelectItem value="ECART">9) ECART</SelectItem>
+                      <SelectItem value="DESIGNER">10) DESIGNER</SelectItem>
+                      <SelectItem value="DIGITAL MARKETING">
+                        11) DIGITAL MARKETING
                       </SelectItem>
-                      <SelectItem value="DOCTOR">9) DOCTOR</SelectItem>
-                      <SelectItem value="MAID">10) MAID</SelectItem>
-                      <SelectItem value="GUARD">11) GUARD</SelectItem>
-                      <SelectItem value="DRIVER">12) DRIVER</SelectItem>
+                      <SelectItem value="DOCTOR">12) DOCTOR</SelectItem>
+                      <SelectItem value="MAID / OFFICE BOY">
+                        13) MAID / OFFICE BOY
+                      </SelectItem>
+                      <SelectItem value="GUARD">14) GUARD</SelectItem>
+                      <SelectItem value="DRIVER">15) DRIVER</SelectItem>
                       <SelectItem value="ACCOUNTANT / INVENTORY">
-                        13) ACCOUNTANT / INVENTORY
+                        16) ACCOUNTANT / INVENTORY
                       </SelectItem>
-                      <SelectItem value="TRUST">14) TRUST</SelectItem>
-                      <SelectItem value="DIGITAL HEAD">
-                        15) DIGITAL HEAD
+                      <SelectItem value="TRUST MARKETING">
+                        17) TRUST MARKETING
                       </SelectItem>
-                      <SelectItem value="MARKETING MANAGER">
-                        16) MARKETING MANAGER
+                      <SelectItem value="SHOP RANCHI">
+                        18) SHOP RANCHI
                       </SelectItem>
-                      <SelectItem value="STAFF">17) STAFF</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="cityR"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>City</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>City</SelectLabel>
+                      <SelectItem value="Ranchi">Ranchi</SelectItem>
+                      <SelectItem value="Kolkata">Kolkata</SelectItem>
+                      <SelectItem value="Patna">Patna</SelectItem>
+                      <SelectItem value="Delhi">Delhi</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -161,7 +196,7 @@ export default function SignupForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-              <PasswordInput placeholder="Password" {...field} />
+                <PasswordInput placeholder="Password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -174,103 +209,3 @@ export default function SignupForm() {
     </Form>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -18,11 +18,12 @@ export const lucia = new Lucia(adapter, {
     return {
       id: databaseUserAttributes.id,
       displayname: databaseUserAttributes.displayname,
-      dipartment:databaseUserAttributes.dipartment,
+      dipartment: databaseUserAttributes.dipartment,
       avatarUrl: databaseUserAttributes.avatarUrl,
       googleId: databaseUserAttributes.googleId,
-      admin:databaseUserAttributes.admin,
-      permisionToggal :databaseUserAttributes.permisionToggal
+      admin: databaseUserAttributes.admin,
+      permisionToggal: databaseUserAttributes.permisionToggal,
+      city: databaseUserAttributes.city,
     };
   },
 });
@@ -40,8 +41,9 @@ interface DatabaseUserAttributesInterface {
   dipartment: string;
   avatarUrl: string | null;
   googleId: string | null;
-  admin: boolean
-  permisionToggal :boolean
+  admin: boolean;
+  permisionToggal: boolean;
+  city: string;
 }
 
 export const validateRequest = cache(

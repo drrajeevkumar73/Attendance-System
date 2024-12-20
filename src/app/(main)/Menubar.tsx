@@ -61,6 +61,20 @@ export default function Menubar({ className }: MenuBarProps) {
             <Link href={"/attendance"}>Add Today&lsquo;s Task</Link>
           </Button>
           <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Excel Part"
+            asChild
+          >
+            <Link href={"/excel"}>Excel Part</Link>
+          </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/vewexceldeta" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Veiw Excel Data"
+            asChild
+          >
+            <Link href={"/vewexceldeta"}>Veiw Excel Data</Link>
+          </Button>
+          <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/setask" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
             title="See Task"
             asChild

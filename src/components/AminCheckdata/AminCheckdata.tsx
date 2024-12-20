@@ -60,10 +60,22 @@ export default function AminCheckdata() {
 
   const { toast } = useToast();
   const [ispending, setispending] = useState(false);
-  const [client, setclient] = useState<[]>();
+  const [client, setclient] = useState({
+    Patna: [],
+    Kolkata: [],
+    Delhi: [],
+    Ranchi: [],
+  });
+
   const selctor = async () => {
     const { data } = await axios.get("/api/allclient");
-    setclient(data);
+
+    setclient({
+      Patna: data.Patna,
+      Kolkata: data.Kolkata,
+      Delhi: data.Delhi,
+      Ranchi: data.Ranchi,
+    });
   };
   useEffect(() => {
     selctor();
@@ -72,6 +84,7 @@ export default function AminCheckdata() {
   const [timedata, settimedata] = useState({
     dipartment: "",
     fullname: "",
+    city:"",
     tentwe: [],
     twetwo: [],
     twofour: [],
@@ -88,6 +101,7 @@ export default function AminCheckdata() {
       settimedata({
         dipartment: data.dnameorFname.dipartment,
         fullname: data.dnameorFname.displayname,
+        city:data.dnameorFname.city,
         tentwe: data.data.tentwe,
         twetwo: data.data.twetwo,
         twofour: data.data.twofour,
@@ -127,8 +141,35 @@ export default function AminCheckdata() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Staff name</SelectLabel>
-                        {client?.map((v: any, i) => (
+                        <SelectLabel className="text-green-500">
+                          Ranchi Staff name
+                        </SelectLabel>
+                        {client?.Ranchi.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          Patna Staff name
+                        </SelectLabel>
+                        {client?.Patna.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          Kolkata Staff name
+                        </SelectLabel>
+                        {client?.Kolkata.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+
+                        <SelectLabel className="text-green-500">
+                          Delhi Staff name
+                        </SelectLabel>
+                        {client?.Delhi.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
@@ -148,16 +189,43 @@ export default function AminCheckdata() {
         </form>
       </Form>
 
-      <Card className="py-8 w-full">
+      <Card className="w-full py-8">
         <CardContent>
-          <p className="flex items-center gap-4  "><span className="text-[2rem] font-bold text-muted-foreground">Full Name: </span><span className="text-[1rem] font-semibold"> {' '}{timedata.fullname}</span></p>
+          <p className="flex items-center gap-4">
+            <span className="text-[2rem] font-bold text-muted-foreground">
+              Full Name:{" "}
+            </span>
+            <span className="text-[1rem] font-semibold">
+              {" "}
+              {timedata.fullname}
+            </span>
+          </p>
         </CardContent>
         <CardFooter>
-        <p className="flex items-center gap-4  "><span className="text-[2rem] font-bold text-muted-foreground">Department: </span><span className="text-[1rem] font-semibold"> {' '}{timedata.dipartment}</span></p>
+          <p className="flex items-center gap-4">
+            <span className="text-[2rem] font-bold text-muted-foreground">
+              Department:{" "}
+            </span>
+            <span className="text-[1rem] font-semibold">
+              {" "}
+              {timedata.dipartment}
+            </span>
+          </p>
+        </CardFooter>
+        <CardFooter>
+          <p className="flex items-center gap-4">
+            <span className="text-[2rem] font-bold text-muted-foreground">
+              City:{" "}
+            </span>
+            <span className="text-[1rem] font-semibold">
+              {" "}
+              {timedata.city}
+            </span>
+          </p>
         </CardFooter>
       </Card>
 
-      <Table className='mt-[100px]'>
+      <Table className="mt-[100px]">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="w-[100px]">Date</TableHead>
@@ -220,7 +288,7 @@ export default function AminCheckdata() {
                   {formatRelativeMonthDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words">
-                  {item.content} 
+                  {item.content}
                 </TableCell>
                 <TableCell className="text-right">
                   {formatRelativeTime(item.createdAt)}
@@ -237,7 +305,7 @@ export default function AminCheckdata() {
         )}
       </Table>
 
-      <Table className='mt-[100px]'>
+      <Table className="mt-[100px]">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="w-[100px]">Date</TableHead>
@@ -316,7 +384,7 @@ export default function AminCheckdata() {
         )}
       </Table>
 
-      <Table className='mt-[100px]'>
+      <Table className="mt-[100px]">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="w-[100px]">Date</TableHead>

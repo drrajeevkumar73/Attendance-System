@@ -13,7 +13,7 @@ import {
     DropdownMenuSubTrigger,
   } from "./ui/dropdown-menu";
   import Link from "next/link";
-  import { Check, Diameter, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
+  import { Check, Diameter, HomeIcon, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
   import { cn } from "@/lib/utils";
   import { useAppSelector } from "@/lib/hooks";
 
@@ -48,6 +48,10 @@ export default function UserButton({ className }: clasnameProps) {
           <DropdownMenuItem>
             <Diameter className="mr-2 size-4" />
             Department as {user.dipartment}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <HomeIcon className="mr-2 size-4" />
+            City as {user.city}
           </DropdownMenuItem>
      
         <DropdownMenuSub>

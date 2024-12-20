@@ -9,24 +9,25 @@ datasource db {
 }
 
 model User {
-  id           String  @id
-  displayname  String
-  email        String  @unique
-  dipartment   String
-  passwordHash String
-  googleId     String? @unique
-  avatarUrl    String?
-  admin        Boolean @default(false)
+  id              String  @id
+  displayname     String
+  email           String  @unique
+  dipartment      String
+  city            String
+  passwordHash    String
+  googleId        String? @unique
+  avatarUrl       String?
+  admin           Boolean @default(false)
   permisionToggal Boolean @default(false)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   sessions   Session[]
   Todayswork Todayswork[]
   StaffWork  StaffWork[]
-  Reting     Reting[]
   Atendace   Attendance[]
+  Telecaller Telecaller[]
 
   @@map("users")
 }
@@ -49,8 +50,8 @@ model Todayswork {
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("todayswork")
 }
@@ -81,13 +82,26 @@ model StaffWork {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now())
 
   @@map("staffWork")
 }
 
-model Reting {
-  id     String  @id @default(cuid())
+model Attendance {
+  id     String @id @default(cuid())
+  userId String
+  status String // "present" or "absent"
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("attendance")
+}
+
+model Telecaller {
+  id           String  @id @default(cuid())
   userId String
   task1  String?
   task2  String?
@@ -101,30 +115,11 @@ model Reting {
   task10 String?
   task11 String?
   task12 String?
-  task13 String?
-  task14 String?
-  task15 String?
-  task16 String?
-  task17 String?
-  task18 String?
-  task19 String?
-  task20 String?
 
-  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User User @relation(fields: [userId], references: [id])
 
-  createdAt DateTime @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@map("reting")
-}
-
-model Attendance {
-  id        String   @id @default(cuid())
-  userId    String
-  status    String // "present" or "absent"
-
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
-  @@map("attendance")
+  @@map("telecaller")
 }

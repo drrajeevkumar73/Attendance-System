@@ -6,6 +6,7 @@ export const signupSchema = z.object({
   displayname: requiredString.max(20, "Must be at least 20 characters"),
   email: requiredString.email("Invalid email"),
   dipartment: requiredString,
+  cityR: requiredString,
   passwordHash: requiredString.min(8, "Must be at least 8 characters"),
 });
 
@@ -112,5 +113,28 @@ export type RemarkValue = z.infer<typeof remarkSchema>;
 
 
 export type sanameValue = z.infer<typeof autoSelectSchema>;
+
+
+
+
+
+
+export const exelSchema = z.object({
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+  task5: z.string().trim(),
+  task6: z.string().trim(),
+  task7: z.string().trim(),
+  task8: z.string().trim(),
+  task9: z.string().trim(),
+  task10: z.string().trim(),
+  task11: z.string().trim(),
+  task12: z.string().trim(),
+ 
+});
+
+export type ExelValue = z.infer<typeof exelSchema>;
 
 
