@@ -1,6 +1,7 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import moment from "moment-timezone";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,10 +10,10 @@ export async function POST(req: NextRequest) {
       throw Error("unauthorized");
     }
 
-    // Current time in hours and minutes
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    const currentMinutes = currentTime.getMinutes();
+    // Get current time in IST
+    const currentTime = moment().tz("Asia/Kolkata");
+    const currentHour = currentTime.hour(); // 24-hour format
+    const currentMinutes = currentTime.minute();
 
     // Block entries between 8 PM (20:00) to 9:59 AM (09:59)
     if (
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
       (currentHour >= 0 && currentHour < 10) // Midnight to 9:59 AM
     ) {
       return NextResponse.json(
-        { success: false, message: "Data entry is not allowed between 8 PM and 9:59 AM." },
+        { success: false, message: "Data entry is not allowed between 8 PM and 9:59 AM (IST)." },
         { status: 403 }
       );
     }
