@@ -20,12 +20,13 @@ model User {
   admin           Boolean @default(false)
   permisionToggal Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   sessions   Session[]
   Todayswork Todayswork[]
   StaffWork  StaffWork[]
+  Reting     Reting[]
   Atendace   Attendance[]
   Telecaller Telecaller[]
 
@@ -50,8 +51,8 @@ model Todayswork {
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   @@map("todayswork")
 }
@@ -82,9 +83,40 @@ model StaffWork {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz
 
   @@map("staffWork")
+}
+
+model Reting {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String?
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+  task12 String?
+  task13 String?
+  task14 String?
+  task15 String?
+  task16 String?
+  task17 String?
+  task18 String?
+  task19 String?
+  task20 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @db.Timestamptz
+
+  @@map("reting")
 }
 
 model Attendance {
@@ -94,14 +126,14 @@ model Attendance {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   @@map("attendance")
 }
 
 model Telecaller {
-  id           String  @id @default(cuid())
+  id     String  @id @default(cuid())
   userId String
   task1  String?
   task2  String?
@@ -116,7 +148,7 @@ model Telecaller {
   task11 String?
   task12 String?
 
-  User User @relation(fields: [userId], references: [id])
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
