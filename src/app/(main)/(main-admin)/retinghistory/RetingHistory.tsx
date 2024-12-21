@@ -245,9 +245,9 @@ export default function RetingHistory() {
       <Table>
         <TableHeader className="border border-primary">
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px]">Date</TableHead>
-            <TableHead>Work</TableHead>
-            <TableHead className="text-right">Time</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="border-2 border-blue-400">Work</TableHead>
+            <TableHead className="text-right border-2 border-blue-400">Time</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="border border-primary">
@@ -260,15 +260,15 @@ export default function RetingHistory() {
           ) : alluserdata.displayname && alluserdata.StaffWork.length > 0 ? (
             alluserdata.StaffWork.map((work: any, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">
+                <TableCell className="font-medium border-2 border-blue-400">
                   {formatRelativeMonthDate(work.createdAt)}
                 </TableCell>
-                <TableCell className="space-y-4 font-medium">
+                <TableCell className="space-y-4 font-medium border-2 border-blue-400">
                   {[...Array(20)].map((_, i) => (
                     <p key={i}>{work[`task${i + 1}`]}</p>
                   ))}
                 </TableCell>
-                <TableCell className="text-right font-medium">
+                <TableCell className="text-right font-medium w-[200px] border-2 border-blue-400">
                   {formatRelativeTime(work.createdAt)}
                 </TableCell>
               </TableRow>

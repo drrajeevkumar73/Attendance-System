@@ -141,9 +141,9 @@ export default function Calender({ className }: classNameProps) {
       <Table>
         <TableHeader className="border border-primary">
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px]">Date</TableHead>
-            <TableHead>Work</TableHead>
-            <TableHead className="text-right">Time</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="border-2 border-blue-400">Work</TableHead>
+            <TableHead className="text-right border-2 border-blue-400">Time</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -170,13 +170,13 @@ export default function Calender({ className }: classNameProps) {
           data?.map((v: any, i) => (
             <TableBody className="border border-primary" key={i}>
               <TableRow>
-                <TableCell className="font-medium">
+                <TableCell className="font-medium border-2 border-blue-400">
                   {formatRelativeMonthDate(v.createdAt)}
                 </TableCell>
-                <TableCell className="whitespace-pre-line break-words">
+                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {v.content}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="w-[200px] text-right border-2 border-blue-400">
                   {formatRelativeTime(v.createdAt)}
                 </TableCell>
               </TableRow>

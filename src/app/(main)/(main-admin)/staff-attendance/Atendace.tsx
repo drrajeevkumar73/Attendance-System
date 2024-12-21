@@ -249,9 +249,9 @@ export default function Atendace() {
            <Table>
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
-                  <TableHead className="w-[100px]">Date</TableHead>
-                  <TableHead>Work</TableHead>
-                  <TableHead className="text-right">Time</TableHead>
+                  <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+                  <TableHead className="border-2 border-blue-400">Work</TableHead>
+                  <TableHead className="text-right border-2 border-blue-400">Time</TableHead>
                 </TableRow>
               </TableHeader>
       
@@ -265,13 +265,13 @@ export default function Atendace() {
                 <TableBody>
                   {userdate.Totalwork.map((item: any, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">
+                      <TableCell className="font-medium border-2 border-blue-400">
                         {formatRelativeMonthDate(item.createdAt)}
                       </TableCell>
-                      <TableCell className="whitespace-pre-line break-words">
+                      <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                         {item.content} 
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-right w-[200px] border-2 border-blue-400">
                         {formatRelativeTime(item.createdAt)}
                       </TableCell>
                     </TableRow>
