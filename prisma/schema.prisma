@@ -20,8 +20,8 @@ model User {
   admin           Boolean @default(false)
   permisionToggal Boolean @default(false)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   sessions   Session[]
   Todayswork Todayswork[]
@@ -29,6 +29,9 @@ model User {
   Reting     Reting[]
   Atendace   Attendance[]
   Telecaller Telecaller[]
+  Reception  Reception[]
+  Medicene   Medicene[]
+  Ranchishop Ranchishop[]
 
   @@map("users")
 }
@@ -51,8 +54,8 @@ model Todayswork {
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("todayswork")
 }
@@ -83,7 +86,7 @@ model StaffWork {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now())
 
   @@map("staffWork")
 }
@@ -114,7 +117,7 @@ model Reting {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now())
 
   @@map("reting")
 }
@@ -126,8 +129,8 @@ model Attendance {
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz
-  updatedAt DateTime @updatedAt @db.Timestamptz
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("attendance")
 }
@@ -135,7 +138,7 @@ model Attendance {
 model Telecaller {
   id     String  @id @default(cuid())
   userId String
-  task1  String?
+  task1  String
   task2  String?
   task3  String?
   task4  String?
@@ -148,4 +151,71 @@ model Telecaller {
   updatedAt DateTime @updatedAt
 
   @@map("telecaller")
+}
+
+model Reception {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+  task12 String?
+  task13 String?
+  task14 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("reception")
+}
+
+model Medicene {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("medicene")
+}
+
+model Ranchishop {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("ranchishop")
 }

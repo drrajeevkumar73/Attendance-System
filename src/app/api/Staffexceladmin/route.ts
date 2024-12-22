@@ -74,14 +74,154 @@ export async function POST(req: NextRequest) {
 
 
     
-   }else if(userdata.dipartment === "HR"){
-    // const data=prisma.telecaller.findMany({
-    //     where:{
-    //         userId:userid
-    //     }
-    // })
+   }else if(userdata.dipartment === "RECEPTIONS"){
+    const data=await prisma.reception.findMany({
+        where:{
+            userId:userid
+        },
+        orderBy:{
+            createdAt:"desc"
+        }
+        
+    })
 
-    // return NextResponse.json(data)
+
+
+    const d = data.filter((v: any) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Aaj ke din ka start fix karo
+    
+        const createdAt = new Date(v.createdAt);
+    
+        if (monthname === "Today") {
+            // Aaj ka data filter karo
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            return createdAt >= today && createdAt < tomorrow;
+        } else if (monthname === "Yesterday") {
+            // Kal ka data filter karo
+            const yesterdayStart = new Date(today);
+            yesterdayStart.setDate(today.getDate() - 1);
+            const yesterdayEnd = new Date(today);
+            return createdAt >= yesterdayStart && createdAt < yesterdayEnd;
+        } else if (monthname === "last_7_day") {
+            // Last 7 din ka data filter karo
+            const last7DaysStart = new Date(today);
+            last7DaysStart.setDate(today.getDate() - 7);
+    
+            const last7DaysEnd = new Date(today);
+    
+            return createdAt >= last7DaysStart && createdAt < last7DaysEnd;
+        } else if (monthname) {
+            // Specific month ka data filter karo
+            return monthname === formatRelativeMonth(v.createdAt);
+        }
+    });
+    
+
+    return NextResponse.json({
+        dipartment:"reception",
+        data:d
+    })
+   }else if(userdata.dipartment === "MEDICINE COUNTER"){
+    const data=await prisma.medicene.findMany({
+        where:{
+            userId:userid
+        },
+        orderBy:{
+            createdAt:"desc"
+        }
+        
+    })
+
+
+
+    const d = data.filter((v: any) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Aaj ke din ka start fix karo
+    
+        const createdAt = new Date(v.createdAt);
+    
+        if (monthname === "Today") {
+            // Aaj ka data filter karo
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            return createdAt >= today && createdAt < tomorrow;
+        } else if (monthname === "Yesterday") {
+            // Kal ka data filter karo
+            const yesterdayStart = new Date(today);
+            yesterdayStart.setDate(today.getDate() - 1);
+            const yesterdayEnd = new Date(today);
+            return createdAt >= yesterdayStart && createdAt < yesterdayEnd;
+        } else if (monthname === "last_7_day") {
+            // Last 7 din ka data filter karo
+            const last7DaysStart = new Date(today);
+            last7DaysStart.setDate(today.getDate() - 7);
+    
+            const last7DaysEnd = new Date(today);
+    
+            return createdAt >= last7DaysStart && createdAt < last7DaysEnd;
+        } else if (monthname) {
+            // Specific month ka data filter karo
+            return monthname === formatRelativeMonth(v.createdAt);
+        }
+    });
+    
+
+    return NextResponse.json({
+        dipartment:"medicen",
+        data:d
+    })
+   }
+   else if(userdata.dipartment === "SHOP RANCHI"){
+    const data=await prisma.ranchishop.findMany({
+        where:{
+            userId:userid
+        },
+        orderBy:{
+            createdAt:"desc"
+        }
+        
+    })
+
+
+
+    const d = data.filter((v: any) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Aaj ke din ka start fix karo
+    
+        const createdAt = new Date(v.createdAt);
+    
+        if (monthname === "Today") {
+            // Aaj ka data filter karo
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            return createdAt >= today && createdAt < tomorrow;
+        } else if (monthname === "Yesterday") {
+            // Kal ka data filter karo
+            const yesterdayStart = new Date(today);
+            yesterdayStart.setDate(today.getDate() - 1);
+            const yesterdayEnd = new Date(today);
+            return createdAt >= yesterdayStart && createdAt < yesterdayEnd;
+        } else if (monthname === "last_7_day") {
+            // Last 7 din ka data filter karo
+            const last7DaysStart = new Date(today);
+            last7DaysStart.setDate(today.getDate() - 7);
+    
+            const last7DaysEnd = new Date(today);
+    
+            return createdAt >= last7DaysStart && createdAt < last7DaysEnd;
+        } else if (monthname) {
+            // Specific month ka data filter karo
+            return monthname === formatRelativeMonth(v.createdAt);
+        }
+    });
+    
+
+    return NextResponse.json({
+        dipartment:"ranchi_shop",
+        data:d
+    })
    }
 
 

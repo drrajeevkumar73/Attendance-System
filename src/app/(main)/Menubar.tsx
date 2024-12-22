@@ -82,9 +82,61 @@ export default function Menubar({ className }: MenuBarProps) {
                 <Link href={"/vewexceldeta"}>Veiw Excel Data</Link>
               </Button>
             </>
+          ) : user.dipartment === "RECEPTIONS" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/excel-reception" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part"
+                asChild
+              >
+                <Link href={"/excel-reception"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/vewdata-reception" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/vewdata-reception"}>Veiw Excel Data</Link>
+              </Button>
+            </>
+          ) : user.dipartment === "MEDICINE COUNTER" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/medice-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part"
+                asChild
+              >
+                <Link href={"/medice-excel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/vew-medicene" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/vew-medicene"}>Veiw Excel Data</Link>
+              </Button>
+            </>
+          ) : user.dipartment === "SHOP RANCHI" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/ranchi-shop-exel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part"
+                asChild
+              >
+                <Link href={"/ranchi-shop-exel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/ranchi-shop-vew-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/ranchi-shop-vew-data"}>Veiw Excel Data</Link>
+              </Button>
+            </>
           ) : (
             ""
-          )}
+          )
+          }
 
           <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/setask" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
