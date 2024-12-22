@@ -126,15 +126,18 @@ export const exelSchema = z.object({
   task4: z.string().trim(),
   task5: z.string().trim(),
   task6: z.string().trim(),
-  task7: z.string().trim(),
-  task8: z.string().trim(),
-  task9: z.string().trim(),
-  task10: z.string().trim(),
-  task11: z.string().trim(),
-  task12: z.string().trim(),
  
 });
 
 export type ExelValue = z.infer<typeof exelSchema>;
 
 
+
+export const exeadminSchema = z.object({
+ userid:requiredString,
+ monthname:requiredString,
+ dipartment:requiredString
+ 
+});
+
+export type ExeladminValue = z.infer<typeof exeadminSchema>;

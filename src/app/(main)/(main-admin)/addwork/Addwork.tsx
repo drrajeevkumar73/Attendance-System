@@ -277,7 +277,7 @@ export default function Addwork() {
                     <SelectGroup>
                       <SelectLabel>Dipartment</SelectLabel>
                       <SelectItem value="CENTER OPS MANAGER">
-                        1) CENTER OPS MANAGER
+                        1) CENTER MANAGER
                       </SelectItem>
                       <SelectItem value="HR">2) HR</SelectItem>
                       <SelectItem value="CASHIER">3) CASHIER</SelectItem>
@@ -301,14 +301,17 @@ export default function Addwork() {
                       </SelectItem>
                       <SelectItem value="GUARD">14) GUARD</SelectItem>
                       <SelectItem value="DRIVER">15) DRIVER</SelectItem>
-                      <SelectItem value="ACCOUNTANT / INVENTORY">
-                        16) ACCOUNTANT / INVENTORY
+                      <SelectItem value="ACCOUNTANT">
+                        16) ACCOUNTANT
+                      </SelectItem>
+                      <SelectItem value="INVENTORY">
+                        17) INVENTORY
                       </SelectItem>
                       <SelectItem value="TRUST MARKETING">
-                        17) TRUST MARKETING
+                        18) TRUST MARKETING
                       </SelectItem>
                       <SelectItem value="SHOP RANCHI">
-                        18) SHOP RANCHI
+                        19) SHOP RANCHI
                       </SelectItem>
                     </SelectGroup>
                     </SelectContent>
@@ -341,7 +344,7 @@ export default function Addwork() {
                     <SelectGroup>
                       <SelectLabel>Dipartment</SelectLabel>
                       <SelectItem value="CENTER OPS MANAGER">
-                        1) CENTER OPS MANAGER
+                        1) CENTER MANAGER
                       </SelectItem>
                       <SelectItem value="HR">2) HR</SelectItem>
                       <SelectItem value="CASHIER">3) CASHIER</SelectItem>
@@ -365,14 +368,17 @@ export default function Addwork() {
                       </SelectItem>
                       <SelectItem value="GUARD">14) GUARD</SelectItem>
                       <SelectItem value="DRIVER">15) DRIVER</SelectItem>
-                      <SelectItem value="ACCOUNTANT / INVENTORY">
-                        16) ACCOUNTANT / INVENTORY
+                      <SelectItem value="ACCOUNTANT">
+                        16) ACCOUNTANT
+                      </SelectItem>
+                      <SelectItem value="INVENTORY">
+                        17) INVENTORY
                       </SelectItem>
                       <SelectItem value="TRUST MARKETING">
-                        17) TRUST MARKETING
+                        18) TRUST MARKETING
                       </SelectItem>
                       <SelectItem value="SHOP RANCHI">
-                        18) SHOP RANCHI
+                        19) SHOP RANCHI
                       </SelectItem>
                     </SelectGroup>
                     </SelectContent>

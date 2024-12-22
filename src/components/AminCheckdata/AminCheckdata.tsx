@@ -61,20 +61,26 @@ export default function AminCheckdata() {
   const { toast } = useToast();
   const [ispending, setispending] = useState(false);
   const [client, setclient] = useState({
-    Patna: [],
-    Kolkata: [],
-    Delhi: [],
-    Ranchi: [],
+    RANCHI: [],
+    RANCHI_SHOP: [],
+    PATNA: [],
+    KOLKATA: [],
+    GAUR_CITY: [],
+    SPECTRUM: [],
+    JAGTAULI: [],
   });
 
   const selctor = async () => {
     const { data } = await axios.get("/api/allclient");
 
     setclient({
-      Patna: data.Patna,
-      Kolkata: data.Kolkata,
-      Delhi: data.Delhi,
-      Ranchi: data.Ranchi,
+      RANCHI: data.RANCHI,
+      RANCHI_SHOP: data.RANCHI_SHOP,
+      PATNA: data.PATNA,
+      KOLKATA: data.KOLKATA,
+      GAUR_CITY: data.GAUR_CITY,
+      SPECTRUM: data.SPECTRUM,
+      JAGTAULI: data.JAGTAULI,
     });
   };
   useEffect(() => {
@@ -84,7 +90,7 @@ export default function AminCheckdata() {
   const [timedata, settimedata] = useState({
     dipartment: "",
     fullname: "",
-    city:"",
+    city: "",
     tentwe: [],
     twetwo: [],
     twofour: [],
@@ -101,7 +107,7 @@ export default function AminCheckdata() {
       settimedata({
         dipartment: data.dnameorFname.dipartment,
         fullname: data.dnameorFname.displayname,
-        city:data.dnameorFname.city,
+        city: data.dnameorFname.city,
         tentwe: data.data.tentwe,
         twetwo: data.data.twetwo,
         twofour: data.data.twofour,
@@ -142,34 +148,59 @@ export default function AminCheckdata() {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel className="text-green-500">
-                          Ranchi Staff name
+                          RANCHI Staff name
                         </SelectLabel>
-                        {client?.Ranchi.map((v: any, i: any) => (
+                        {client?.RANCHI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          Patna Staff name
+                          RANCHI SHOP Staff name
                         </SelectLabel>
-                        {client?.Patna.map((v: any, i: any) => (
+                        {client?.RANCHI_SHOP.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          Kolkata Staff name
+                          PATNA Staff name
                         </SelectLabel>
-                        {client?.Kolkata.map((v: any, i: any) => (
+                        {client?.PATNA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          Delhi Staff name
+                          KOLKATA Staff name
                         </SelectLabel>
-                        {client?.Delhi.map((v: any, i: any) => (
+                        {client?.KOLKATA.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+
+                        <SelectLabel className="text-green-500">
+                          GAUR CITY Staff name
+                        </SelectLabel>
+                        {client?.GAUR_CITY.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          SPECTRUM Staff name
+                        </SelectLabel>
+                        {client?.SPECTRUM.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          JAGTAULI Staff name
+                        </SelectLabel>
+                        {client?.JAGTAULI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
@@ -217,10 +248,7 @@ export default function AminCheckdata() {
             <span className="text-[2rem] font-bold text-muted-foreground">
               City:{" "}
             </span>
-            <span className="text-[1rem] font-semibold">
-              {" "}
-              {timedata.city}
-            </span>
+            <span className="text-[1rem] font-semibold"> {timedata.city}</span>
           </p>
         </CardFooter>
       </Card>
@@ -228,9 +256,13 @@ export default function AminCheckdata() {
       <Table className="mt-[100px]">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">
+              Date
+            </TableHead>
             <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="text-right border-2 border-blue-400">10AM - 12PM</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              10AM - 12PM
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -244,13 +276,13 @@ export default function AminCheckdata() {
           <TableBody>
             {timedata.tentwe.map((item: any, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium border-2 border-blue-400">
+                <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.content}
                 </TableCell>
-                <TableCell className="text-right border-2 border-blue-400 w-[200px]">
+                <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(item.createdAt)}
                 </TableCell>
               </TableRow>
@@ -268,9 +300,13 @@ export default function AminCheckdata() {
       <Table>
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">
+              Date
+            </TableHead>
             <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="text-right border-2 border-blue-400">12PM - 2PM</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              12PM - 2PM
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -284,13 +320,13 @@ export default function AminCheckdata() {
           <TableBody>
             {timedata.twetwo.map((item: any, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium border-2 border-blue-400">
+                <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.content}
                 </TableCell>
-                <TableCell className="text-right w-[200px] border-2 border-blue-400">
+                <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(item.createdAt)}
                 </TableCell>
               </TableRow>
@@ -308,9 +344,13 @@ export default function AminCheckdata() {
       <Table className="mt-[100px]">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">
+              Date
+            </TableHead>
             <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="text-right border-2 border-blue-400">2PM - 4PM</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              2PM - 4PM
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -324,13 +364,13 @@ export default function AminCheckdata() {
           <TableBody>
             {timedata.twofour.map((item: any, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium border-2 border-blue-400">
+                <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.content}
                 </TableCell>
-                <TableCell className="text-right border-2 border-blue-400 w-[200px]">
+                <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(item.createdAt)}
                 </TableCell>
               </TableRow>
@@ -347,9 +387,13 @@ export default function AminCheckdata() {
       <Table>
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">
+              Date
+            </TableHead>
             <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="text-right border-2 border-blue-400">4PM - 6PM</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              4PM - 6PM
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -363,13 +407,13 @@ export default function AminCheckdata() {
           <TableBody>
             {timedata.foursix.map((item: any, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium border-2 border-blue-400">
+                <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.content}
                 </TableCell>
-                <TableCell className="text-right w-[200px] border-2 border-blue-400">
+                <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(item.createdAt)}
                 </TableCell>
               </TableRow>
@@ -387,9 +431,13 @@ export default function AminCheckdata() {
       <Table className="mt-[100px]">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">
+              Date
+            </TableHead>
             <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="text-right border-2 border-blue-400">6PM - 8PM</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              6PM - 8PM
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -403,13 +451,13 @@ export default function AminCheckdata() {
           <TableBody>
             {timedata.sixeigh.map((item: any, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium border-2 border-blue-400">
+                <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.content}
                 </TableCell>
-                <TableCell className="text-right w-[200px] border-2 border-blue-400">
+                <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(item.createdAt)}
                 </TableCell>
               </TableRow>

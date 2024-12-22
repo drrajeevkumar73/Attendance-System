@@ -29,20 +29,20 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { serchSchema, SerchValue } from "@/lib/vallidation";
-import { useEffect, useState } from "react";
+import { exeadminSchema, ExeladminValue, serchSchema, SerchValue } from "@/lib/vallidation";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import LodingButton from "@/components/LodingButton";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { formatRelativeMonthDate, formatRelativeTime } from "@/lib/utils";
 
-export default function Atendace() {
-  const form = useForm<SerchValue>({
-    resolver: zodResolver(serchSchema),
+export default function SatffExelAdmin() {
+  const form = useForm<ExeladminValue>({
+    resolver: zodResolver(exeadminSchema),
     defaultValues: {
-      username: "",
+      userid: "",
       monthname: "",
+      dipartment:""
     },
   });
 
@@ -74,35 +74,33 @@ export default function Atendace() {
   useEffect(() => {
     selctor();
   }, []);
-  
-  const [userdate,setuserdat]=useState({
-    Totalwork:[],
-    Atendace:"",
+
+
+  const[tabelex,settablseex]=useState({
     dipartment:"",
-    displayname:"",
-    city:""
+    data:[]
   })
-  const onSubmit = async (value: SerchValue) => {
+
+  const onSubmit = async(value:ExeladminValue) => {
     try {
-      setispending(true);
-    const {data} = await axios.post("/api/toatalpresnrtdat", {
-        username: value.username,
-        monthname: value.monthname,
-      });
-      setuserdat({
-        Totalwork:data.data.Totalwork,
-        Atendace:data.data.Atendace,
-        dipartment:data.data.dipartment,
-        displayname:data.data.displayname,
-        city:data.data.city
+      setispending(true)
+   const {data}  = await axios.post("/api/Staffexceladmin",{
+        userid:value.userid,
+        monthname:value.monthname,
+        dipartment:value.dipartment
       })
 
+      settablseex({
+        dipartment:data.dipartment,
+        data:data.data
+      })
     } catch (error) {
       toast({
-        description: "Faild to send deta.",
-      });
-    } finally {
-      setispending(false);
+        description:"Something went wrong",
+        variant:"destructive"
+      })
+    }finally{
+      setispending(false)
     }
   };
   return (
@@ -114,7 +112,7 @@ export default function Atendace() {
         >
           <FormField
             control={form.control}
-            name="username"
+            name="userid"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Serch by name</FormLabel>
@@ -127,7 +125,7 @@ export default function Atendace() {
                       <SelectValue placeholder="Select by name" />
                     </SelectTrigger>
                     <SelectContent>
-                    <SelectGroup>
+                      <SelectGroup>
                         <SelectLabel className="text-green-500">
                           RANCHI Staff name
                         </SelectLabel>
@@ -213,6 +211,12 @@ export default function Atendace() {
 
                   <SelectContent>
                     <SelectGroup>
+                      <SelectLabel>Select Today Work</SelectLabel>
+                      <SelectItem value="Today">Toady</SelectItem>
+                      <SelectLabel>Select Yesterday Work</SelectLabel>
+                      <SelectItem value="Yesterday">Yesterday</SelectItem>
+                      <SelectLabel>Select last 7 day Work</SelectLabel>
+                      <SelectItem value="last_7_day">last 7 day</SelectItem>
                       <SelectLabel>Select By Month</SelectLabel>
                       <SelectItem value="January">January</SelectItem>
                       <SelectItem value="February">February</SelectItem>
@@ -235,88 +239,157 @@ export default function Atendace() {
             )}
           />
 
+<FormField
+          control={form.control}
+          name="dipartment"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Dipartment</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a dipartment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Dipartment</SelectLabel>
+                      <SelectItem value="CENTER OPS MANAGER">
+                        1) CENTER MANAGER
+                      </SelectItem>
+                      <SelectItem value="HR">2) HR</SelectItem>
+                      <SelectItem value="CASHIER">3) CASHIER</SelectItem>
+                      <SelectItem value="RECEPTIONS">4) RECEPTIONS</SelectItem>
+                      <SelectItem value="MEDICINE COUNTER">
+                        5) MEDICINE COUNTER
+                      </SelectItem>
+                      <SelectItem value="HD / OD">6) HD / OD</SelectItem>
+                      <SelectItem value="TELECALLER DEPT">
+                        7) TELECALLER DEPT
+                      </SelectItem>
+                      <SelectItem value="MIXER">8) MIXER</SelectItem>
+                      <SelectItem value="ECART">9) ECART</SelectItem>
+                      <SelectItem value="DESIGNER">10) DESIGNER</SelectItem>
+                      <SelectItem value="DIGITAL MARKETING">
+                        11) DIGITAL MARKETING
+                      </SelectItem>
+                      <SelectItem value="DOCTOR">12) DOCTOR</SelectItem>
+                      <SelectItem value="MAID / OFFICE BOY">
+                        13) MAID / OFFICE BOY
+                      </SelectItem>
+                      <SelectItem value="GUARD">14) GUARD</SelectItem>
+                      <SelectItem value="DRIVER">15) DRIVER</SelectItem>
+                      <SelectItem value="ACCOUNTANT">
+                        16) ACCOUNTANT
+                      </SelectItem>
+                      <SelectItem value="INVENTORY">
+                        17) INVENTORY
+                      </SelectItem>
+                      <SelectItem value="TRUST MARKETING">
+                        18) TRUST MARKETING
+                      </SelectItem>
+                      <SelectItem value="SHOP RANCHI">
+                        19) SHOP RANCHI
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
           <LodingButton loding={ispending} type="submit" className="w-full">
             Submit
           </LodingButton>
         </form>
       </Form>
 
-      <Card className="w-full py-8">
-        <CardContent>
-          <p className="flex items-center gap-4">
-            <span className="text-[2rem] font-bold text-muted-foreground">
-              Full Name:
-            </span>
-            <span className="text-[1rem] font-semibold  text-red-500">{userdate.displayname}</span>
-          </p>
-        </CardContent>
-        <CardFooter>
-          <p className="flex items-center gap-4">
-            <span className="text-[2rem] font-bold text-muted-foreground">
-              Department:
-            </span>
-            <span className="text-[1rem] font-semibold  text-red-500">{userdate.dipartment}</span>
-          </p>
-        </CardFooter>
-        <CardFooter>
-          <p className="flex items-center gap-4">
-            <span className="text-[2rem] font-bold text-muted-foreground">
-              City:
-            </span>
-            <span className="text-[1rem] font-semibold  text-red-500">{userdate.city}</span>
-          </p>
-        </CardFooter>
-        <CardFooter>
-          <p className="flex items-center gap-4">
-            <span className="text-[2rem] font-bold text-muted-foreground">
-              Total Present In This Month:
-            </span>
-            <span className="text-[1rem] font-semibold  text-red-500">{userdate.Atendace}</span>
-          </p>
-        </CardFooter>
-        
-      </Card>
 
 
-           <Table>
-              <TableHeader>
-                <TableRow className="border border-primary bg-primary">
-                  <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
-                  <TableHead className="border-2 border-blue-400">Work</TableHead>
-                  <TableHead className="text-right border-2 border-blue-400">Time</TableHead>
-                </TableRow>
-              </TableHeader>
+
+      {(tabelex.dipartment === "telecaller")?
+       <Table>
+       <TableHeader>
+         <TableRow className="border border-primary bg-primary">
+           <TableHead className="border-2 border-blue-400">Date</TableHead>
+           <TableHead className="border-2 border-blue-400">Work</TableHead>
+           <TableHead className="border-2 border-blue-400">Incoming</TableHead>
+           <TableHead className="border-2 border-blue-400">Outgoing</TableHead>
+           <TableHead className="border-2 border-blue-400">Total</TableHead>
+           <TableHead className="border-2 border-blue-400">
+             Whatsapp / Text
+           </TableHead>
+           <TableHead className="border-2 border-blue-400">Appt</TableHead>
+           <TableHead className="border-2 border-blue-400">Fees</TableHead>
+           <TableHead className="border-2 border-blue-400">Time</TableHead>
+         </TableRow>
+       </TableHeader>
+
+
+       {ispending?
+       
+        <TableBody>
+        <TableRow>
+          <TableCell colSpan={3} className="">
+            Loading...
+          </TableCell>
+        </TableRow>
+      </TableBody>
+      :
+      tabelex?.data?.length === 0 ?
+      <TableBody>
+      <TableRow>
+        <TableCell colSpan={3} className="">
+          No Data Found
+        </TableCell>
+      </TableRow>
+    </TableBody>
+    :
+        tabelex?.data?.map((v: any, i) => (
+                <TableBody className="border border-primary" key={i}>
+                  <TableRow>
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeMonthDate(v.createdAt)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task1}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task2}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task3}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {Number(v.task2) + Number(v.task3)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task4}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task5}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task6}
+                    </TableCell>
+    
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeTime(v.createdAt)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))
+       
+       }
+       </Table>
+      :
       
-              {ispending ? (
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">Loading...</TableCell>
-                  </TableRow>
-                </TableBody>
-              ) : userdate.Totalwork.length > 0 ? (
-                <TableBody>
-                  {userdate.Totalwork.map((item: any, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium border-2 border-blue-400">
-                        {formatRelativeMonthDate(item.createdAt)}
-                      </TableCell>
-                      <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
-                        {item.content} 
-                      </TableCell>
-                      <TableCell className="text-right w-[200px] border-2 border-blue-400">
-                        {formatRelativeTime(item.createdAt)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              ) : (
-                <tbody>
-                  <TableRow>
-                    <TableCell colSpan={3}>No data available</TableCell>
-                  </TableRow>
-                </tbody>
-              )}
-            </Table>
+      ""
+      }
     </>
   );
 }

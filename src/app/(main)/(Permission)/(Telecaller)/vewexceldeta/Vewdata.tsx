@@ -106,7 +106,7 @@ export default function Vewdata() {
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Date</TableHead>
-            <TableHead className="border-2 border-blue-400">Data</TableHead>
+            <TableHead className="border-2 border-blue-400">Work</TableHead>
             <TableHead className="border-2 border-blue-400">Incoming</TableHead>
             <TableHead className="border-2 border-blue-400">Outgoing</TableHead>
             <TableHead className="border-2 border-blue-400">Total</TableHead>
@@ -171,61 +171,10 @@ export default function Vewdata() {
                   {formatRelativeTime(v.createdAt)}
                 </TableCell>
               </TableRow>
-              <TableRow>
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeMonthDate(v.createdAt)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task7}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task8}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task9}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {Number(v.task8) + Number(v.task9)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task10}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task11}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task12}
-                </TableCell>
-
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeTime(v.createdAt)}
-                </TableCell>
-              </TableRow>
             </TableBody>
           ))
         )}
       </Table>
     </>
   );
-}
-
-{
-  /* <TableCell className="border-2 border-blue-400">
-                  {v.task7}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task8}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task9}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task10}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task11}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task12}
-                </TableCell> */
 }

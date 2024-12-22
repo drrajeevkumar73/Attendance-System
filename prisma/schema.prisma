@@ -141,12 +141,6 @@ model Telecaller {
   task4  String?
   task5  String?
   task6  String?
-  task7  String?
-  task8  String?
-  task9  String?
-  task10 String?
-  task11 String?
-  task12 String?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

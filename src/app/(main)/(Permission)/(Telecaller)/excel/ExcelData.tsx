@@ -42,12 +42,7 @@ export default function ExcelData() {
       task4: "",
       task5: "",
       task6: "",
-      task7: "",
-      task8: "",
-      task9: "",
-      task10: "",
-      task11: "",
-      task12: "",
+  
     },
   });
 
@@ -62,12 +57,7 @@ export default function ExcelData() {
         task4: value.task4,
         task5: value.task5,
         task6: value.task6,
-        task7: value.task7,
-        task8: value.task8,
-        task9: value.task9,
-        task10: value.task10,
-        task11: value.task11,
-        task12: value.task12,
+      
       });
       form.reset();
       toast({
@@ -90,7 +80,7 @@ export default function ExcelData() {
           <Table>
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
-                <TableHead className="border-2 border-blue-400">Data</TableHead>
+                <TableHead className="border-2 border-blue-400">Work</TableHead>
                 <TableHead className="border-2 border-blue-400">
                   Incoming
                 </TableHead>
@@ -220,123 +210,7 @@ export default function ExcelData() {
                   />
                 </TableCell>
               </TableRow>
-              <TableRow>
-                <TableCell className="border-2 border-blue-400">
-                  <FormField
-                    control={form.control}
-                    name="task7"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input className="border-foreground" {...field} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  <FormField
-                    control={form.control}
-                    name="task8"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            className="border-foreground"
-                            {...field}
-                            type="number"
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {" "}
-                  <FormField
-                    control={form.control}
-                    name="task9"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            className="border-foreground"
-                            {...field}
-                            type="number"
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TableCell>
-
-                <TableCell className="border-2 border-blue-400">
-                  {" "}
-                  <FormField
-                    control={form.control}
-                    name="task10"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            className="border-foreground"
-                            {...field}
-                            type="number"
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {" "}
-                  <FormField
-                    control={form.control}
-                    name="task11"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            className="border-foreground"
-                            {...field}
-                            type="number"
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {" "}
-                  <FormField
-                    control={form.control}
-                    name="task12"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            className="border-foreground"
-                            {...field}
-                            type="number"
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TableCell>
-              </TableRow>
+              
             </TableBody>
           </Table>
           <LodingButton loding={ispending} type="submit" className="w-full">

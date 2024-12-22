@@ -52,26 +52,31 @@ export default function Ratework() {
     },
   });
   const [client, setclient] = useState({
-    Patna: [],
-    Kolkata: [],
-    Delhi: [],
-    Ranchi: [],
+    RANCHI: [],
+    RANCHI_SHOP: [],
+    PATNA: [],
+    KOLKATA: [],
+    GAUR_CITY: [],
+    SPECTRUM: [],
+    JAGTAULI: [],
   });
 
   const selctor = async () => {
     const { data } = await axios.get("/api/allclient");
 
     setclient({
-      Patna: data.Patna,
-      Kolkata: data.Kolkata,
-      Delhi: data.Delhi,
-      Ranchi: data.Ranchi,
+      RANCHI: data.RANCHI,
+      RANCHI_SHOP: data.RANCHI_SHOP,
+      PATNA: data.PATNA,
+      KOLKATA: data.KOLKATA,
+      GAUR_CITY: data.GAUR_CITY,
+      SPECTRUM: data.SPECTRUM,
+      JAGTAULI: data.JAGTAULI,
     });
   };
   useEffect(() => {
     selctor();
   }, []);
-
   const onSubmit = async (value: SerchValue) => {
     try {
       setispending(true);
@@ -116,34 +121,59 @@ export default function Ratework() {
                     <SelectContent>
                     <SelectGroup>
                         <SelectLabel className="text-green-500">
-                          Ranchi Staff name
+                          RANCHI Staff name
                         </SelectLabel>
-                        {client?.Ranchi.map((v: any, i: any) => (
+                        {client?.RANCHI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          Patna Staff name
+                          RANCHI SHOP Staff name
                         </SelectLabel>
-                        {client?.Patna.map((v: any, i: any) => (
+                        {client?.RANCHI_SHOP.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          Kolkata Staff name
+                          PATNA Staff name
                         </SelectLabel>
-                        {client?.Kolkata.map((v: any, i: any) => (
+                        {client?.PATNA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          Delhi Staff name
+                          KOLKATA Staff name
                         </SelectLabel>
-                        {client?.Delhi.map((v: any, i: any) => (
+                        {client?.KOLKATA.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+
+                        <SelectLabel className="text-green-500">
+                          GAUR CITY Staff name
+                        </SelectLabel>
+                        {client?.GAUR_CITY.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          SPECTRUM Staff name
+                        </SelectLabel>
+                        {client?.SPECTRUM.map((v: any, i: any) => (
+                          <SelectItem key={i} value={v.id}>
+                            {v.displayname}
+                          </SelectItem>
+                        ))}
+                        <SelectLabel className="text-green-500">
+                          JAGTAULI Staff name
+                        </SelectLabel>
+                        {client?.JAGTAULI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
                             {v.displayname}
                           </SelectItem>

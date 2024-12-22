@@ -13,21 +13,30 @@ export async function GET(req: NextRequest) {
     });
 
     const value = {
-      Patna: <any[]>[],
-      Kolkata: <any[]>[],
-      Delhi: <any[]>[],
-      Ranchi: <any[]>[],
+      RANCHI: <any[]>[],
+      RANCHI_SHOP: <any[]>[],
+      PATNA: <any[]>[],
+      KOLKATA: <any[]>[],
+      GAUR_CITY: <any[]>[],
+      SPECTRUM: <any[]>[],
+      JAGTAULI: <any[]>[],
     };
 
     userData.map((v, i) => {
-      if (v.city == "Patna") {
-        value.Patna.push(v);
-      } else if (v.city == "Kolkata") {
-        value.Kolkata.push(v);
-      } else if (v.city == "Delhi") {
-        value.Delhi.push(v);
-      } else if (v.city == "Ranchi") {
-        value.Ranchi.push(v);
+      if (v.city === "RANCHI") {
+        value.RANCHI.push(v);
+      } else if (v.city === "RANCHI SHOP") {
+        value.RANCHI_SHOP.push(v);
+      } else if (v.city === "PATNA") {
+        value.PATNA.push(v);
+      } else if (v.city === "KOLKATA") {
+        value.KOLKATA.push(v);
+      }else if (v.city === "GAUR CITY") {
+        value.GAUR_CITY.push(v);
+      }else if (v.city === "SPECTRUM") {
+        value.SPECTRUM.push(v);
+      }else if (v.city === "JAGTAULI") {
+        value.JAGTAULI.push(v);
       }
     });
 
