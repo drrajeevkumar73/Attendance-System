@@ -117,41 +117,41 @@ export default function SignupForm() {
                     <SelectGroup>
                       <SelectLabel>Dipartment</SelectLabel>
                       <SelectItem value="CENTER OPS MANAGER">
-                        1) CENTER MANAGER
+                         CENTER MANAGER
                       </SelectItem>
-                      <SelectItem value="HR">2) HR</SelectItem>
-                      <SelectItem value="CASHIER">3) CASHIER</SelectItem>
-                      <SelectItem value="RECEPTIONS">4) RECEPTIONS</SelectItem>
+                      <SelectItem value="HR"> HR</SelectItem>
+                      <SelectItem value="CASHIER"> CASHIER</SelectItem>
+                      <SelectItem value="RECEPTIONS">RECEPTIONS</SelectItem>
                       <SelectItem value="MEDICINE COUNTER">
-                        5) MEDICINE COUNTER
+                       MEDICINE COUNTER
                       </SelectItem>
-                      <SelectItem value="HD / OD">6) HD / OD</SelectItem>
+                      <SelectItem value="HD / OD">HD / OD</SelectItem>
                       <SelectItem value="TELECALLER DEPT">
-                        7) TELECALLER DEPT
+                       TELECALLER DEPT
                       </SelectItem>
-                      <SelectItem value="MIXER">8) MIXER</SelectItem>
-                      <SelectItem value="ECART">9) ECART</SelectItem>
-                      <SelectItem value="DESIGNER">10) DESIGNER</SelectItem>
+                      <SelectItem value="MIXER"> MIXER</SelectItem>
+                      <SelectItem value="ECART"> ECART</SelectItem>
+                      <SelectItem value="DESIGNER"> DESIGNER</SelectItem>
                       <SelectItem value="DIGITAL MARKETING">
-                        11) DIGITAL MARKETING
+                         DIGITAL MARKETING
                       </SelectItem>
-                      <SelectItem value="DOCTOR">12) DOCTOR</SelectItem>
+                      <SelectItem value="DOCTOR"> DOCTOR</SelectItem>
                       <SelectItem value="MAID / OFFICE BOY">
-                        13) MAID / OFFICE BOY
+                         MAID / OFFICE BOY
                       </SelectItem>
-                      <SelectItem value="GUARD">14) GUARD</SelectItem>
-                      <SelectItem value="DRIVER">15) DRIVER</SelectItem>
+                      <SelectItem value="GUARD"> GUARD</SelectItem>
+                      <SelectItem value="DRIVER"> DRIVER</SelectItem>
                       <SelectItem value="ACCOUNTANT">
-                        16) ACCOUNTANT
+                         ACCOUNTANT
                       </SelectItem>
                       <SelectItem value="INVENTORY">
-                        17) INVENTORY
+                         INVENTORY
                       </SelectItem>
                       <SelectItem value="TRUST MARKETING">
-                        18) TRUST MARKETING
+                         TRUST MARKETING
                       </SelectItem>
                       <SelectItem value="SHOP RANCHI">
-                        19) SHOP RANCHI
+                         SHOP RANCHI
                       </SelectItem>
                     </SelectGroup>
                   </SelectContent>

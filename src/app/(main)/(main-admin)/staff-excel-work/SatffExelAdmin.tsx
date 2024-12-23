@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import * as XLSX from "xlsx";
 import {
   Table,
   TableBody,
@@ -36,10 +37,11 @@ import {
   SerchValue,
 } from "@/lib/vallidation";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import axios from "axios";
 import LodingButton from "@/components/LodingButton";
 import { formatRelativeMonthDate, formatRelativeTime } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export default function SatffExelAdmin() {
   const form = useForm<ExeladminValue>({
@@ -81,8 +83,12 @@ export default function SatffExelAdmin() {
   }, []);
 
   const [tabelex, settablseex] = useState({
+    name: "",
+    deipartment: "",
     dipartment: "",
     data: [],
+    dataOf: [],
+    dataOn: [],
   });
 
   const onSubmit = async (value: ExeladminValue) => {
@@ -95,8 +101,12 @@ export default function SatffExelAdmin() {
       });
 
       settablseex({
+        name: data.name,
+        deipartment: data.deipartment,
         dipartment: data.dipartment,
         data: data.data,
+        dataOf: data.dataOff,
+        dataOn: data.dataOn,
       });
 
       if (data.success === false) {
@@ -114,6 +124,225 @@ export default function SatffExelAdmin() {
       setispending(false);
     }
   };
+
+  const exportToExcel = () => {
+    if (!tabelex?.data || tabelex?.data.length === 0) {
+      toast({
+        description: "No data to export",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (
+      !tabelex?.dataOf ||
+      (tabelex?.dataOf.length === 0 && !tabelex?.dataOn) ||
+      tabelex?.dataOn.length === 0
+    ) {
+      toast({
+        description: "No data to export",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Prepare data for Excel
+    if (tabelex.dipartment === "telecaller") {
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        Work: v.task1,
+        Incoming: v.task2,
+        Outgoing: v.task3,
+        Total: Number(v.task2) + Number(v.task3),
+        "Whatsapp / Text": v.task4,
+        Appt: v.task5,
+        Fees: v.task6,
+        Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+    } else if (tabelex.dipartment === "reception") {
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        PATIENT: v.task1,
+        VISITED: v.task2,
+        NEW: v.task3,
+        OLD: v.task4,
+        "By JR Dr.": v.task5,
+        ENQUIRY: v.task6,
+        CALL: v.task7,
+        WHATSAPP: v.task8,
+        APP: v.task9,
+        MESSAGE: v.task10,
+        CASH: v.task11,
+        ONLINE: v.task12,
+        "GRAND TOTAL": Number(v.task11) + Number(v.task12),
+        Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+    } else if (tabelex.dipartment === "medicen") {
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        "TOTAL BILL": v.task1,
+        MARG: v.task2,
+        LOOSE: v.task3,
+        "TOTAL SALE": Number(v.task2) + Number(v.task3),
+        CASE: v.task4,
+        CARD: v.task5,
+        SCAN: v.task6,
+        RETURN: v.task7,
+        CRDT: v.task8,
+        "DISC AMT": v.task9,
+        Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+    } else if (tabelex.dipartment === "ranchi_shop") {
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        "TOTAL BILL": v.task1,
+        MARG: v.task2,
+        LOOSE: v.task3,
+        "TOTAL SALE": Number(v.task2) + Number(v.task3),
+        CASE: v.task4,
+        CARD: v.task5,
+        SCAN: v.task6,
+        RETURN: v.task7,
+        CRDT: v.task8,
+        "DISC AMT": v.task9,
+        Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+    } else if (tabelex.dipartment === "Doctor") {
+      if (of === 1) {
+        const excelData = tabelex?.dataOf.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          Doctor: v.task1,
+          "NEW PATIENT": v.task2,
+          "OLD PATIENT": v.task3,
+          FEES: v.task4,
+          "COUNTER MEDICINE": v.task5,
+          LAB: v.task6,
+          WHATSAPP: v.task7,
+          "FOLLOW UP CALL": v.task8,
+          ARTICLE: v.task9,
+          CONTENT: v.task10,
+          QUESTIONNAIRE: v.task11,
+          "CASE HISTORY": v.task12,
+          CAMP: v.task13,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+      } else {
+        const excelData = tabelex?.dataOn.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          Doctor: v.task1,
+          Interakt: v.task2,
+          "INTL - LEADS": v.task3,
+          "INTL - NATIONAL": v.task4,
+          "INTL - INTERNATIONAL": v.task5,
+          "NATIONAL - FEES": v.task6,
+          "INTERNATIONAL - FEES": v.task7,
+          "NATIONAL - MED": v.task8,
+          "INTERNATIONAL - MED": v.task9,
+          MAIL: v.task10,
+          VIDEO: v.task11,
+          "FB - REPLY": v.task12,
+          "FB - Conversion": v.task13,
+          "INT - REPLY": v.task14,
+          "INT - Conversion": v.task15,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+      }
+    }
+  };
+
+  const [of, setof] = useState(1);
+
+  const ofileHanlder = () => {
+    setof(1);
+  };
+
+  const onileHanlder = () => {
+    setof(0);
+  };
+
   return (
     <>
       <Form {...form}>
@@ -222,11 +451,10 @@ export default function SatffExelAdmin() {
 
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select Today Work</SelectLabel>
-                      <SelectItem value="Today">Toady</SelectItem>
-                      <SelectLabel>Select Yesterday Work</SelectLabel>
+                      <SelectItem value="Today">Today</SelectItem>
+
                       <SelectItem value="Yesterday">Yesterday</SelectItem>
-                      <SelectLabel>Select last 7 day Work</SelectLabel>
+
                       <SelectItem value="last_7_day">last 7 day</SelectItem>
                       <SelectLabel>Select By Month</SelectLabel>
                       <SelectItem value="January">January</SelectItem>
@@ -268,42 +496,36 @@ export default function SatffExelAdmin() {
                       <SelectGroup>
                         <SelectLabel>Dipartment</SelectLabel>
                         <SelectItem value="CENTER OPS MANAGER">
-                          1) CENTER MANAGER
+                          CENTER MANAGER
                         </SelectItem>
-                        <SelectItem value="HR">2) HR</SelectItem>
-                        <SelectItem value="CASHIER">3) CASHIER</SelectItem>
-                        <SelectItem value="RECEPTIONS">
-                          4) RECEPTIONS
-                        </SelectItem>
+                        <SelectItem value="HR">HR</SelectItem>
+                        <SelectItem value="CASHIER">CASHIER</SelectItem>
+                        <SelectItem value="RECEPTIONS">RECEPTIONS</SelectItem>
                         <SelectItem value="MEDICINE COUNTER">
-                          5) MEDICINE COUNTER
+                          MEDICINE COUNTER
                         </SelectItem>
-                        <SelectItem value="HD / OD">6) HD / OD</SelectItem>
+                        <SelectItem value="HD / OD"> HD / OD</SelectItem>
                         <SelectItem value="TELECALLER DEPT">
-                          7) TELECALLER DEPT
+                          TELECALLER DEPT
                         </SelectItem>
-                        <SelectItem value="MIXER">8) MIXER</SelectItem>
-                        <SelectItem value="ECART">9) ECART</SelectItem>
-                        <SelectItem value="DESIGNER">10) DESIGNER</SelectItem>
+                        <SelectItem value="MIXER">MIXER</SelectItem>
+                        <SelectItem value="ECART">ECART</SelectItem>
+                        <SelectItem value="DESIGNER"> DESIGNER</SelectItem>
                         <SelectItem value="DIGITAL MARKETING">
-                          11) DIGITAL MARKETING
+                          DIGITAL MARKETING
                         </SelectItem>
-                        <SelectItem value="DOCTOR">12) DOCTOR</SelectItem>
+                        <SelectItem value="DOCTOR"> DOCTOR</SelectItem>
                         <SelectItem value="MAID / OFFICE BOY">
-                          13) MAID / OFFICE BOY
+                          MAID / OFFICE BOY
                         </SelectItem>
-                        <SelectItem value="GUARD">14) GUARD</SelectItem>
-                        <SelectItem value="DRIVER">15) DRIVER</SelectItem>
-                        <SelectItem value="ACCOUNTANT">
-                          16) ACCOUNTANT
-                        </SelectItem>
-                        <SelectItem value="INVENTORY">17) INVENTORY</SelectItem>
+                        <SelectItem value="GUARD"> GUARD</SelectItem>
+                        <SelectItem value="DRIVER"> DRIVER</SelectItem>
+                        <SelectItem value="ACCOUNTANT">ACCOUNTANT</SelectItem>
+                        <SelectItem value="INVENTORY"> INVENTORY</SelectItem>
                         <SelectItem value="TRUST MARKETING">
-                          18) TRUST MARKETING
+                          TRUST MARKETING
                         </SelectItem>
-                        <SelectItem value="SHOP RANCHI">
-                          19) SHOP RANCHI
-                        </SelectItem>
+                        <SelectItem value="SHOP RANCHI">SHOP RANCHI</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -318,6 +540,15 @@ export default function SatffExelAdmin() {
           </LodingButton>
         </form>
       </Form>
+
+      <button
+        type="button"
+        onClick={exportToExcel}
+        className="rounded bg-blue-500 p-2 text-white"
+      >
+        {" "}
+        Export to Excel
+      </button>
 
       {tabelex.dipartment === "telecaller" ? (
         <>
@@ -442,9 +673,7 @@ export default function SatffExelAdmin() {
                 <TableHead className="border-2 border-blue-400">
                   GRAND TOTAL
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  LAB BD
-                </TableHead>
+
                 <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
             </TableHeader>
@@ -509,10 +738,7 @@ export default function SatffExelAdmin() {
                       {v.task12}
                     </TableCell>
                     <TableCell className="border-2 border-blue-400">
-                      {v.task13}
-                    </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task14}
+                      {Number(v.task11) + Number(v.task12)}
                     </TableCell>
 
                     <TableCell className="border-2 border-blue-400">
@@ -536,7 +762,10 @@ export default function SatffExelAdmin() {
                 <TableHead className="border-2 border-blue-400">
                   TOTAL BILL
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">SALE</TableHead>
+                <TableHead className="border-2 border-blue-400">MARG</TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  LOOSE
+                </TableHead>
                 <TableHead className="border-2 border-blue-400">
                   TOTAL SALE
                 </TableHead>
@@ -550,9 +779,6 @@ export default function SatffExelAdmin() {
                 <TableHead className="border-2 border-blue-400">CRDT</TableHead>
                 <TableHead className="border-2 border-blue-400">
                   DISC AMT
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  SALE QTY
                 </TableHead>
                 <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
@@ -591,6 +817,9 @@ export default function SatffExelAdmin() {
                       {v.task3}
                     </TableCell>
                     <TableCell className="border-2 border-blue-400">
+                      {Number(v.task2) + Number(v.task3)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
                       {v.task4}
                     </TableCell>
                     <TableCell className="border-2 border-blue-400">
@@ -607,9 +836,6 @@ export default function SatffExelAdmin() {
                     </TableCell>
                     <TableCell className="border-2 border-blue-400">
                       {v.task9}
-                    </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task10}
                     </TableCell>
 
                     <TableCell className="border-2 border-blue-400">
@@ -624,7 +850,7 @@ export default function SatffExelAdmin() {
       ) : tabelex.dipartment === "ranchi_shop" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
           <p className="text-center text-[3rem] font-bold text-green-500">
-          SHOP RANCHI Data
+            SHOP RANCHI Data
           </p>
           <Table className="w-[2000px]">
             <TableHeader>
@@ -633,7 +859,10 @@ export default function SatffExelAdmin() {
                 <TableHead className="border-2 border-blue-400">
                   TOTAL BILL
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">SALE</TableHead>
+                <TableHead className="border-2 border-blue-400">MARG</TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  LOOSE
+                </TableHead>
                 <TableHead className="border-2 border-blue-400">
                   TOTAL SALE
                 </TableHead>
@@ -647,9 +876,6 @@ export default function SatffExelAdmin() {
                 <TableHead className="border-2 border-blue-400">CRDT</TableHead>
                 <TableHead className="border-2 border-blue-400">
                   DISC AMT
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  SALE QTY
                 </TableHead>
                 <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
@@ -688,6 +914,9 @@ export default function SatffExelAdmin() {
                       {v.task3}
                     </TableCell>
                     <TableCell className="border-2 border-blue-400">
+                      {Number(v.task2) + Number(v.task3)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
                       {v.task4}
                     </TableCell>
                     <TableCell className="border-2 border-blue-400">
@@ -705,9 +934,6 @@ export default function SatffExelAdmin() {
                     <TableCell className="border-2 border-blue-400">
                       {v.task9}
                     </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task10}
-                    </TableCell>
 
                     <TableCell className="border-2 border-blue-400">
                       {formatRelativeTime(v.createdAt)}
@@ -717,6 +943,289 @@ export default function SatffExelAdmin() {
               ))
             )}
           </Table>
+        </div>
+      ) : tabelex.dipartment === "Doctor" ? (
+        <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
+          <p className="text-center text-[3rem] font-bold text-green-500">
+            DOCTOR Data
+          </p>
+
+          <div className="space-y-6">
+            <Button
+              onClick={ofileHanlder}
+              className={` ${of === 1 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
+            >
+              Offline
+            </Button>{" "}
+            <Button
+              onClick={onileHanlder}
+              className={` ${of === 0 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
+            >
+              Online
+            </Button>
+            <div className={` ${of === 1 ? "block" : "hidden"}`}>
+              <Table className="w-[2300px]">
+                <TableHeader>
+                  <TableRow className="border border-primary bg-primary">
+                    <TableHead className="border-2 border-blue-400">
+                      Date
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      Doctor
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      NEW PATIENT
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      OLD PATIENT
+                    </TableHead>
+
+                    <TableHead className="border-2 border-blue-400">
+                      FEES
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      COUNTER MEDICINE{" "}
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      LAB
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      WHATSAPP
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      FOLLOW UP CALL
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      ARTICLE
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      CONTENT
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      QUESTIONNAIRE
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      CASE HISTORY
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      CAMP{" "}
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      Time
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+
+                {ispending ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={3} className="">
+                        Loading...
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : tabelex?.dataOf?.length === 0 ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={3} className="">
+                        No Data Found
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : (
+                  tabelex?.dataOf?.map((v: any, i) => (
+                    <TableBody className="border border-primary" key={i}>
+                      <TableRow>
+                        <TableCell className="border-2 border-blue-400">
+                          {formatRelativeMonthDate(v.createdAt)}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task1}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task2}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task3}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task4}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task5}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task6}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task7}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task8}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task9}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task10}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task11}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task12}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task13}
+                        </TableCell>
+
+                        <TableCell className="border-2 border-blue-400">
+                          {formatRelativeTime(v.createdAt)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ))
+                )}
+              </Table>
+            </div>
+            <div className={`${of === 0 ? "block" : "hidden"}`}>
+              <Table className="w-[3000px]">
+                <TableHeader>
+                  <TableRow className="border border-primary bg-primary">
+                    <TableHead className="border-2 border-blue-400">
+                      Date
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      Doctor
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      Interakt
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      INTL - LEADS
+                    </TableHead>
+
+                    <TableHead className="border-2 border-blue-400">
+                      INTL - NATIONAL
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      INTL - INTERNATIONAL
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      NATIONAL - FEES
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      INTERNATIONAL - FEES
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      NATIONAL - MED
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      INTERNATIONAL - MED
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      MAIL
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      VIDEO
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      FB - REPLY
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      FB - Conversion{" "}
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      INT - REPLY
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      INT - Conversion
+                    </TableHead>
+                    <TableHead className="border-2 border-blue-400">
+                      Time
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+
+                {ispending ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={3} className="">
+                        Loading...
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : tabelex?.dataOn?.length === 0 ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={3} className="">
+                        No Data Found
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : (
+                  tabelex?.dataOn?.map((v: any, i) => (
+                    <TableBody className="border border-primary" key={i}>
+                      <TableRow>
+                        <TableCell className="border-2 border-blue-400">
+                          {formatRelativeMonthDate(v.createdAt)}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task1}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task2}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task3}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task4}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task5}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task6}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task7}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task8}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task9}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task10}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task11}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task12}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task13}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task14}
+                        </TableCell>
+                        <TableCell className="border-2 border-blue-400">
+                          {v.task15}
+                        </TableCell>
+
+                        <TableCell className="border-2 border-blue-400">
+                          {formatRelativeTime(v.createdAt)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ))
+                )}
+              </Table>
+            </div>
+          </div>
         </div>
       ) : (
         ""

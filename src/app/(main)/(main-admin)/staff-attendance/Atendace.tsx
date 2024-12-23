@@ -213,7 +213,7 @@ export default function Atendace() {
 
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select By Month</SelectLabel>
+                     
                       <SelectItem value="January">January</SelectItem>
                       <SelectItem value="February">February</SelectItem>
                       <SelectItem value="March">March</SelectItem>

@@ -39,8 +39,7 @@ export async function POST(req: NextRequest) {
       task10,
       task11,
       task12,
-      task13,
-      task14
+   
     
     } = await req.json();
 
@@ -59,8 +58,7 @@ export async function POST(req: NextRequest) {
         task10,
         task11,
         task12,
-        task13,
-        task14
+        
       },
     });
 

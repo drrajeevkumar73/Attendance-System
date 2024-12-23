@@ -41,7 +41,7 @@ export default function Vewdata() {
   const onSubmit = async (value: CalederValue) => {
     try {
       setloding(true);
-      const { data } = await axios.post("/api/medice-vew-data", {
+      const { data } = await axios.post("/api/offine-doctor-vew-deta", {
         monthname: value,
       });
       setdata(data);
@@ -102,27 +102,44 @@ export default function Vewdata() {
         </form>
       </Form>
 
-      <Table className="w-[2000px]">
+      <Table className="w-[2300px]">
         <TableHeader>
-          <TableRow className="border border-primary bg-primary">
-            <TableHead className="border-2 border-blue-400">Date</TableHead>
-            <TableHead className="border-2 border-blue-400">
-              TOTAL BILL
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">MARG</TableHead>
-            <TableHead className="border-2 border-blue-400">LOOSE</TableHead>
-            <TableHead className="border-2 border-blue-400">
-              TOTAL SALE
-            </TableHead>
+        <TableRow className="border border-primary bg-primary">
+        <TableHead className="border-2 border-blue-400">Date</TableHead>
+              <TableHead className="border-2 border-blue-400">Doctor</TableHead>
+              <TableHead className="border-2 border-blue-400">
+                NEW PATIENT
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                OLD PATIENT
+              </TableHead>
 
-            <TableHead className="border-2 border-blue-400">CASE</TableHead>
-            <TableHead className="border-2 border-blue-400">CARD</TableHead>
-            <TableHead className="border-2 border-blue-400">SCAN</TableHead>
-            <TableHead className="border-2 border-blue-400">RETURN</TableHead>
-            <TableHead className="border-2 border-blue-400">CRDT</TableHead>
-            <TableHead className="border-2 border-blue-400">DISC AMT</TableHead>
-            <TableHead className="border-2 border-blue-400">Time</TableHead>
-          </TableRow>
+              <TableHead className="border-2 border-blue-400">FEES</TableHead>
+              <TableHead className="border-2 border-blue-400">
+                COUNTER MEDICINE{" "}
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">LAB</TableHead>
+              <TableHead className="border-2 border-blue-400">
+                WHATSAPP
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                FOLLOW UP CALL
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                ARTICLE
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                CONTENT
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                QUESTIONNAIRE
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                CASE HISTORY
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">CAMP </TableHead>
+              <TableHead className="border-2 border-blue-400">Time</TableHead>
+            </TableRow>
         </TableHeader>
 
         {loding ? (
@@ -161,9 +178,6 @@ export default function Vewdata() {
                   {v.task3}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
-                  {Number(v.task2) + Number(v.task3)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
                   {v.task4}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
@@ -180,6 +194,18 @@ export default function Vewdata() {
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   {v.task9}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task10}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task11}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task12}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task13}
                 </TableCell>
 
                 <TableCell className="border-2 border-blue-400">

@@ -23,15 +23,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessions   Session[]
-  Todayswork Todayswork[]
-  StaffWork  StaffWork[]
-  Reting     Reting[]
-  Atendace   Attendance[]
-  Telecaller Telecaller[]
-  Reception  Reception[]
-  Medicene   Medicene[]
-  Ranchishop Ranchishop[]
+  sessions          Session[]
+  Todayswork        Todayswork[]
+  StaffWork         StaffWork[]
+  Reting            Reting[]
+  Atendace          Attendance[]
+  Telecaller        Telecaller[]
+  Reception         Reception[]
+  Medicene          Medicene[]
+  Ranchishop        Ranchishop[]
+  Offlinedoctorshop Offlinedoctorshop[]
+  Onlinedoctorshop  Onlinedoctorshop[]
 
   @@map("users")
 }
@@ -168,9 +170,6 @@ model Reception {
   task10 String?
   task11 String?
   task12 String?
-  task13 String?
-  task14 String?
-
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -190,7 +189,7 @@ model Medicene {
   task7  String?
   task8  String?
   task9  String?
-  task10 String?
+
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -211,11 +210,62 @@ model Ranchishop {
   task7  String?
   task8  String?
   task9  String?
-  task10 String?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
   @@map("ranchishop")
+}
+
+model Offlinedoctorshop {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+
+  task12 String?
+
+  task13 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("offlinedoctorshop")
+}
+
+model Onlinedoctorshop {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+  task12 String?
+  task13 String?
+  task14 String?
+  task15 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("onlinedoctorshop")
 }

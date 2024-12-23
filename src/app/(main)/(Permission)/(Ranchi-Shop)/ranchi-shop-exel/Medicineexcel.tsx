@@ -39,7 +39,7 @@ export default function Medicineexcel() {
             task7: "",
             task8: "",
             task9: "",
-            task10:""
+       
         },
     });
     const [ispending, setispending] = useState(false);
@@ -56,7 +56,7 @@ export default function Medicineexcel() {
                 task7: value.task7,
                 task8: value.task8,
                 task9: value.task9,
-                task10: value.task10
+               
             });
             form.reset();
             toast({
@@ -85,9 +85,11 @@ export default function Medicineexcel() {
                                 TOTAL BILL
                             </TableHead>
                             <TableHead className="border-2 border-blue-400">
-                                SALE
+                                MARG
                             </TableHead>
-                            <TableHead className="border-2 border-blue-400">TOTAL SALE</TableHead>
+                            <TableHead className="border-2 border-blue-400">
+                                LOOSE
+                            </TableHead>
 
                             <TableHead className="border-2 border-blue-400">CASE</TableHead>
                             <TableHead className="border-2 border-blue-400">
@@ -101,9 +103,7 @@ export default function Medicineexcel() {
                                 CRDT
                             </TableHead>
                             <TableHead className="border-2 border-blue-400">DISC AMT</TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                SALE QTY
-                            </TableHead>
+                           
                           
                         </TableRow>
                     </TableHeader>
@@ -283,25 +283,7 @@ export default function Medicineexcel() {
                                     )}
                                 />
                             </TableCell>
-                            <TableCell className="border-2 border-blue-400">
-                                <FormField
-                                    control={form.control}
-                                    name="task10"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input
-                                                    className="border-foreground"
-                                                    {...field}
-                                                    type="number"
-                                                />
-                                            </FormControl>
 
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </TableCell>
                           
                         </TableRow>
                     </TableBody>

@@ -36,12 +36,17 @@ export async function POST(req: NextRequest) {
       task7,
       task8,
       task9,
-
+      task10,
+      task11,
+      task12,
+      task13,
+      task14,
+      task15,
 
     
     } = await req.json();
 
-    await prisma.medicene.create({
+    await prisma.onlinedoctorshop.create({
       data: {
         userId: user.id,
         task1,
@@ -53,7 +58,12 @@ export async function POST(req: NextRequest) {
         task7,
         task8,
         task9,
- 
+        task10,
+        task11,
+        task12,
+        task13,
+        task14,
+        task15,
       
       },
     });

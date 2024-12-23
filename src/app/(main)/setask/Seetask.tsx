@@ -111,9 +111,9 @@ export default function Seetask() {
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select Today Work</SelectLabel>
+                   
                       <SelectItem value="Today">Toady</SelectItem>
-                      <SelectLabel>Select Month Work</SelectLabel>
+                    
                       <SelectItem value="January">January</SelectItem>
                       <SelectItem value="February">February</SelectItem>
                       <SelectItem value="March">March</SelectItem>

@@ -103,50 +103,32 @@ export default function Vewdata() {
       </Form>
 
       <Table className="w-[2000px]">
-      <TableHeader >
-                        <TableRow className="border border-primary bg-primary">
-                        <TableHead className="border-2 border-blue-400">
-                                Date
-                            </TableHead>
+        <TableHeader>
+          <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Date</TableHead>
 
-                            <TableHead className="border-2 border-blue-400">
-                                PATIENT
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                VISITED
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">NEW</TableHead>
+            <TableHead className="border-2 border-blue-400">PATIENT</TableHead>
+            <TableHead className="border-2 border-blue-400">VISITED</TableHead>
+            <TableHead className="border-2 border-blue-400">NEW</TableHead>
 
-                            <TableHead className="border-2 border-blue-400">OLD</TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                By JR Dr.
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                ENQUIRY
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">CALL</TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                WHATSAPP
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">APP</TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                MESSAGE
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">CASH</TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                ONLINE
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                GRAND TOTAL
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                LAB BD
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                Time
-                            </TableHead>
-                        </TableRow>
-                    </TableHeader>
+            <TableHead className="border-2 border-blue-400">OLD</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              By JR Dr.
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">ENQUIRY</TableHead>
+            <TableHead className="border-2 border-blue-400">CALL</TableHead>
+            <TableHead className="border-2 border-blue-400">WHATSAPP</TableHead>
+            <TableHead className="border-2 border-blue-400">APP</TableHead>
+            <TableHead className="border-2 border-blue-400">MESSAGE</TableHead>
+            <TableHead className="border-2 border-blue-400">CASH</TableHead>
+            <TableHead className="border-2 border-blue-400">ONLINE</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              GRAND TOTAL
+            </TableHead>
+
+            <TableHead className="border-2 border-blue-400">Time</TableHead>
+          </TableRow>
+        </TableHeader>
 
         {loding ? (
           // Loading message
@@ -184,7 +166,7 @@ export default function Vewdata() {
                   {v.task3}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
-                {v.task4}
+                  {v.task4}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   {v.task5}
@@ -211,11 +193,9 @@ export default function Vewdata() {
                   {v.task12}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
-                  {v.task13}
+                  {Number(v.task11) + Number(v.task12)}
                 </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task14}
-                </TableCell>
+
                 <TableCell className="border-2 border-blue-400">
                   {formatRelativeTime(v.createdAt)}
                 </TableCell>

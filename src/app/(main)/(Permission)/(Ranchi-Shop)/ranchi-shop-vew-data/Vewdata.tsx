@@ -109,7 +109,8 @@ export default function Vewdata() {
             <TableHead className="border-2 border-blue-400">
               TOTAL BILL
             </TableHead>
-            <TableHead className="border-2 border-blue-400">SALE</TableHead>
+            <TableHead className="border-2 border-blue-400">MARG</TableHead>
+            <TableHead className="border-2 border-blue-400">LOOSE</TableHead>
             <TableHead className="border-2 border-blue-400">
               TOTAL SALE
             </TableHead>
@@ -120,7 +121,6 @@ export default function Vewdata() {
             <TableHead className="border-2 border-blue-400">RETURN</TableHead>
             <TableHead className="border-2 border-blue-400">CRDT</TableHead>
             <TableHead className="border-2 border-blue-400">DISC AMT</TableHead>
-            <TableHead className="border-2 border-blue-400">SALE QTY</TableHead>
             <TableHead className="border-2 border-blue-400">Time</TableHead>
           </TableRow>
         </TableHeader>
@@ -161,6 +161,9 @@ export default function Vewdata() {
                   {v.task3}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
+                  {Number(v.task2) + Number(v.task3)}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
                   {v.task4}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
@@ -177,9 +180,6 @@ export default function Vewdata() {
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   {v.task9}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task10}
                 </TableCell>
 
                 <TableCell className="border-2 border-blue-400">

@@ -42,8 +42,7 @@ export default function ExelRecetion() {
             task10: "",
             task11: "",
             task12: "",
-            task13: "",
-            task14: "",
+        
         },
     });
     const [ispending, setispending] = useState(false);
@@ -63,8 +62,7 @@ export default function ExelRecetion() {
                 task10: value.task10,
                 task11: value.task11,
                 task12: value.task12,
-                task13: value.task13,
-                task14: value.task14,
+            
             });
             form.reset();
             toast({
@@ -116,12 +114,7 @@ export default function ExelRecetion() {
                             <TableHead className="border-2 border-blue-400">
                                 ONLINE
                             </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                GRAND TOTAL
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                LAB BD
-                            </TableHead>
+                          
                         </TableRow>
                     </TableHeader>
 
@@ -357,44 +350,8 @@ export default function ExelRecetion() {
                                     )}
                                 />
                             </TableCell>
-                            <TableCell className="border-2 border-blue-400">
-                                <FormField
-                                    control={form.control}
-                                    name="task13"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input
-                                                    className="border-foreground"
-                                                    {...field}
-                                                    type="number"
-                                                />
-                                            </FormControl>
-
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </TableCell>
-                            <TableCell className="border-2 border-blue-400">
-                                <FormField
-                                    control={form.control}
-                                    name="task14"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input
-                                                    className="border-foreground"
-                                                    {...field}
-                                                    type="number"
-                                                />
-                                            </FormControl>
-
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </TableCell>
+                          
+                           
                         </TableRow>
                     </TableBody>
 
