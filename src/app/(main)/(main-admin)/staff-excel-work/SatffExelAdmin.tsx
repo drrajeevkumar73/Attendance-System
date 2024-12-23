@@ -131,7 +131,7 @@ export default function SatffExelAdmin() {
         description: "No data to export",
         variant: "destructive",
       });
-      return;
+   
     }
     else if (
       !tabelex?.dataOf ||
@@ -142,7 +142,7 @@ export default function SatffExelAdmin() {
         description: "No data to export",
         variant: "destructive",
       });
-      return;
+   
     }
 
     // Prepare data for Excel
