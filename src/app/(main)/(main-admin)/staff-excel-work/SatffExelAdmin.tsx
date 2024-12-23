@@ -126,23 +126,15 @@ export default function SatffExelAdmin() {
   };
 
   const exportToExcel = () => {
-    if (!tabelex?.data || tabelex?.data.length === 0) {
-      toast({
-        description: "No data to export",
-        variant: "destructive",
-      });
-   
-    }
-    else if (
-      !tabelex?.dataOf ||
-      (tabelex?.dataOf.length === 0 && !tabelex?.dataOn) ||
-      tabelex?.dataOn.length === 0
+    if (
+      !tabelex?.data ||
+      tabelex?.data.length === 0 
     ) {
       toast({
         description: "No data to export",
         variant: "destructive",
       });
-   
+      return;
     }
 
     // Prepare data for Excel
