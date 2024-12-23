@@ -133,7 +133,7 @@ export default function SatffExelAdmin() {
       });
       return;
     }
-    if (
+    else if (
       !tabelex?.dataOf ||
       (tabelex?.dataOf.length === 0 && !tabelex?.dataOn) ||
       tabelex?.dataOn.length === 0
