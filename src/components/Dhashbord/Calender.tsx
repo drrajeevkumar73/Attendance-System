@@ -8,6 +8,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Card,
   CardContent,
@@ -39,12 +41,14 @@ import {
 } from "../ui/table";
 import { formatRelativeMonthDate, formatRelativeTime } from "@/lib/utils";
 import { useAppSelector } from "@/lib/hooks";
+import { useToast } from "@/hooks/use-toast";
 
 interface classNameProps {
   className?: string;
 }
 
 export default function Calender({ className }: classNameProps) {
+  const { toast } = useToast();
   const form = useForm<CalederValue>({
     resolver: zodResolver(calenderSchema),
   });
@@ -63,6 +67,22 @@ export default function Calender({ className }: classNameProps) {
     } catch (error) {
     } finally {
       setloding(false);
+    }
+  };
+
+  const checkHandler = async () => {
+    try {
+      const { data } = await axios.post("/api/switch");
+
+      toast({
+        title: data.message,
+        variant: "default",
+      });
+    } catch (error) {
+      toast({
+        description: " Error",
+        variant: "destructive",
+      });
     }
   };
   const { user } = useAppSelector((state) => state.loginlice);
@@ -116,6 +136,10 @@ export default function Calender({ className }: classNameProps) {
           />
         </form>
       </Form>
+      <div className="flex items-center space-x-2">
+        <Switch id="airplane-mode" onClick={checkHandler} />
+        <Label htmlFor="airplane-mode"></Label>
+      </div>
 
       <Card>
         <CardHeader>
@@ -141,9 +165,13 @@ export default function Calender({ className }: classNameProps) {
       <Table>
         <TableHeader className="border border-primary">
           <TableRow className="border border-primary bg-primary">
-            <TableHead className="w-[100px] border-2 border-blue-400">Date</TableHead>
+            <TableHead className="w-[100px] border-2 border-blue-400">
+              Date
+            </TableHead>
             <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="text-right border-2 border-blue-400">Time</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              Time
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -170,13 +198,13 @@ export default function Calender({ className }: classNameProps) {
           data?.map((v: any, i) => (
             <TableBody className="border border-primary" key={i}>
               <TableRow>
-                <TableCell className="font-medium border-2 border-blue-400">
+                <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(v.createdAt)}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {v.content}
                 </TableCell>
-                <TableCell className="w-[200px] text-right border-2 border-blue-400">
+                <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(v.createdAt)}
                 </TableCell>
               </TableRow>

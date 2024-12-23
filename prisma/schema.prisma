@@ -34,6 +34,7 @@ model User {
   Ranchishop        Ranchishop[]
   Offlinedoctorshop Offlinedoctorshop[]
   Onlinedoctorshop  Onlinedoctorshop[]
+  useentry          useentry[]
 
   @@map("users")
 }
@@ -137,6 +138,18 @@ model Attendance {
   @@map("attendance")
 }
 
+model useentry {
+  id     String @id @default(cuid())
+  userId String
+  status String // "present" or "absent"
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("useentry")
+}
+
 model Telecaller {
   id     String  @id @default(cuid())
   userId String
@@ -170,7 +183,7 @@ model Reception {
   task10 String?
   task11 String?
   task12 String?
-  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -189,7 +202,6 @@ model Medicene {
   task7  String?
   task8  String?
   task9  String?
-
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
