@@ -115,6 +115,8 @@ export default function SignupForm() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
+                    <SelectLabel className="text-green-500">All City</SelectLabel>
+                    <SelectItem value="Core"> Core</SelectItem>
                       <SelectLabel>Dipartment</SelectLabel>
                       <SelectItem value="CENTER OPS MANAGER">
                          CENTER MANAGER
