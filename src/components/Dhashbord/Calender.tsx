@@ -136,11 +136,17 @@ export default function Calender({ className }: classNameProps) {
           />
         </form>
       </Form>
-      <div className="flex items-center space-x-2">
+      {
+        user.permisionToggal?
+        <div className="flex items-center space-x-2">
         <Switch id="airplane-mode" onClick={checkHandler} />
         <Label htmlFor="airplane-mode"></Label>
       </div>
 
+:
+""
+      }
+   
       <Card>
         <CardHeader>
           <CardTitle>
