@@ -233,10 +233,17 @@ export default function Menubar({ className }: MenuBarProps) {
           </Button>
           <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/staff-excel-work" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-            title="staff-excel-work"
+            title="Staff Excel Work"
             asChild
           >
             <Link href={"/staff-excel-work"}>Staff Excel Work</Link>
+          </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/revenue-tracker" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Revenue Tracker"
+            asChild
+          >
+            <Link href={"/revenue-tracker"}>Revenue Tracker</Link>
           </Button>
         </div>
       </div>

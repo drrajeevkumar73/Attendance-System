@@ -35,6 +35,7 @@ model User {
   Offlinedoctorshop Offlinedoctorshop[]
   Onlinedoctorshop  Onlinedoctorshop[]
   useentry          useentry[]
+  Revenuetracker    Revenuetracker[]
 
   @@map("users")
 }
@@ -139,10 +140,10 @@ model Attendance {
 }
 
 model useentry {
-  id     String @id @default(cuid())
-  userId String
-  status String // "present" or "absent"
-  lateMinutes Int? 
+  id          String @id @default(cuid())
+  userId      String
+  status      String // "present" or "absent"
+  lateMinutes Int?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -281,4 +282,28 @@ model Onlinedoctorshop {
   createdAt DateTime @default(now())
 
   @@map("onlinedoctorshop")
+}
+
+model Revenuetracker {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+task12 String?
+
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("revenuetracker")
 }
