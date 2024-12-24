@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         status,
+        lateMinutes, // Store late minutes in the database
       },
     });
 

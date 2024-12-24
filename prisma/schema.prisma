@@ -142,6 +142,7 @@ model useentry {
   id     String @id @default(cuid())
   userId String
   status String // "present" or "absent"
+  lateMinutes Int? 
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
