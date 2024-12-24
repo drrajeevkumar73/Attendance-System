@@ -10,13 +10,23 @@ export async function POST(req: NextRequest) {
 
     if (!user) throw new Error("Unauthorized");
 
-    // Get current time in India timezone
+    // Calculate IST time using Intl.DateTimeFormat
     const now = new Date();
-    const ISTOffset = 5.5 * 60 * 60 * 1000; // India Standard Time offset
-    const currentTimeIST = new Date(now.getTime() + ISTOffset);
+    const options = { timeZone: "Asia/Kolkata", hour12: false };
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      ...options,
+      hour: "numeric",
+      minute: "numeric",
+    });
+
+    const [hour, minute] = formatter.formatToParts(now).map((part) => parseInt(part.value) || 0);
+    const currentTimeIST = new Date(now.setHours(hour, minute));
     const currentHour = currentTimeIST.getHours();
     const currentMinute = currentTimeIST.getMinutes();
-    const currentTimeInMinutes = currentHour * 60 + currentMinute; // Convert to minutes for comparison
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+    console.log("Current Time in IST:", currentTimeIST);
+    console.log("Current Time in Minutes:", currentTimeInMinutes);
 
     // Check if current time is between 9:00 AM and 3:00 PM
     if (currentTimeInMinutes < 540 || currentTimeInMinutes > 1080) {
@@ -27,12 +37,15 @@ export async function POST(req: NextRequest) {
     }
 
     // Get today's entry for the user
+    const todayStart = new Date(currentTimeIST.setHours(0, 0, 0, 0));
+    const todayEnd = new Date(currentTimeIST.setHours(23, 59, 59, 999));
+
     const existingEntry = await prisma.useentry.findFirst({
       where: {
         userId: user.id,
         createdAt: {
-          gte: new Date(currentTimeIST.setHours(0, 0, 0, 0)), // Start of today in IST
-          lte: new Date(currentTimeIST.setHours(23, 59, 59, 999)), // End of today in IST
+          gte: todayStart,
+          lte: todayEnd,
         },
       },
     });

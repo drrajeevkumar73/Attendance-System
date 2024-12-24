@@ -27,7 +27,18 @@ export async function POST(req: NextRequest) {
             status: true,
             createdAt: true,
           },
+          
         },
+        useentry:{
+          select:{
+            status:true,
+            lateMinutes:true,
+            createdAt:true
+          },
+          orderBy:{
+            createdAt:'desc'
+          }
+        }
       },
     });
 
@@ -51,9 +62,14 @@ export async function POST(req: NextRequest) {
       if (v.status !== "absent") return v.status;
     });
 
+    const filteredLatesatus= userdata.useentry?.filter(
+      (work: any) => formatRelativeMonth(work.createdAt) === monthname,
+    );
+
     return NextResponse.json({
       success: true,
       data: {
+        filteredLatesatus,
         Totalwork: filteredTodaysWork,
         Atendace: totalAdence.length,
         dipartment:userdata.dipartment,
