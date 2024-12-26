@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { date, task1, task2, task3, task4, task5, task6 } = await req.json();
+    
 
     // Set timezone to Asia/Kolkata
     const currentTime = moment.tz("Asia/Kolkata");
@@ -18,21 +19,23 @@ export async function POST(req: NextRequest) {
     const endAllowedTime = moment.tz("20:00", "HH:mm", "Asia/Kolkata");
 
     // Check if the current time is within the allowed range
-    // if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
-    //   return NextResponse.json(
-    //     {
-    //       success: false,
-    //       message: "You can add data only between 10:00 AM and 8:00 PM.",
-    //     },
-    //     { status: 403 }
-    //   );
-    // }
+    if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "You can add data only between 10:00 AM and 8:00 PM.",
+        },
+        { status: 403 }
+      );
+    }
 
     // Set default `date` to today if not provided
-    const currentDate = date ? moment(date, "YYYY-MM-DD", true) : moment();
+    const currentDate = date || currentTime.format("YYYY-MM-DD");
+
+   
 
     // Validate the date format
-    if (!currentDate.isValid()) {
+    if (!moment(currentDate, "YYYY-MM-DD", true).isValid()) {
       return NextResponse.json(
         { success: false, message: "Invalid date format. Use YYYY-MM-DD." },
         { status: 400 }
@@ -40,10 +43,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Define today's and yesterday's boundaries
-    const todayStart = currentDate.clone().startOf("day").toDate();
-    const todayEnd = currentDate.clone().endOf("day").toDate();
-    const yesterdayStart = currentDate.clone().subtract(1, "days").startOf("day").toDate();
-    const yesterdayEnd = currentDate.clone().subtract(1, "days").endOf("day").toDate();
+    const todayStart = moment.tz("Asia/Kolkata").startOf("day").toDate();
+    const todayEnd = moment.tz("Asia/Kolkata").endOf("day").toDate();
+    const yesterdayStart = moment.tz("Asia/Kolkata").subtract(1, "days").startOf("day").toDate();
+    const yesterdayEnd = moment.tz("Asia/Kolkata").subtract(1, "days").endOf("day").toDate();
 
     // Check if today's entry exists
     const todayEntry = await prisma.telecaller.findFirst({
@@ -59,7 +62,7 @@ export async function POST(req: NextRequest) {
     console.log("Today's entry:", todayEntry);
 
     // If user is adding for yesterday, ensure today's entry is filled first
-    if (!todayEntry && currentDate.isSame(yesterdayStart, "day")) {
+    if (!todayEntry && moment(currentDate).isSame(yesterdayStart, "day")) {
       return NextResponse.json(
         {
           success: false,
@@ -69,8 +72,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if the provided date is valid (only yesterday or today is allowed)
-    if (!currentDate.isSame(todayStart, "day") && !currentDate.isSame(yesterdayStart, "day")) {
+    // Check if the provided date is valid (only yesterday is allowed if not today)
+    if (!moment(currentDate).isSame(todayStart, "day") && !moment(currentDate).isSame(yesterdayStart, "day")) {
       return NextResponse.json(
         {
           success: false,
@@ -85,8 +88,8 @@ export async function POST(req: NextRequest) {
       where: {
         userId: user.id,
         createdAt: {
-          gte: currentDate.startOf("day").toDate(),
-          lte: currentDate.endOf("day").toDate(),
+          gte: moment.tz(currentDate, "Asia/Kolkata").startOf("day").toDate(),
+          lte: moment.tz(currentDate, "Asia/Kolkata").endOf("day").toDate(),
         },
       },
     });
@@ -102,7 +105,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Correct `createdAt` based on provided date or current time
-    const createdAt = currentDate
+    const createdAt = moment
+      .tz(currentDate, "YYYY-MM-DD", "Asia/Kolkata")
       .set({
         hour: currentTime.hour(),
         minute: currentTime.minute(),
