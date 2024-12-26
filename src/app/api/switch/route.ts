@@ -29,7 +29,9 @@ export async function POST(req: NextRequest) {
     console.log("Current Time in Minutes:", currentTimeInMinutes);
 
     // Check if current time is between 9:00 AM and 3:00 PM
-    if (currentTimeInMinutes < 540 || currentTimeInMinutes > 1080) {
+    const startOfEntry = 540; // 9:00 AM in minutes
+    const endOfEntry = 1080;  // 3:00 PM in minutes
+    if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
       return NextResponse.json({
         success: false,
         message: "Entry is allowed only between 9:00 AM to 3:00 PM.",
@@ -54,25 +56,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: false,
         message: "You've already entered for today.",
-        status: existingEntry.status, // Return existing status
+        status: existingEntry.status, // Return existing status if needed
       });
     }
 
     // Define entry time ranges in minutes
-    const entryTimeStart = 540; // 9:00 AM in minutes
-    const entryTimeEnd = 615;   // 10:15 AM in minutes
-    const lateStart = 620;      // 10:20 AM in minutes
+    const onTimeStart = 540; // 9:00 AM in minutes
+    const onTimeEnd = 615;   // 10:15 AM in minutes
+    const lateStart = 620;   // 10:20 AM in minutes
 
     let status = "";
     let lateMinutes = 0;
 
-    if (currentTimeInMinutes >= entryTimeStart && currentTimeInMinutes <= entryTimeEnd) {
+    if (currentTimeInMinutes >= onTimeStart && currentTimeInMinutes <= onTimeEnd) {
       status = "on-time";
-    } else if (currentTimeInMinutes > lateStart) {
+    } else if (currentTimeInMinutes >= lateStart) {
       status = "late";
-      lateMinutes = currentTimeInMinutes - lateStart; // Calculate late minutes
+      lateMinutes = currentTimeInMinutes - onTimeEnd; // Calculate late minutes
     }
 
+    // Store entry in the database
     await prisma.useentry.create({
       data: {
         userId: user.id,
@@ -81,13 +84,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Convert late minutes to hours and minutes for response
+    const lateHours = Math.floor(lateMinutes / 60);
+    const lateRemainingMinutes = lateMinutes % 60;
+
     return NextResponse.json({
       success: true,
       message: "Entry recorded successfully.",
       status,
-      lateMinutes, // Return the late minutes
+      lateMinutes: lateMinutes
+        ? `${lateHours > 0 ? `${lateHours} hour${lateHours > 1 ? "s" : ""} ` : ""}${
+            lateRemainingMinutes > 0 ? `${lateRemainingMinutes} minute${lateRemainingMinutes > 1 ? "s" : ""}` : ""
+          }`
+        : "No delay",
     });
-
   } catch (error) {
     console.error("Error occurred:", error);
     return NextResponse.json(

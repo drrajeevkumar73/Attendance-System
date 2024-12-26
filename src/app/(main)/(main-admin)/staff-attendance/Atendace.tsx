@@ -394,7 +394,13 @@ export default function Atendace() {
                   {item.status}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
-                  {formatMinutesToHoursMinutes(item.lateMinutes)}
+                  {/* {formatMinutesToHoursMinutes(item.lateMinutes)} */}
+                  {
+                    item.lateMinutes>60?
+                    formatMinutesToHoursMinutes(item.lateMinutes)
+                    :
+                    item.lateMinutes
+                  }
                 </TableCell>
                 <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(item.createdAt)}
