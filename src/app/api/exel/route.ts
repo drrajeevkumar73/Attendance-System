@@ -297,22 +297,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-import { DateTime } from 'luxon';
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma"; // Prisma client
 import { validateRequest } from "@/auth"; // Authentication middleware
+import prisma from "@/lib/prisma"; // Prisma client
+import { NextRequest, NextResponse } from "next/server"; // Next.js server types
+import moment from "moment-timezone"; // Moment.js for timezone handling
 
 export async function POST(req: NextRequest) {
   try {
@@ -326,27 +314,28 @@ export async function POST(req: NextRequest) {
     const { date, task1, task2, task3, task4, task5, task6 } = await req.json();
 
     // Set timezone to Asia/Kolkata
-    const currentTime:any = DateTime.now().setZone('Asia/Kolkata');
+    const currentTime = moment.tz("Asia/Kolkata");
 
-    const startAllowedTime = DateTime.fromFormat('10:00', 'HH:mm', { zone: 'Asia/Kolkata' });
-    const endAllowedTime = DateTime.fromFormat('20:00', 'HH:mm', { zone: 'Asia/Kolkata' });
+    // Allowed time window
+    const startAllowedTime = moment.tz("20:00", "HH:mm", "Asia/Kolkata");
+    const endAllowedTime = moment.tz("08:00", "HH:mm", "Asia/Kolkata");
 
     // Check if current time is within allowed time range
     if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
       return NextResponse.json(
         {
           success: false,
-          message: "You can only add data between 10:00 AM and 8:00 PM.",
+          message: "You can only add data between 8:00 PM and 8:00 AM.",
         },
         { status: 403 }
       );
     }
 
     // Step 3: Set default `date` to today if not provided
-    let currentDate = date || currentTime.toFormat('yyyy-MM-dd');
+    let currentDate = date || currentTime.format("YYYY-MM-DD");
 
     // Validate the date format
-    if (!DateTime.fromFormat(currentDate, 'yyyy-MM-dd').isValid) {
+    if (!moment(currentDate, "YYYY-MM-DD", true).isValid()) {
       return NextResponse.json(
         {
           success: false,
@@ -357,24 +346,24 @@ export async function POST(req: NextRequest) {
     }
 
     // Define today's and yesterday's date boundaries
-    const todayStart = currentTime.startOf('day');
-    const todayEnd = currentTime.endOf('day');
-    const yesterdayStart = currentTime.minus({ days: 1 }).startOf('day');
-    const yesterdayEnd = currentTime.minus({ days: 1 }).endOf('day');
+    const todayStart = moment.tz("Asia/Kolkata").startOf("day").toDate();
+    const todayEnd = moment.tz("Asia/Kolkata").endOf("day").toDate();
+    const yesterdayStart = moment.tz("Asia/Kolkata").subtract(1, "days").startOf("day").toDate();
+    const yesterdayEnd = moment.tz("Asia/Kolkata").subtract(1, "days").endOf("day").toDate();
 
     // Step 4: Check if today's entry exists
     const todayEntry = await prisma.telecaller.findFirst({
       where: {
         userId: user.id,
         createdAt: {
-          gte: todayStart.toJSDate(),
-          lte: todayEnd.toJSDate(),
+          gte: todayStart,
+          lte: todayEnd,
         },
       },
     });
 
     // If no today's entry, ensure yesterday's tasks are not entered first
-    if (!todayEntry && currentTime.startOf('day').equals(yesterdayStart)) {
+    if (!todayEntry && moment(currentDate).isSame(yesterdayStart, "day")) {
       return NextResponse.json(
         {
           success: false,
@@ -385,10 +374,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if the provided date is valid
-    if (
-      !currentTime.startOf('day').equals(todayStart) &&
-      !currentTime.startOf('day').equals(yesterdayStart)
-    ) {
+    if (!moment(currentDate).isSame(todayStart, "day") && !moment(currentDate).isSame(yesterdayStart, "day")) {
       return NextResponse.json(
         {
           success: false,
@@ -403,8 +389,8 @@ export async function POST(req: NextRequest) {
       where: {
         userId: user.id,
         createdAt: {
-          gte: currentTime.startOf('day').toJSDate(),
-          lte: currentTime.endOf('day').toJSDate(),
+          gte: moment.tz(currentDate, "Asia/Kolkata").startOf("day").toDate(),
+          lte: moment.tz(currentDate, "Asia/Kolkata").endOf("day").toDate(),
         },
       },
     });
@@ -420,7 +406,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 6: Set the createdAt timestamp based on the provided date or current time
-    const createdAt = currentTime.set({ hour: currentTime.hour, minute: currentTime.minute, second: currentTime.second }).toJSDate();
+    const createdAt = moment
+      .tz(currentDate, "YYYY-MM-DD", "Asia/Kolkata")
+      .set({
+        hour: currentTime.hour(),
+        minute: currentTime.minute(),
+        second: currentTime.second(),
+      })
+      .toDate();
 
     // Step 7: Insert data into the database
     await prisma.telecaller.create({
