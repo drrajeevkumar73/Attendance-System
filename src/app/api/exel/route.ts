@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
     }
 
     const { date, task1, task2, task3, task4, task5, task6 } = await req.json();
-    
 
     // Set timezone to Asia/Kolkata
     const currentTime = moment.tz("Asia/Kolkata");
@@ -32,12 +31,13 @@ export async function POST(req: NextRequest) {
     // Set default `date` to today if not provided
     const currentDate = date || currentTime.format("YYYY-MM-DD");
 
-   
-
     // Validate the date format
-    if (!moment(currentDate, "YYYY-MM-DD", true).isValid()) {
+    if (!currentDate || !moment(currentDate, "YYYY-MM-DD", true).isValid()) {
       return NextResponse.json(
-        { success: false, message: "Invalid date format. Use YYYY-MM-DD." },
+        {
+          success: false,
+          message: "Invalid date format. Use YYYY-MM-DD or only enter tasks for today or one day before.",
+        },
         { status: 400 }
       );
     }
