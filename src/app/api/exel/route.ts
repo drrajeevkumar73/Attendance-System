@@ -317,8 +317,8 @@ export async function POST(req: NextRequest) {
     const currentTime = moment.tz("Asia/Kolkata");
 
     // Allowed time window
-    const startAllowedTime = moment.tz("20:00", "HH:mm", "Asia/Kolkata");
-    const endAllowedTime = moment.tz("08:00", "HH:mm", "Asia/Kolkata");
+    const startAllowedTime = moment.tz("20:00", "HH:mm", "Asia/Kolkata"); // 8:00 PM
+    const endAllowedTime = moment.tz("08:00", "HH:mm", "Asia/Kolkata").add(1, "day"); // 8:00 AM next day
 
     // Check if current time is within allowed time range
     if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
@@ -348,8 +348,16 @@ export async function POST(req: NextRequest) {
     // Define today's and yesterday's date boundaries
     const todayStart = moment.tz("Asia/Kolkata").startOf("day").toDate();
     const todayEnd = moment.tz("Asia/Kolkata").endOf("day").toDate();
-    const yesterdayStart = moment.tz("Asia/Kolkata").subtract(1, "days").startOf("day").toDate();
-    const yesterdayEnd = moment.tz("Asia/Kolkata").subtract(1, "days").endOf("day").toDate();
+    const yesterdayStart = moment
+      .tz("Asia/Kolkata")
+      .subtract(1, "days")
+      .startOf("day")
+      .toDate();
+    const yesterdayEnd = moment
+      .tz("Asia/Kolkata")
+      .subtract(1, "days")
+      .endOf("day")
+      .toDate();
 
     // Step 4: Check if today's entry exists
     const todayEntry = await prisma.telecaller.findFirst({
@@ -374,7 +382,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if the provided date is valid
-    if (!moment(currentDate).isSame(todayStart, "day") && !moment(currentDate).isSame(yesterdayStart, "day")) {
+    if (
+      !moment(currentDate).isSame(todayStart, "day") &&
+      !moment(currentDate).isSame(yesterdayStart, "day")
+    ) {
       return NextResponse.json(
         {
           success: false,
@@ -433,7 +444,6 @@ export async function POST(req: NextRequest) {
       success: true,
       message: "Tasks added successfully.",
     });
-
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
