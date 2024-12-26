@@ -66,9 +66,9 @@ export default function ExcelData() {
         description: data.message,
         variant: "default",
       });
-    } catch (error) {
+    } catch (error:any) {
       toast({
-        description: "Something went wrong",
+        description: error.message || "Something went wrong",
         variant: "destructive",
       });
     } finally {
