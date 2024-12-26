@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     if (!user) throw new Error("Unauthorized");
 
-    // Calculate IST time using Intl.DateTimeFormat
+    // Calculate IST time
     const now = new Date();
     const options = { timeZone: "Asia/Kolkata", hour12: false };
     const formatter = new Intl.DateTimeFormat("en-US", {
@@ -19,16 +19,15 @@ export async function POST(req: NextRequest) {
       minute: "numeric",
     });
 
-    const [hour, minute] = formatter.formatToParts(now).map((part) => parseInt(part.value) || 0);
-    const currentTimeIST = new Date(now.setHours(hour, minute));
-    const currentHour = currentTimeIST.getHours();
-    const currentMinute = currentTimeIST.getMinutes();
-    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    const parts = formatter.formatToParts(now);
+    const hour = parseInt(parts.find((part) => part.type === "hour")?.value || "0");
+    const minute = parseInt(parts.find((part) => part.type === "minute")?.value || "0");
+    const currentTimeInMinutes = hour * 60 + minute;
 
-    console.log("Current Time in IST:", currentTimeIST);
+    console.log("Current Time in IST:", `${hour}:${minute}`);
     console.log("Current Time in Minutes:", currentTimeInMinutes);
 
-    // Check if current time is between 9:00 AM and 3:00 PM
+    // Entry allowed only between 9:00 AM and 3:00 PM
     const startOfEntry = 540; // 9:00 AM in minutes
     const endOfEntry = 1080;  // 3:00 PM in minutes
     if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
@@ -39,8 +38,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Get today's entry for the user
-    const todayStart = new Date(currentTimeIST.setHours(0, 0, 0, 0));
-    const todayEnd = new Date(currentTimeIST.setHours(23, 59, 59, 999));
+    const todayStart = new Date(now.setHours(0, 0, 0, 0));
+    const todayEnd = new Date(now.setHours(23, 59, 59, 999));
 
     const existingEntry = await prisma.useentry.findFirst({
       where: {
@@ -56,23 +55,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: false,
         message: "You've already entered for today.",
-        status: existingEntry.status, // Return existing status if needed
+        status: existingEntry.status,
       });
     }
 
-    // Define entry time ranges in minutes
+    // Define entry time ranges
     const onTimeStart = 540; // 9:00 AM in minutes
     const onTimeEnd = 615;   // 10:15 AM in minutes
-    const lateStart = 620;   // 10:20 AM in minutes
 
     let status = "";
     let lateMinutes = 0;
 
     if (currentTimeInMinutes >= onTimeStart && currentTimeInMinutes <= onTimeEnd) {
       status = "on-time";
-    } else if (currentTimeInMinutes >= lateStart) {
+    } else if (currentTimeInMinutes > onTimeEnd) {
       status = "late";
-      lateMinutes = currentTimeInMinutes - onTimeEnd; // Calculate late minutes
+      lateMinutes = currentTimeInMinutes - onTimeEnd; // Calculate late minutes from 10:15 AM
     }
 
     // Store entry in the database
@@ -80,7 +78,7 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         status,
-        lateMinutes, // Store late minutes in the database
+        lateMinutes,
       },
     });
 
