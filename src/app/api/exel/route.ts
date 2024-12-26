@@ -384,7 +384,7 @@ export async function POST(req: NextRequest) {
     // Check if the provided date is valid
     if (
       moment(currentDate).isSame(todayStart, "day") &&
-      moment(currentDate).isSame(yesterdayStart, "day")
+      !moment(currentDate).isSame(yesterdayStart, "day")
     ) {
       return NextResponse.json(
         {
