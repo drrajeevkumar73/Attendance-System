@@ -11,20 +11,20 @@ export async function POST(req: NextRequest) {
     }
 
     // Get current time in IST
-    // const currentTime = moment().tz("Asia/Kolkata");
-    // const currentHour = currentTime.hour(); // 24-hour format
-    // const currentMinutes = currentTime.minute();
+    const currentTime = moment().tz("Asia/Kolkata");
+    const currentHour = currentTime.hour(); // 24-hour format
+    const currentMinutes = currentTime.minute();
 
     // // Block entries between 8 PM (20:00) to 9:59 AM (09:59)
-    // if (
-    //   (currentHour >= 20 && currentHour <= 23) || // 8 PM to Midnight
-    //   (currentHour >= 0 && currentHour < 10) // Midnight to 9:59 AM
-    // ) {
-    //   return NextResponse.json(
-    //     { success: false, message: "Data entry is not allowed between 8 PM and 9:59 AM (IST)." },
-    //     { status: 403 }
-    //   );
-    // }
+    if (
+      (currentHour >= 20 && currentHour <= 23) || // 8 PM to Midnight
+      (currentHour >= 0 && currentHour < 10) // Midnight to 9:59 AM
+    ) {
+      return NextResponse.json(
+        { success: false, message: "Data entry is not allowed between 8 PM and 9:59 AM (IST)." },
+        { status: 403 }
+      );
+    }
 
     const {
       task1,

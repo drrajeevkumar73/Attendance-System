@@ -399,7 +399,7 @@ export default function Atendace() {
                     item.lateMinutes>60?
                     formatMinutesToHoursMinutes(item.lateMinutes)
                     :
-                    item.lateMinutes
+                    item.lateMinutes+'m'
                   }
                 </TableCell>
                 <TableCell className="w-[200px] border-2 border-blue-400 text-right">
