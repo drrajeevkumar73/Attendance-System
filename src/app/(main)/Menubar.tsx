@@ -140,27 +140,21 @@ export default function Menubar({ className }: MenuBarProps) {
                 title="EOffline Doctor Excel Part"
                 asChild
               >
-                <Link href={"/offline-doctor-excel"}>
-                  Offline Doctor Excel
-                </Link>
+                <Link href={"/offline-doctor-excel"}>Offline Doctor Excel</Link>
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/offline-vew-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
                 title="Offline Doctor Veiw Data"
                 asChild
               >
-                <Link href={"/offline-vew-excel"}>
-                  Offline Doctor Veiw 
-                </Link>
+                <Link href={"/offline-vew-excel"}>Offline Doctor Veiw</Link>
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/online-doctor-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
                 title="Online Doctor Excel Part"
                 asChild
               >
-                <Link href={"/online-doctor-excel"}>
-                  Online Doctor Excel 
-                </Link>
+                <Link href={"/online-doctor-excel"}>Online Doctor Excel</Link>
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/online-vew-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
@@ -168,6 +162,23 @@ export default function Menubar({ className }: MenuBarProps) {
                 asChild
               >
                 <Link href={"/online-vew-excel"}>Online Doctor Veiw</Link>
+              </Button>
+            </>
+          ) : user.dipartment === "HD / OD" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/hdod-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part "
+                asChild
+              >
+                <Link href={"/hdod-excel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/hdod-excel-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/hdod-excel-vew"}>Veiw Excel Data</Link>
               </Button>
             </>
           ) : (

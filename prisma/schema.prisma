@@ -36,6 +36,7 @@ model User {
   Onlinedoctorshop  Onlinedoctorshop[]
   useentry          useentry[]
   Revenuetracker    Revenuetracker[]
+  Hdod              Hdod[]
 
   @@map("users")
 }
@@ -298,12 +299,35 @@ model Revenuetracker {
   task9  String?
   task10 String?
   task11 String?
-task12 String?
-
+  task12 String?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
   @@map("revenuetracker")
+}
+
+model Hdod {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+  task12 String?
+  task13 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("hdod")
 }
