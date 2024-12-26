@@ -382,18 +382,18 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if the provided date is valid
-    // if (
-    //   !moment(currentDate).isSame(todayStart, "day") ||
-    //   !moment(currentDate).isSame(yesterdayStart, "day")
-    // ) {
-    //   return NextResponse.json(
-    //     {
-    //       success: false,
-    //       message: "You can only add tasks for today or one day before.",
-    //     },
-    //     { status: 403 }
-    //   );
-    // }
+    if (
+      !moment(currentDate).isSame(todayStart, "day") ||
+      !moment(currentDate).isSame(yesterdayStart, "day")
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "You can only add tasks for today or one day before.",
+        },
+        { status: 403 }
+      );
+    }
 
     // Step 5: Check if an entry already exists for the given date
     const existingEntry = await prisma.telecaller.findFirst({
