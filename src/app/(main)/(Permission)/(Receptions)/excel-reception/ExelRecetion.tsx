@@ -69,10 +69,11 @@ export default function ExelRecetion() {
                 description: data.message,
                 variant: "default",
             });
-        } catch (error) {
+        } catch (error:any) {
+            const errorMessage = error?.response?.data?.message || "Something went wrong";
             toast({
-                description: "Something went wrong",
-                variant: "destructive",
+              description: errorMessage,
+              variant: "destructive",
             });
         } finally {
             setispending(false);

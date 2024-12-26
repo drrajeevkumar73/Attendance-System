@@ -12,7 +12,15 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 2: Parse request payload
-    const { date, task1, task2, task3, task4, task5, task6 } = await req.json();
+    const { date, task1, task2, task3, task4, task5, task6 , task7,
+      task8,
+      task9,
+      task10,
+      task11,
+      task12,
+      task13,
+      
+      } = await req.json();
 
     // Set timezone to Asia/Kolkata
     const currentTime = moment.tz("Asia/Kolkata");
@@ -65,7 +73,7 @@ export async function POST(req: NextRequest) {
     // Step 4: Check if an entry already exists for the given date
     const startOfDay = inputDate.startOf("day").toDate();
     const endOfDay = inputDate.endOf("day").toDate();
-    const existingEntry = await prisma.telecaller.findFirst({
+    const existingEntry = await prisma.hdod.findFirst({
       where: {
         userId: user.id,
         createdAt: {
@@ -93,7 +101,7 @@ export async function POST(req: NextRequest) {
     }).toDate();
 
     // Step 6: Insert data into the database
-    await prisma.telecaller.create({
+    await prisma.hdod.create({
       data: {
         userId: user.id,
         task1,
@@ -102,6 +110,16 @@ export async function POST(req: NextRequest) {
         task4,
         task5,
         task6,
+        task7,
+        task8,
+        task9,
+        task10,
+        task11,
+        task12,
+        task13,
+        
+        
+       
         createdAt,
       },
     });

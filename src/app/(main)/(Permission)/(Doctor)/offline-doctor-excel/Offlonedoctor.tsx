@@ -85,9 +85,10 @@ export default function Offlonedoctor() {
         description: data.message,
         variant: "default",
       });
-    } catch (error) {
+    } catch (error:any) {
+      const errorMessage = error?.response?.data?.message || "Something went wrong";
       toast({
-        description: "Something went wrong",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

@@ -63,11 +63,12 @@ export default function Medicineexcel() {
                 description: data.message,
                 variant: "default",
             });
-        } catch (error) {
-            toast({
-                description: "Something went wrong",
-                variant: "destructive",
-            });
+        } catch (error:any) {
+            const errorMessage = error?.response?.data?.message || "Something went wrong";
+      toast({
+        description: errorMessage,
+        variant: "destructive",
+      });
         } finally {
             setispending(false);
         }

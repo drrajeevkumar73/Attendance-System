@@ -66,10 +66,6 @@ export default function ExcelData() {
         task6: value.task6,
       };
   
-      // If date is not empty or undefined, add to the request
-      // if (value.date && value.date.trim() !== "") {
-      //   requestData.date = value.date;
-      // }
       
       const { data } = await axios.post("/api/exel", requestData);
   

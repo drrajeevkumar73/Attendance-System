@@ -65,7 +65,7 @@ export default function Hdexcel() {
   const submithandler = async (value: DoctorOffineValue) => {
     try {
       setispending(true);
-      const { data } = await axios.post("/api/offline-doctor-excel", {
+      const { data } = await axios.post("/api/hd-od-excel", {
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -85,9 +85,10 @@ export default function Hdexcel() {
         description: data.message,
         variant: "default",
       });
-    } catch (error) {
+    } catch (error:any) {
+      const errorMessage = error?.response?.data?.message || "Something went wrong";
       toast({
-        description: "Something went wrong",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

@@ -322,6 +322,39 @@ export default function SatffExelAdmin() {
         // Write to file
         XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
       }
+    }else if (tabelex.dipartment === "hdod"){
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        'O.G': v.task1,
+          "IN": v.task2,
+          "HD. ORDER": v.task3,
+          "HD DISP": v.task4,
+          "HD AMT": v.task5,
+          "PRES - Send": v.task6,
+          "OD. ORDER": v.task7,
+          "OD DISP": v.task8,
+          "OD PENDING": v.task9,
+          "MANUAL SENT": v.task10,
+          " LOOSE Medi": v.task11,
+          "OD AMT": v.task12,
+          "FRIGHT": v.task13,
+          TOTAL:Number(v.task12)+Number(v.task13),
+          Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
     }
   };
 
@@ -1219,7 +1252,130 @@ export default function SatffExelAdmin() {
             </div>
           </div>
         </div>
-      ) : (
+      ) : tabelex.dipartment === "hdod"?(
+        <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
+        <p className="text-center text-[3rem] font-bold text-green-500">
+          SHOP RANCHI Data
+        </p>
+        <Table className="w-[2300px]">
+          <TableHeader>
+          <TableRow className="border border-primary bg-primary">
+        <TableHead className="border-2 border-blue-400">Date</TableHead>
+              <TableHead className="border-2 border-blue-400">O.G</TableHead>
+              <TableHead className="border-2 border-blue-400">
+              IN
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+               HD. ORDER
+              </TableHead>
+
+              <TableHead className="border-2 border-blue-400">HD DISP</TableHead>
+              <TableHead className="border-2 border-blue-400">
+              HD AMT
+              </TableHead>
+              <TableHead className="border-2 border-blue-400"> PRES - Send</TableHead>
+              <TableHead className="border-2 border-blue-400">
+              OD. ORDER
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+              OD DISP
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+              OD PENDING
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+              MANUAL SENT
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+              LOOSE Medi
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+              OD AMT
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">FRIGHT </TableHead>
+              <TableHead className="border-2 border-blue-400">TOTAL </TableHead>
+
+              <TableHead className="border-2 border-blue-400">Time</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          {ispending ? (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3} className="">
+                  Loading...
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : tabelex?.data?.length === 0 ? (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3} className="">
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : (
+            tabelex?.data?.map((v: any, i) => (
+              <TableBody className="border border-primary" key={i}>
+              <TableRow>
+                <TableCell className="border-2 border-blue-400">
+                  {formatRelativeMonthDate(v.createdAt)}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task1}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task2}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task3}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task4}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task5}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task6}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task7}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task8}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task9}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task10}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task11}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task12}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task13}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {Number(v.task12)+Number(v.task13)}
+                </TableCell>
+
+                <TableCell className="border-2 border-blue-400">
+                  {formatRelativeTime(v.createdAt)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+            ))
+          )}
+        </Table>
+      </div>
+      ):
+      (
         ""
       )}
     </>
