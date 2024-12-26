@@ -30,6 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { date } from "zod";
 
 export default function ExcelData() {
   const { toast } = useToast();
@@ -56,6 +57,7 @@ export default function ExcelData() {
       
       // Prepare the data to send
       const requestData:any = {
+        date:value.date,
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -65,9 +67,9 @@ export default function ExcelData() {
       };
   
       // If date is not empty or undefined, add to the request
-      if (value.date && value.date.trim() !== "") {
-        requestData.date = value.date;
-      }
+      // if (value.date && value.date.trim() !== "") {
+      //   requestData.date = value.date;
+      // }
       
       const { data } = await axios.post("/api/exel", requestData);
   
