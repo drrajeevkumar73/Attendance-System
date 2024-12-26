@@ -146,42 +146,41 @@
 
 
 
-
-
-
-import { validateRequest } from "@/auth";
-import prisma from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import moment from "moment-timezone";
+import { validateRequest } from "@/auth"; // Authentication middleware
+import prisma from "@/lib/prisma"; // Prisma client
+import { NextRequest, NextResponse } from "next/server"; // Next.js server types
+import moment from "moment-timezone"; // Moment.js for timezone handling
 
 export async function POST(req: NextRequest) {
   try {
+    // Step 1: Validate Request and get the user
     const { user } = await validateRequest();
     if (!user) {
-      throw Error("unauthorized");
+      throw new Error("Unauthorized");
     }
 
+    // Step 2: Parse request payload
     const { date, task1, task2, task3, task4, task5, task6 } = await req.json();
 
     // Set timezone to Asia/Kolkata
     const currentTime = moment.tz("Asia/Kolkata");
 
-    // Set allowed time window
+    // Allowed time window
     const startAllowedTime = moment.tz("10:00", "HH:mm", "Asia/Kolkata");
     const endAllowedTime = moment.tz("20:00", "HH:mm", "Asia/Kolkata");
 
-    // Check if current time is within allowed range
+    // Check if current time is within allowed time range
     // if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
     //   return NextResponse.json(
     //     {
     //       success: false,
-    //       message: "You can add data only between 10:00 AM and 8:00 PM.",
+    //       message: "You can only add data between 10:00 AM and 8:00 PM.",
     //     },
     //     { status: 403 }
     //   );
     // }
 
-    // Set default `date` to today if not provided
+    // Step 3: Set default `date` to today if not provided
     let currentDate = date || currentTime.format("YYYY-MM-DD");
 
     // Validate the date format
@@ -189,19 +188,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "Invalid date format. Use YYYY-MM-DD or only enter tasks for today or one day before.",
+          message: "Invalid date format. Use YYYY-MM-DD.",
         },
         { status: 400 }
       );
     }
 
-    // Define today's and yesterday's boundaries
+    // Define today's and yesterday's date boundaries
     const todayStart = moment.tz("Asia/Kolkata").startOf("day").toDate();
     const todayEnd = moment.tz("Asia/Kolkata").endOf("day").toDate();
     const yesterdayStart = moment.tz("Asia/Kolkata").subtract(1, "days").startOf("day").toDate();
     const yesterdayEnd = moment.tz("Asia/Kolkata").subtract(1, "days").endOf("day").toDate();
 
-    // Check if today's entry exists
+    // Step 4: Check if today's entry exists
     const todayEntry = await prisma.telecaller.findFirst({
       where: {
         userId: user.id,
@@ -212,7 +211,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // If user is adding for yesterday, ensure today's entry is filled first
+    // If no today's entry, ensure yesterday's tasks are not entered first
     if (!todayEntry && moment(currentDate).isSame(yesterdayStart, "day")) {
       return NextResponse.json(
         {
@@ -223,7 +222,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if the provided date is valid (only yesterday is allowed if not today)
+    // Check if the provided date is valid
     if (!moment(currentDate).isSame(todayStart, "day") && !moment(currentDate).isSame(yesterdayStart, "day")) {
       return NextResponse.json(
         {
@@ -234,7 +233,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if an entry for the given date already exists
+    // Step 5: Check if an entry already exists for the given date
     const existingEntry = await prisma.telecaller.findFirst({
       where: {
         userId: user.id,
@@ -255,7 +254,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Correct `createdAt` based on provided date or current time
+    // Step 6: Set the createdAt timestamp based on the provided date or current time
     const createdAt = moment
       .tz(currentDate, "YYYY-MM-DD", "Asia/Kolkata")
       .set({
@@ -265,7 +264,7 @@ export async function POST(req: NextRequest) {
       })
       .toDate();
 
-    // Insert data
+    // Step 7: Insert data into the database
     await prisma.telecaller.create({
       data: {
         userId: user.id,
@@ -281,10 +280,11 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Task created successfully.",
+      message: "Tasks added successfully.",
     });
+
   } catch (error) {
-    console.error("Error occurred:", error);
+    console.error("Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error." },
       { status: 500 }
