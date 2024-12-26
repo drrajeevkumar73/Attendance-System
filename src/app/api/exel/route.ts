@@ -22,15 +22,15 @@ export async function POST(req: NextRequest) {
     const restrictedEnd = moment.tz("10:00", "HH:mm", "Asia/Kolkata").add(1, "day"); // Next day 10:00 AM
 
     // Check if current time is within the restricted range
-    if (currentTime.isBetween(restrictedStart, restrictedEnd, null, "[)")) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "You cannot add data between 8:00 PM and 10:00 AM.",
-        },
-        { status: 403 }
-      );
-    }
+    // if (currentTime.isBetween(restrictedStart, restrictedEnd, null, "[)")) {
+    //   return NextResponse.json(
+    //     {
+    //       success: false,
+    //       message: "You cannot add data between 8:00 PM and 10:00 AM.",
+    //     },
+    //     { status: 403 }
+    //   );
+    // }
 
     // Step 3: Set default `date` to today if not provided
     let currentDate = date || currentTime.format("YYYY-MM-DD");
