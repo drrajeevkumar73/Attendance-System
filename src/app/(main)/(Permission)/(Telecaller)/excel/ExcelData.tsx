@@ -53,20 +53,39 @@ export default function ExcelData() {
   const submithandler = async (value: ExelValue) => {
     try {
       setispending(true);
-      const { data } = await axios.post("/api/exel", {
-        date: value.date,
-        task1: value.task1,
-        task2: value.task2,
-        task3: value.task3,
-        task4: value.task4,
-        task5: value.task5,
-        task6: value.task6,
-      });
-      form.reset();
-      toast({
-        description: data.message, // Properly showing message from server
-        variant: "default",
-      });
+      if(value.date === ""){
+        const { data } = await axios.post("/api/exel", {
+          task1: value.task1,
+          task2: value.task2,
+          task3: value.task3,
+          task4: value.task4,
+          task5: value.task5,
+          task6: value.task6,
+        })
+        form.reset();
+        toast({
+          description: data.message, // Properly showing message from server
+          variant: "default",
+        });
+      }else{
+        const { data } = await axios.post("/api/exel", {
+          date:value.date,
+          task1: value.task1,
+          task2: value.task2,
+          task3: value.task3,
+          task4: value.task4,
+          task5: value.task5,
+          task6: value.task6,
+        })
+        form.reset();
+        toast({
+          description: data.message, // Properly showing message from server
+          variant: "default",
+        });
+      
+      }
+     
+     
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Something went wrong"; // Fallback error message
       toast({

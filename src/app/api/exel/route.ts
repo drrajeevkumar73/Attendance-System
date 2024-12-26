@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { date, task1, task2, task3, task4, task5, task6 } = await req.json();
+    
 
     // Set timezone to Asia/Kolkata
     const currentTime = moment.tz("Asia/Kolkata");
