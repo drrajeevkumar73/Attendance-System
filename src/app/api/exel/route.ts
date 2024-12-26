@@ -18,15 +18,15 @@ export async function POST(req: NextRequest) {
     const endAllowedTime = moment.tz("20:00", "HH:mm", "Asia/Kolkata");
 
     // Check if the current time is within the allowed range
-    if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "You can add data only between 10:00 AM and 8:00 PM.",
-        },
-        { status: 403 }
-      );
-    }
+    // if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
+    //   return NextResponse.json(
+    //     {
+    //       success: false,
+    //       message: "You can add data only between 10:00 AM and 8:00 PM.",
+    //     },
+    //     { status: 403 }
+    //   );
+    // }
 
     // Set default `date` to today if not provided
     const currentDate = date || currentTime.format("YYYY-MM-DD");
