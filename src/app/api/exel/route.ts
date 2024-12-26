@@ -165,10 +165,12 @@ export async function POST(req: NextRequest) {
 
     // Set timezone to Asia/Kolkata
     const currentTime = moment.tz("Asia/Kolkata");
+
+    // Set allowed time window
     const startAllowedTime = moment.tz("10:00", "HH:mm", "Asia/Kolkata");
     const endAllowedTime = moment.tz("20:00", "HH:mm", "Asia/Kolkata");
 
-    // Check if the current time is within the allowed range
+    // Check if current time is within allowed range
     // if (!currentTime.isBetween(startAllowedTime, endAllowedTime)) {
     //   return NextResponse.json(
     //     {
@@ -180,10 +182,10 @@ export async function POST(req: NextRequest) {
     // }
 
     // Set default `date` to today if not provided
-    const currentDate = date || currentTime.format("YYYY-MM-DD");
+    let currentDate = date || currentTime.format("YYYY-MM-DD");
 
     // Validate the date format
-    if (!currentDate || !moment(currentDate, "YYYY-MM-DD", true).isValid()) {
+    if (!moment(currentDate, "YYYY-MM-DD", true).isValid()) {
       return NextResponse.json(
         {
           success: false,
@@ -222,10 +224,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if the provided date is valid (only yesterday is allowed if not today)
-    if (
-      !moment(currentDate).isSame(todayStart, "day") &&
-      !moment(currentDate).isSame(yesterdayStart, "day")
-    ) {
+    if (!moment(currentDate).isSame(todayStart, "day") && !moment(currentDate).isSame(yesterdayStart, "day")) {
       return NextResponse.json(
         {
           success: false,
@@ -265,8 +264,6 @@ export async function POST(req: NextRequest) {
         second: currentTime.second(),
       })
       .toDate();
-
-    console.log("Final createdAt value:", createdAt);
 
     // Insert data
     await prisma.telecaller.create({
