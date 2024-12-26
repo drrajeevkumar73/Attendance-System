@@ -52,8 +52,10 @@ export default function ExcelData() {
 
   const submithandler = async (value: ExelValue) => {
     try {
+      
       setispending(true);
       if(value.date === ""){
+      
         const { data } = await axios.post("/api/exel", {
           task1: value.task1,
           task2: value.task2,
@@ -67,7 +69,9 @@ export default function ExcelData() {
           description: data.message, // Properly showing message from server
           variant: "default",
         });
+      
       }else{
+       
         const { data } = await axios.post("/api/exel", {
           date:value.date,
           task1: value.task1,
