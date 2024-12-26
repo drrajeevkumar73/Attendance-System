@@ -326,7 +326,7 @@ export async function POST(req: NextRequest) {
     const { date, task1, task2, task3, task4, task5, task6 } = await req.json();
 
     // Set timezone to Asia/Kolkata
-    const currentTime = DateTime.now().setZone('Asia/Kolkata');
+    const currentTime:any = DateTime.now().setZone('Asia/Kolkata');
 
     const startAllowedTime = DateTime.fromFormat('10:00', 'HH:mm', { zone: 'Asia/Kolkata' });
     const endAllowedTime = DateTime.fromFormat('20:00', 'HH:mm', { zone: 'Asia/Kolkata' });
