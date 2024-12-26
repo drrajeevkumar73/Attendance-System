@@ -36,6 +36,7 @@ export default function ExcelData() {
   const form = useForm<ExelValue>({
     resolver: zodResolver(exelSchema),
     defaultValues: {
+      date:"",
       task1: "",
       task2: "",
       task3: "",
@@ -51,6 +52,7 @@ export default function ExcelData() {
     try {
       setispending(true);
       const { data } = await axios.post("/api/exel", {
+        date:value.date,
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -80,6 +82,7 @@ export default function ExcelData() {
           <Table>
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
+              <TableHead className="border-2 border-blue-400">Please enter date for the previous day only.</TableHead>
                 <TableHead className="border-2 border-blue-400">Work</TableHead>
                 <TableHead className="border-2 border-blue-400">
                   Incoming
@@ -98,6 +101,25 @@ export default function ExcelData() {
 
             <TableBody>
               <TableRow>
+              <TableCell className="border-2 border-blue-400">
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="border-foreground"
+                            {...field}
+                            type="number"
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   <FormField
                     control={form.control}
