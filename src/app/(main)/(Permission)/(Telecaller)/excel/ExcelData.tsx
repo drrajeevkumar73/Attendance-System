@@ -111,7 +111,7 @@ export default function ExcelData() {
                           <Input
                             className="border-foreground"
                             {...field}
-                            type="number"
+                            
                           />
                         </FormControl>
 
