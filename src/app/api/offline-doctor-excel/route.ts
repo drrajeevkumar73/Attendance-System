@@ -25,22 +25,23 @@ export async function POST(req: NextRequest) {
     const currentTime = moment().tz("Asia/Kolkata");
 
     // Define restricted time range (8:00 PM to 10:00 AM)
-    const restrictedStart = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(20, "hours"); // 8:00 PM
-    const restrictedEnd = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(10, "hours").add(1, "day"); // 10:00 AM next day
+   // Define restricted time range (8:00 PM to 10:00 AM)
+const restrictedStart = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(20, "hours"); // 8:00 PM
+const restrictedEnd = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(10, "hours").add(1, "day"); // 10:00 AM next day
 
-    // Check if current time is within the restricted range
-    if (
-      currentTime.isAfter(restrictedStart) ||
-      currentTime.isBefore(restrictedEnd)
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "You cannot add data between 8:00 PM and 10:00 AM.",
-        },
-        { status: 403 }
-      );
-    }
+// Check if current time is within the restricted range
+if (
+  currentTime.isBetween(restrictedStart, restrictedEnd, "minute", "[)")
+) {
+  return NextResponse.json(
+    {
+      success: false,
+      message: "You cannot add data between 8:00 PM and 10:00 AM.",
+    },
+    { status: 403 }
+  );
+}
+
 
     // Step 3: Set default `date` to today if not provided
     let currentDate = date || currentTime.format("YYYY-MM-DD");
