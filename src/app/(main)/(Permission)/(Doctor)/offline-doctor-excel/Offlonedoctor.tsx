@@ -46,6 +46,7 @@ export default function Offlonedoctor() {
   const form = useForm<DoctorOffineValue>({
     resolver: zodResolver(doctorOfflineSchema),
     defaultValues: {
+      date:"",
       task1: "",
       task2: "",
       task3: "",
@@ -66,6 +67,7 @@ export default function Offlonedoctor() {
     try {
       setispending(true);
       const { data } = await axios.post("/api/offline-doctor-excel", {
+        date: value.date,
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -101,6 +103,7 @@ export default function Offlonedoctor() {
         <Table className="w-[2300px]">
           <TableHeader>
             <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Please enter date for the previous day only.</TableHead>
               <TableHead className="border-2 border-blue-400">Doctor</TableHead>
               <TableHead className="border-2 border-blue-400">
                 NEW PATIENT
@@ -138,6 +141,25 @@ export default function Offlonedoctor() {
 
           <TableBody>
             <TableRow>
+            <TableCell className="border-2 border-blue-400">
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="border-foreground"
+                            {...field}
+                            
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TableCell>
               <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { date, z } from "zod";
 
 const requiredString = z.string().trim().min(1, "Required");
 
@@ -146,7 +146,7 @@ export type ExeladminValue = z.infer<typeof exeadminSchema>;
 
 
 export const receptiomSchema = z.object({
-
+  date:z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -167,7 +167,7 @@ export type ReceptopValue = z.infer<typeof receptiomSchema>;
 
 
 export const medicenSchema = z.object({
-
+  date:z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -184,7 +184,7 @@ export type MediceneValue = z.infer<typeof medicenSchema>;
 
 
 export const doctorOfflineSchema = z.object({
-
+ date:z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -204,7 +204,7 @@ export type DoctorOffineValue = z.infer<typeof doctorOfflineSchema>;
 
 
 export const doctorOnlineSchema = z.object({
-
+ date:z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),

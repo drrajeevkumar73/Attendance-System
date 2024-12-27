@@ -42,12 +42,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { date } from "zod";
 
 export default function Onlinedoctor() {
   const { toast } = useToast();
   const form = useForm<DoctorOnlineValue>({
     resolver: zodResolver(doctorOnlineSchema),
     defaultValues: {
+      date:"",
       task1: "",
       task2: "",
       task3: "",
@@ -70,6 +72,7 @@ export default function Onlinedoctor() {
     try {
       setispending(true);
       const { data } = await axios.post("/api/online-doctor-excel", {
+        date:value.date,
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -107,6 +110,7 @@ export default function Onlinedoctor() {
         <Table className="w-[3000px]">
           <TableHeader>
             <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Please enter date for the previous day only.</TableHead>
               <TableHead className="border-2 border-blue-400" colSpan={2}>Doctor</TableHead>
               <TableHead className="border-2 border-blue-400">
               Interakt
@@ -146,6 +150,25 @@ export default function Onlinedoctor() {
 
           <TableBody>
             <TableRow >
+            <TableCell className="border-2 border-blue-400">
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="border-foreground"
+                            {...field}
+                            
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TableCell>
               <TableCell className="border-2 border-blue-400"  colSpan={2}>
                 <FormField
                   control={form.control}

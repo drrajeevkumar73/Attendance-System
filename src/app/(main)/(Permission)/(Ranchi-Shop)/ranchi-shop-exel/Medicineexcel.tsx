@@ -30,6 +30,7 @@ export default function Medicineexcel() {
     const form = useForm<MediceneValue>({
         resolver: zodResolver(medicenSchema),
         defaultValues: {
+            date:"",
             task1: "",
             task2: "",
             task3: "",
@@ -47,6 +48,7 @@ export default function Medicineexcel() {
         try {
             setispending(true);
             const { data } = await axios.post("/api/ranchi-sho-exel", {
+                date:value.date,
                 task1: value.task1,
                 task2: value.task2,
                 task3: value.task3,
@@ -82,6 +84,7 @@ export default function Medicineexcel() {
 
                     <TableHeader >
                         <TableRow className="border border-primary bg-primary">
+                        <TableHead className="border-2 border-blue-400">Please enter date for the previous day only.</TableHead>
                             <TableHead className="border-2 border-blue-400">
                                 TOTAL BILL
                             </TableHead>
@@ -111,6 +114,25 @@ export default function Medicineexcel() {
 
                     <TableBody >
                         <TableRow>
+                        <TableCell className="border-2 border-blue-400">
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="border-foreground"
+                            {...field}
+                            
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TableCell>
                             <TableCell className="border-2 border-blue-400">
                                 <FormField
                                     control={form.control}
