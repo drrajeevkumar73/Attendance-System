@@ -17,12 +17,15 @@ export async function POST(req: NextRequest) {
     // Set timezone to Asia/Kolkata
     const currentTime = moment().tz("Asia/Kolkata");
 
-    // Define restricted time range
-    const restrictedStart = moment.tz("20:00", "HH:mm", "Asia/Kolkata");
-    const restrictedEnd = moment.tz("10:00", "HH:mm", "Asia/Kolkata").add(1, "day");
+    // Define restricted time range (8:00 PM to 10:00 AM)
+    const restrictedStart = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(20, "hours"); // 8:00 PM
+    const restrictedEnd = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(10, "hours").add(1, "day"); // 10:00 AM next day
 
     // Check if current time is within the restricted range
-    if (currentTime.isBetween(restrictedStart, restrictedEnd, null, "[)")) {
+    if (
+      currentTime.isAfter(restrictedStart) ||
+      currentTime.isBefore(restrictedEnd)
+    ) {
       return NextResponse.json(
         {
           success: false,
