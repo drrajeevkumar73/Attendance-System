@@ -24,14 +24,17 @@ export async function POST(req: NextRequest) {
       } = await req.json();
 
     // Set timezone to Asia/Kolkata
-    const currentTime = moment.tz("Asia/Kolkata");
+    const currentTime = moment().tz("Asia/Kolkata");
 
-    // Define restricted time range
-    const restrictedStart = moment.tz("20:00", "HH:mm", "Asia/Kolkata"); // 8:00 PM
-    const restrictedEnd = moment.tz("10:00", "HH:mm", "Asia/Kolkata").add(1, "day"); // Next day 10:00 AM
+    // Define restricted time range (8:00 PM to 10:00 AM)
+    const restrictedStart = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(20, "hours"); // 8:00 PM
+    const restrictedEnd = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(10, "hours").add(1, "day"); // 10:00 AM next day
 
     // Check if current time is within the restricted range
-    if (currentTime.isBetween(restrictedStart, restrictedEnd, null, "[)")) {
+    if (
+      currentTime.isAfter(restrictedStart) ||
+      currentTime.isBefore(restrictedEnd)
+    ) {
       return NextResponse.json(
         {
           success: false,
@@ -95,11 +98,13 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 5: Set the `createdAt` timestamp for the new entry
-    const createdAt = inputDate.set({
-      hour: currentTime.hour(),
-      minute: currentTime.minute(),
-      second: currentTime.second(),
-    }).toDate();
+    const createdAt = inputDate
+      .set({
+        hour: currentTime.hour(),
+        minute: currentTime.minute(),
+        second: currentTime.second(),
+      })
+      .toDate();
 
     // Step 6: Insert data into the database
     await prisma.onlinedoctorshop.create({
@@ -121,7 +126,6 @@ export async function POST(req: NextRequest) {
         task14,
         task15,
         
-       
         createdAt,
       },
     });
