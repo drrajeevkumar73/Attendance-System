@@ -84,7 +84,7 @@ export default function Medicineexcel() {
 
                     <TableHeader >
                         <TableRow className="border border-primary bg-primary">
-                        <TableHead className="border-2 border-blue-400">Please enter date for the previous day only.</TableHead>
+                        <TableHead className="border-2 border-blue-400">Please enter date for the previous day</TableHead>
                             <TableHead className="border-2 border-blue-400">
                                 TOTAL BILL
                             </TableHead>
@@ -95,7 +95,7 @@ export default function Medicineexcel() {
                                 LOOSE
                             </TableHead>
 
-                            <TableHead className="border-2 border-blue-400">CASE</TableHead>
+                            <TableHead className="border-2 border-blue-400">CASH</TableHead>
                             <TableHead className="border-2 border-blue-400">
                                 CARD
                             </TableHead>

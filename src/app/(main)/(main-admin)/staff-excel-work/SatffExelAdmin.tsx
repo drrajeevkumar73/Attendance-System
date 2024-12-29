@@ -148,6 +148,7 @@ export default function SatffExelAdmin() {
         "Whatsapp / Text": v.task4,
         Appt: v.task5,
         Fees: v.task6,
+       " New  Patient":v.task7,
         Time: formatRelativeTime(v.createdAt),
       }));
 
@@ -356,6 +357,64 @@ export default function SatffExelAdmin() {
       // Write to file
       XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
     }
+    else if (tabelex.dipartment === "ecart"){
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        'Amazon': v.task1,
+          "Amazon:- Amount": v.task2,
+          "Amazon:- Listing": v.task3,
+          "Flipkart": v.task4,
+          "Flipkart:- Amount": v.task5,
+          "Flipkart:- Listing": v.task6,
+          Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+    }
+    else if (tabelex.dipartment === "designer"){
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        ' Video Count': v.task1,
+          "MADE": v.task2,
+          "EXPORT": v.task3,
+          "DOWNLOAD": v.task4,
+          "EDITING": v.task5,
+          "YouTube": v.task6,
+          '  Reel / short': v.task7,
+          "Banner": v.task8,
+          "Send to DR, Rajeev's sir (date)": v.task9,
+          "INSTAGRAM POST BY DR. RAJEEV SIR": v.task10,
+          "FACEBOOK POST BY RAJEEV SIR": v.task11,
+          " Post by Vikash Sir": v.task12,
+          Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+    }
   };
 
   const [of, setof] = useState(1);
@@ -392,7 +451,7 @@ export default function SatffExelAdmin() {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel className="text-green-500">
-                          RANCHI Staff name
+                          RANCHI
                         </SelectLabel>
                         {client?.RANCHI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -400,7 +459,7 @@ export default function SatffExelAdmin() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          RANCHI SHOP Staff name
+                          RANCHI SHOP
                         </SelectLabel>
                         {client?.RANCHI_SHOP.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -408,7 +467,7 @@ export default function SatffExelAdmin() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          PATNA Staff name
+                          PATNA
                         </SelectLabel>
                         {client?.PATNA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -417,7 +476,7 @@ export default function SatffExelAdmin() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          KOLKATA Staff name
+                          KOLKATA
                         </SelectLabel>
                         {client?.KOLKATA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -426,7 +485,7 @@ export default function SatffExelAdmin() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          GAUR CITY Staff name
+                          GAUR CITY
                         </SelectLabel>
                         {client?.GAUR_CITY.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -434,7 +493,7 @@ export default function SatffExelAdmin() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          SPECTRUM Staff name
+                          SPECTRUM
                         </SelectLabel>
                         {client?.SPECTRUM.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -442,7 +501,7 @@ export default function SatffExelAdmin() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          JAGTAULI Staff name
+                          JAGTAULI
                         </SelectLabel>
                         {client?.JAGTAULI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -531,7 +590,7 @@ export default function SatffExelAdmin() {
                         </SelectItem>
                         <SelectItem value="HD / OD"> HD / OD</SelectItem>
                         <SelectItem value="TELECALLER DEPT">
-                          TELECALLER DEPT
+                          TELECALLER 
                         </SelectItem>
                         <SelectItem value="MIXER">MIXER</SelectItem>
                         <SelectItem value="ECART">ECART</SelectItem>
@@ -577,9 +636,7 @@ export default function SatffExelAdmin() {
 
       {tabelex.dipartment === "telecaller" ? (
         <>
-          <p className="text-center text-[3rem] font-bold text-green-500">
-            TELECALLER DEPT Data
-          </p>
+        
 
           <Table>
             <TableHeader>
@@ -600,6 +657,7 @@ export default function SatffExelAdmin() {
                 </TableHead>
                 <TableHead className="border-2 border-blue-400">Appt</TableHead>
                 <TableHead className="border-2 border-blue-400">Fees</TableHead>
+                <TableHead className="border-2 border-blue-400">New  Patient</TableHead>
                 <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
             </TableHeader>
@@ -648,6 +706,9 @@ export default function SatffExelAdmin() {
                     <TableCell className="border-2 border-blue-400">
                       {v.task6}
                     </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task7}
+                    </TableCell>
 
                     <TableCell className="border-2 border-blue-400">
                       {formatRelativeTime(v.createdAt)}
@@ -660,9 +721,7 @@ export default function SatffExelAdmin() {
         </>
       ) : tabelex.dipartment === "reception" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-          <p className="text-center text-[3rem] font-bold text-green-500">
-            RECEPTIONS Data
-          </p>
+          
           <Table className="w-[2000px]">
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
@@ -777,9 +836,7 @@ export default function SatffExelAdmin() {
         </div>
       ) : tabelex.dipartment === "medicen" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-          <p className="text-center text-[3rem] font-bold text-green-500">
-            MEDICINE COUNTER Data
-          </p>
+         
           <Table className="w-[2000px]">
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
@@ -795,7 +852,7 @@ export default function SatffExelAdmin() {
                   TOTAL SALE
                 </TableHead>
 
-                <TableHead className="border-2 border-blue-400">CASE</TableHead>
+                <TableHead className="border-2 border-blue-400">CASH</TableHead>
                 <TableHead className="border-2 border-blue-400">CARD</TableHead>
                 <TableHead className="border-2 border-blue-400">SCAN</TableHead>
                 <TableHead className="border-2 border-blue-400">
@@ -874,9 +931,7 @@ export default function SatffExelAdmin() {
         </div>
       ) : tabelex.dipartment === "ranchi_shop" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-          <p className="text-center text-[3rem] font-bold text-green-500">
-            SHOP RANCHI Data
-          </p>
+          
           <Table className="w-[2000px]">
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
@@ -892,7 +947,7 @@ export default function SatffExelAdmin() {
                   TOTAL SALE
                 </TableHead>
 
-                <TableHead className="border-2 border-blue-400">CASE</TableHead>
+                <TableHead className="border-2 border-blue-400">CASH</TableHead>
                 <TableHead className="border-2 border-blue-400">CARD</TableHead>
                 <TableHead className="border-2 border-blue-400">SCAN</TableHead>
                 <TableHead className="border-2 border-blue-400">
@@ -971,9 +1026,7 @@ export default function SatffExelAdmin() {
         </div>
       ) : tabelex.dipartment === "Doctor" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-          <p className="text-center text-[3rem] font-bold text-green-500">
-            DOCTOR Data
-          </p>
+         
 
           <div className="space-y-6">
             <Button
@@ -1254,9 +1307,7 @@ export default function SatffExelAdmin() {
         </div>
       ) : tabelex.dipartment === "hdod"?(
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-        <p className="text-center text-[3rem] font-bold text-green-500">
-          SHOP RANCHI Data
-        </p>
+
         <Table className="w-[2300px]">
           <TableHeader>
           <TableRow className="border border-primary bg-primary">
@@ -1364,6 +1415,192 @@ export default function SatffExelAdmin() {
                 <TableCell className="border-2 border-blue-400">
                   {Number(v.task12)+Number(v.task13)}
                 </TableCell>
+
+                <TableCell className="border-2 border-blue-400">
+                  {formatRelativeTime(v.createdAt)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+            ))
+          )}
+        </Table>
+      </div>
+      ) : tabelex.dipartment === "ecart"?(
+        <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
+       
+        <Table >
+          <TableHeader>
+          <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Date</TableHead>
+            <TableHead className="border-2 border-blue-400">Amazon                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                Amount
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                Listing
+                </TableHead>
+
+                <TableHead className="border-2 border-blue-400">
+                Flipkart
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">Amount
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">Listing</TableHead>
+            <TableHead className="border-2 border-blue-400">Time</TableHead>
+          </TableRow>
+          </TableHeader>
+
+          {ispending ? (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3} className="">
+                  Loading...
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : tabelex?.data?.length === 0 ? (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3} className="">
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : (
+            tabelex?.data?.map((v: any, i) => (
+              <TableBody className="border border-primary" key={i}>
+              <TableRow>
+                <TableCell className="border-2 border-blue-400">
+                  {formatRelativeMonthDate(v.createdAt)}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task1}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task2}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task3}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task4}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task5}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task6}
+                </TableCell>
+               
+            
+
+                <TableCell className="border-2 border-blue-400">
+                  {formatRelativeTime(v.createdAt)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+            ))
+          )}
+        </Table>
+      </div>
+      ): tabelex.dipartment === "designer"?(
+        <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
+      
+        <Table className="w-[2300px]">
+          <TableHeader>
+          <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Date</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Video Count
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">MADE</TableHead>
+            <TableHead className="border-2 border-blue-400">EXPORT</TableHead>
+            <TableHead className="border-2 border-blue-400">DOWNLOAD</TableHead>
+            <TableHead className="border-2 border-blue-400">EDITING</TableHead>
+            <TableHead className="border-2 border-blue-400">YouTube</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Reel / short
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Banner</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Send to DR, Rajeev&lsquo;s sir (date)
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              INSTAGRAM POST BY DR. RAJEEV SIR
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              FACEBOOK POST BY RAJEEV SIR
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Post by Vikash Sir
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Time</TableHead>
+          </TableRow>
+          </TableHeader>
+
+          {ispending ? (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3} className="">
+                  Loading...
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : tabelex?.data?.length === 0 ? (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3} className="">
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : (
+            tabelex?.data?.map((v: any, i) => (
+              <TableBody className="border border-primary" key={i}>
+              <TableRow>
+                <TableCell className="border-2 border-blue-400">
+                  {formatRelativeMonthDate(v.createdAt)}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task1}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task2}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task3}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task4}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task5}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task6}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task7}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task8}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task9}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task10}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task11}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task12}
+                </TableCell>
+               
+               
+              
+              
 
                 <TableCell className="border-2 border-blue-400">
                   {formatRelativeTime(v.createdAt)}

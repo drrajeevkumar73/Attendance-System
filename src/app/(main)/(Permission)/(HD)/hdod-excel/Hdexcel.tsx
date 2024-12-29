@@ -103,7 +103,7 @@ export default function Hdexcel() {
         <Table className="w-[2300px]">
           <TableHeader>
             <TableRow className="border border-primary bg-primary">
-            <TableHead className="border-2 border-blue-400">Please enter date for the previous day only.</TableHead>
+            <TableHead className="border-2 border-blue-400">Please enter date for the previous day</TableHead>
               <TableHead className="border-2 border-blue-400">O.G</TableHead>
               <TableHead className="border-2 border-blue-400">
               IN

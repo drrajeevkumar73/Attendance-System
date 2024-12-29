@@ -115,7 +115,7 @@ export default function Vewdata() {
               TOTAL SALE
             </TableHead>
 
-            <TableHead className="border-2 border-blue-400">CASE</TableHead>
+            <TableHead className="border-2 border-blue-400">CASH</TableHead>
             <TableHead className="border-2 border-blue-400">CARD</TableHead>
             <TableHead className="border-2 border-blue-400">SCAN</TableHead>
             <TableHead className="border-2 border-blue-400">RETURN</TableHead>

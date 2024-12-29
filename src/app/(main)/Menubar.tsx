@@ -181,7 +181,44 @@ export default function Menubar({ className }: MenuBarProps) {
                 <Link href={"/hdod-excel-vew"}>Veiw Excel Data</Link>
               </Button>
             </>
-          ) : (
+          ) : user.dipartment === "ECART" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/ecart-execlel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part "
+                asChild
+              >
+                <Link href={"/ecart-execlel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/vew-exel-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/vew-exel-data"}>Veiw Excel Data</Link>
+              </Button>
+            </>
+          )
+            : user.dipartment === "DESIGNER" ? (
+              <>
+                <Button
+                  className={`flex items-center justify-start gap-3 ${pathname == "/designer-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                  title="Excel Part "
+                  asChild
+                >
+                  <Link href={"/designer-excel"}>Excel Part</Link>
+                </Button>
+                <Button
+                  className={`flex items-center justify-start gap-3 ${pathname == "/designer-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                  title="Veiw Excel Data"
+                  asChild
+                >
+                  <Link href={"/designer-vew"}>Veiw Excel Data</Link>
+                </Button>
+              </>
+            )
+              :
+          (
             ""
           )}
 
@@ -255,6 +292,13 @@ export default function Menubar({ className }: MenuBarProps) {
             asChild
           >
             <Link href={"/revenue-tracker"}>Revenue Tracker</Link>
+          </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/attendance-dashboard" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Attendance"
+            asChild
+          >
+            <Link href={"/attendance-dashboard"}>Attendance</Link>
           </Button>
         </div>
       </div>

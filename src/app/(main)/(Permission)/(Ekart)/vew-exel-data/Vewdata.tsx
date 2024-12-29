@@ -41,7 +41,7 @@ export default function Vewdata() {
   const onSubmit = async (value: CalederValue) => {
     try {
       setloding(true);
-      const { data } = await axios.post("/api/vewexecaldara", {
+      const { data } = await axios.post("/api/vew-ecrt-ecel-data", {
         monthname: value,
       });
       setdata(data);
@@ -104,20 +104,24 @@ export default function Vewdata() {
 
       <Table>
         <TableHeader>
-          <TableRow className="border border-primary bg-primary">
-            <TableHead className="border-2 border-blue-400">Date</TableHead>
-            <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="border-2 border-blue-400">Incoming</TableHead>
-            <TableHead className="border-2 border-blue-400">Outgoing</TableHead>
-            <TableHead className="border-2 border-blue-400">Total</TableHead>
-            <TableHead className="border-2 border-blue-400">
-              Whatsapp / Text
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">Appt</TableHead>
-            <TableHead className="border-2 border-blue-400">Fees</TableHead>
-            <TableHead className="border-2 border-blue-400">New  Patient</TableHead>
-            <TableHead className="border-2 border-blue-400">Time</TableHead>
-          </TableRow>
+            <TableRow className="border border-primary bg-primary">
+              <TableHead className="border-2 border-blue-400">Date</TableHead>
+              <TableHead className="border-2 border-blue-400">Amazon                </TableHead>
+                  <TableHead className="border-2 border-blue-400">
+                  Amount
+                  </TableHead>
+                  <TableHead className="border-2 border-blue-400">
+                  Listing
+                  </TableHead>
+
+                  <TableHead className="border-2 border-blue-400">
+                  Flipkart
+                  </TableHead>
+                  <TableHead className="border-2 border-blue-400">Amount
+                  </TableHead>
+                  <TableHead className="border-2 border-blue-400">Listing</TableHead>
+              <TableHead className="border-2 border-blue-400">Time</TableHead>
+            </TableRow>
         </TableHeader>
 
         {loding ? (
@@ -155,9 +159,7 @@ export default function Vewdata() {
                 <TableCell className="border-2 border-blue-400">
                   {v.task3}
                 </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {Number(v.task2) + Number(v.task3)}
-                </TableCell>
+                
                 <TableCell className="border-2 border-blue-400">
                   {v.task4}
                 </TableCell>
@@ -166,9 +168,6 @@ export default function Vewdata() {
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   {v.task6}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task7}
                 </TableCell>
 
                 <TableCell className="border-2 border-blue-400">

@@ -41,7 +41,7 @@ export default function Vewdata() {
   const onSubmit = async (value: CalederValue) => {
     try {
       setloding(true);
-      const { data } = await axios.post("/api/vewexecaldara", {
+      const { data } = await axios.post("/api/vew-ecel-dsigner", {
         monthname: value,
       });
       setdata(data);
@@ -102,20 +102,34 @@ export default function Vewdata() {
         </form>
       </Form>
 
-      <Table>
+      <Table className="w-[2300px]">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Date</TableHead>
-            <TableHead className="border-2 border-blue-400">Work</TableHead>
-            <TableHead className="border-2 border-blue-400">Incoming</TableHead>
-            <TableHead className="border-2 border-blue-400">Outgoing</TableHead>
-            <TableHead className="border-2 border-blue-400">Total</TableHead>
             <TableHead className="border-2 border-blue-400">
-              Whatsapp / Text
+              Video Count
             </TableHead>
-            <TableHead className="border-2 border-blue-400">Appt</TableHead>
-            <TableHead className="border-2 border-blue-400">Fees</TableHead>
-            <TableHead className="border-2 border-blue-400">New  Patient</TableHead>
+            <TableHead className="border-2 border-blue-400">MADE</TableHead>
+            <TableHead className="border-2 border-blue-400">EXPORT</TableHead>
+            <TableHead className="border-2 border-blue-400">DOWNLOAD</TableHead>
+            <TableHead className="border-2 border-blue-400">EDITING</TableHead>
+            <TableHead className="border-2 border-blue-400">YouTube</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Reel / short
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Banner</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Send to DR, Rajeev&lsquo;s sir (date)
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              INSTAGRAM POST BY DR. RAJEEV SIR
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              FACEBOOK POST BY RAJEEV SIR
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Post by Vikash Sir
+            </TableHead>
             <TableHead className="border-2 border-blue-400">Time</TableHead>
           </TableRow>
         </TableHeader>
@@ -155,9 +169,7 @@ export default function Vewdata() {
                 <TableCell className="border-2 border-blue-400">
                   {v.task3}
                 </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {Number(v.task2) + Number(v.task3)}
-                </TableCell>
+
                 <TableCell className="border-2 border-blue-400">
                   {v.task4}
                 </TableCell>
@@ -169,6 +181,21 @@ export default function Vewdata() {
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   {v.task7}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task8}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task9}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task10}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task11}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task12}
                 </TableCell>
 
                 <TableCell className="border-2 border-blue-400">

@@ -32,7 +32,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { date } from "zod";
 
-export default function ExcelData() {
+export default function Exeldata() {
   const { toast } = useToast();
   const form = useForm<ExelValue>({
     resolver: zodResolver(exelSchema),
@@ -44,7 +44,6 @@ export default function ExcelData() {
       task4: "",
       task5: "",
       task6: "",
-      task7: "",
   
     },
   });
@@ -65,11 +64,10 @@ export default function ExcelData() {
         task4: value.task4,
         task5: value.task5,
         task6: value.task6,
-        task7: value.task7,
       };
   
       
-      const { data } = await axios.post("/api/exel", requestData);
+      const { data } = await axios.post("/api/ecart-ecel", requestData);
   
       form.reset();
       toast({
@@ -97,21 +95,20 @@ export default function ExcelData() {
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
               <TableHead className="border-2 border-blue-400">Please enter date for the previous day </TableHead>
-                <TableHead className="border-2 border-blue-400">Work</TableHead>
+                <TableHead className="border-2 border-blue-400">Amazon                </TableHead>
                 <TableHead className="border-2 border-blue-400">
-                  Incoming
+                Amount
                 </TableHead>
                 <TableHead className="border-2 border-blue-400">
-                  Outgoing
+                Listing
                 </TableHead>
 
                 <TableHead className="border-2 border-blue-400">
-                  Whatsapp / Text
+                Flipkart
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">Appt</TableHead>
-
-                <TableHead className="border-2 border-blue-400">Fees</TableHead>
-                <TableHead className="border-2 border-blue-400">New  Patient</TableHead>
+                <TableHead className="border-2 border-blue-400">Amount
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">Listing</TableHead>
               </TableRow>
             </TableHeader>
 

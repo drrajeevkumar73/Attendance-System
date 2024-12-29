@@ -287,7 +287,7 @@ export default function Addwork() {
                       </SelectItem>
                       <SelectItem value="HD / OD"> HD / OD</SelectItem>
                       <SelectItem value="TELECALLER DEPT">
-                        TELECALLER DEPT
+                        TELECALLER 
                       </SelectItem>
                       <SelectItem value="MIXER">MIXER</SelectItem>
                       <SelectItem value="ECART"> ECART</SelectItem>
@@ -354,7 +354,7 @@ export default function Addwork() {
                       </SelectItem>
                       <SelectItem value="HD / OD"> HD / OD</SelectItem>
                       <SelectItem value="TELECALLER DEPT">
-                      TELECALLER DEPT
+                      TELECALLER 
                       </SelectItem>
                       <SelectItem value="MIXER"> MIXER</SelectItem>
                       <SelectItem value="ECART"> ECART</SelectItem>

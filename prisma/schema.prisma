@@ -37,6 +37,8 @@ model User {
   useentry          useentry[]
   Revenuetracker    Revenuetracker[]
   Hdod              Hdod[]
+  Ecart             Ecart[]
+  Designer          Designer[]
 
   @@map("users")
 }
@@ -161,7 +163,9 @@ model Telecaller {
   task3  String?
   task4  String?
   task5  String?
-  task6  String?
+
+  task6 String?
+  task7 String?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -330,4 +334,46 @@ model Hdod {
   createdAt DateTime @default(now())
 
   @@map("hdod")
+}
+
+model Ecart {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ecart")
+}
+
+model Designer {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+  task12 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("designer")
 }

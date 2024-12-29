@@ -110,7 +110,7 @@ export default function Onlinedoctor() {
         <Table className="w-[3000px]">
           <TableHeader>
             <TableRow className="border border-primary bg-primary">
-            <TableHead className="border-2 border-blue-400">Please enter date for the previous day only.</TableHead>
+            <TableHead className="border-2 border-blue-400">Please enter date for the previous day</TableHead>
               <TableHead className="border-2 border-blue-400" colSpan={2}>Doctor</TableHead>
               <TableHead className="border-2 border-blue-400">
               Interakt
