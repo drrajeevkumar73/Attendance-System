@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
     const { user } = await validateRequest();
 
     if (!user) throw new Error("Unauthorized");
+   
 
     // Calculate IST time
     const now = new Date();
@@ -24,18 +25,17 @@ export async function POST(req: NextRequest) {
     const minute = parseInt(parts.find((part) => part.type === "minute")?.value || "0");
     const currentTimeInMinutes = hour * 60 + minute;
 
-    console.log("Current Time in IST:", `${hour}:${minute}`);
-    console.log("Current Time in Minutes:", currentTimeInMinutes);
+    
 
     // Entry allowed only between 9:00 AM and 3:00 PM
     const startOfEntry = 540; // 9:00 AM in minutes
     const endOfEntry = 1080;  // 3:00 PM in minutes
-    if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
-      return NextResponse.json({
-        success: false,
-        message: "Entry is allowed only between 9:00 AM to 3:00 PM.",
-      });
-    }
+    // if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
+    //   return NextResponse.json({
+    //     success: false,
+    //     message: "Entry is allowed only between 9:00 AM to 5:00 PM.",
+    //   });
+    // }
 
     // Get today's entry for the user
     const todayStart = new Date(now.setHours(0, 0, 0, 0));
@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
+   
     if (existingEntry) {
       return NextResponse.json({
         success: false,
@@ -79,8 +80,10 @@ export async function POST(req: NextRequest) {
         userId: user.id,
         status,
         lateMinutes,
+        statusR:"present"
       },
     });
+
 
     // Convert late minutes to hours and minutes for response
     const lateHours = Math.floor(lateMinutes / 60);

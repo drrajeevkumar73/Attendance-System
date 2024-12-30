@@ -85,7 +85,7 @@ export default function Atendace() {
   });
 
   const [late, setlate] = useState([]);
-  console.log(late)
+
   const onSubmit = async (value: SerchValue) => {
     try {
       setispending(true);
@@ -148,7 +148,7 @@ export default function Atendace() {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel className="text-green-500">
-                          RANCHI 
+                          RANCHI Staff name
                         </SelectLabel>
                         {client?.RANCHI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -156,7 +156,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          RANCHI SHOP 
+                          RANCHI SHOP Staff name
                         </SelectLabel>
                         {client?.RANCHI_SHOP.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -164,7 +164,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          PATNA 
+                          PATNA Staff name
                         </SelectLabel>
                         {client?.PATNA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -173,7 +173,7 @@ export default function Atendace() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          KOLKATA 
+                          KOLKATA Staff name
                         </SelectLabel>
                         {client?.KOLKATA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -182,7 +182,7 @@ export default function Atendace() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          GAUR CITY 
+                          GAUR CITY Staff name
                         </SelectLabel>
                         {client?.GAUR_CITY.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -190,7 +190,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          SPECTRUM 
+                          SPECTRUM Staff name
                         </SelectLabel>
                         {client?.SPECTRUM.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -198,7 +198,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          JAGTAULI 
+                          JAGTAULI Staff name
                         </SelectLabel>
                         {client?.JAGTAULI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>

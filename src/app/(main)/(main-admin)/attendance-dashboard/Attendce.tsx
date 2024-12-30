@@ -32,6 +32,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 export default function Attendce() {
   const form = useForm<AValue>({
     resolver: zodResolver(aSchema),
@@ -41,23 +42,41 @@ export default function Attendce() {
     },
   });
 
-  const [late, setlate] = useState([]);
-  console.log(late)
+  const [late, setlate] = useState<{
+    attendanceCountByUser: any[];
+    attendanceDetails: any[];
+  }>({
+    attendanceCountByUser: [],
+    attendanceDetails: [],
+  });
+
   const [ispending, setispending] = useState(false);
   const onSubmit = async (value: AValue) => {
     try {
       setispending(true);
-      const { data } = await axios.post("/api/dhashord-atance", {
+      const { data } = await axios.post("/api/switchTotal-attendce", {
         cityname: value.cityname,
         monthname: value.monthname,
       });
-      setlate(data.userdata      );
+      console.log("Submitted Data:", data); // Form data ko console me dekhlo
+      setlate({
+        attendanceCountByUser: data.attendanceCountByUser || [],
+        attendanceDetails: data.attendanceDetails || [],
+      });
     } catch (error) {
+      console.error("Error:", error);
     } finally {
       setispending(false);
     }
   };
 
+  const [tab, setTad] = useState(1);
+  const plushHandler = () => {
+    setTad(1);
+  };
+  const minusHandler = () => {
+    setTad(0);
+  };
   function formatMinutesToHoursMinutes(minutes: any) {
     if (!minutes) return "0h 0m"; // Handle null or undefined
     const hours = Math.floor(minutes / 60); // Calculate hours
@@ -120,8 +139,8 @@ export default function Attendce() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                  <SelectItem value="Today">Today</SelectItem>
-                  <SelectItem value="Yesterday">Yesterday</SelectItem>
+                    <SelectItem value="Today">Today</SelectItem>
+                    <SelectItem value="Yesterday">Yesterday</SelectItem>
                     <SelectItem value="January">January</SelectItem>
                     <SelectItem value="February">February</SelectItem>
                     <SelectItem value="March">March</SelectItem>
@@ -155,8 +174,9 @@ export default function Attendce() {
               Department
             </TableHead>
             <TableHead className="border-2 border-blue-400">
-              Present Only
+              Present Count
             </TableHead>
+            <TableHead className="border-2 border-blue-400">Status</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -166,9 +186,9 @@ export default function Attendce() {
               <TableCell className="font-medium">Loading...</TableCell>
             </TableRow>
           </TableBody>
-        ) : late?.length > 0 ? (
+        ) : late?.attendanceCountByUser.length > 0 ? (
           <TableBody>
-            {late?.map((item: any, index) => (
+            {late?.attendanceCountByUser.map((item: any, index) => (
               <TableRow key={index}>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.displayname}
@@ -178,6 +198,37 @@ export default function Attendce() {
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.presentCount}
+                </TableCell>
+                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
+                  <table className="w-full border-collapse text-left">
+                    <thead>
+                      <tr>
+                        <th className="border bg-gray-100 px-2 py-1">Date</th>
+                        <th className="border bg-gray-100 px-2 py-1">Status</th>
+                        <th className="border bg-gray-100 px-2 py-1">
+                          Late Time
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {item.attendanceDetails?.map(
+                        (detailer: any, index: any) => (
+                          <tr key={index}>
+                            <td className="border px-2 py-1">
+                              {detailer.date}
+                            </td>
+                            <td className="border px-2 py-1">
+                              {detailer.status}
+                            </td>
+                            <td className="border px-2 py-1">
+                              {formatMinutesToHoursMinutes(detailer.latetime)}
+                            </td>
+                          </tr>
+                        ),
+                      )}
+                    </tbody>
+                  </table>
                 </TableCell>
               </TableRow>
             ))}

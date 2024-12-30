@@ -37,7 +37,7 @@ export default function ExcelData() {
   const form = useForm<ExelValue>({
     resolver: zodResolver(exelSchema),
     defaultValues: {
-      date:"",
+      date: "",
       task1: "",
       task2: "",
       task3: "",
@@ -45,20 +45,18 @@ export default function ExcelData() {
       task5: "",
       task6: "",
       task7: "",
-  
     },
   });
 
   const [ispending, setispending] = useState(false);
- 
 
   const submithandler = async (value: ExelValue) => {
     try {
       setispending(true);
-      
+
       // Prepare the data to send
-      const requestData:any = {
-        date:value.date,
+      const requestData: any = {
+        date: value.date,
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -67,18 +65,17 @@ export default function ExcelData() {
         task6: value.task6,
         task7: value.task7,
       };
-  
-      
+
       const { data } = await axios.post("/api/exel", requestData);
-  
+
       form.reset();
       toast({
         description: data.message,
         variant: "default",
       });
-  
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || "Something went wrong";
+      const errorMessage =
+        error?.response?.data?.message || "Something went wrong";
       toast({
         description: errorMessage,
         variant: "destructive",
@@ -87,8 +84,7 @@ export default function ExcelData() {
       setispending(false);
     }
   };
-  
-  
+
   return (
     <>
       <Form {...form}>
@@ -96,7 +92,9 @@ export default function ExcelData() {
           <Table className="w-[1800px]">
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
-              <TableHead className="border-2 border-blue-400">Please enter date for the previous day </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Please enter date for the previous day{" "}
+                </TableHead>
                 <TableHead className="border-2 border-blue-400">Work</TableHead>
                 <TableHead className="border-2 border-blue-400">
                   Incoming
@@ -111,24 +109,22 @@ export default function ExcelData() {
                 <TableHead className="border-2 border-blue-400">Appt</TableHead>
 
                 <TableHead className="border-2 border-blue-400">Fees</TableHead>
-                <TableHead className="border-2 border-blue-400">New  Patient</TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  New Patient
+                </TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
               <TableRow>
-              <TableCell className="border-2 border-blue-400">
+                <TableCell className="border-2 border-blue-400">
                   <FormField
                     control={form.control}
                     name="date"
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input
-                            className="border-foreground"
-                            {...field}
-                            
-                          />
+                          <Input className="border-foreground" {...field} />
                         </FormControl>
 
                         <FormMessage />
@@ -247,8 +243,26 @@ export default function ExcelData() {
                     )}
                   />
                 </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  <FormField
+                    control={form.control}
+                    name="task7"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="border-foreground"
+                            {...field}
+                            type="number"
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TableCell>
               </TableRow>
-              
             </TableBody>
           </Table>
           <LodingButton loding={ispending} type="submit" className="w-full">
