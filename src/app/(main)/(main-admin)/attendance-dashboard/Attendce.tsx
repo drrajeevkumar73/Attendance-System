@@ -203,9 +203,9 @@ export default function Attendce() {
                   <table className="w-full border-collapse text-left">
                     <thead>
                       <tr>
-                        <th className="border bg-gray-100 px-2 py-1">Date</th>
-                        <th className="border bg-gray-100 px-2 py-1">Status</th>
-                        <th className="border bg-gray-100 px-2 py-1">
+                        <th className="border px-2 py-1">Date</th>
+                        <th className="border px-2 py-1">Status</th>
+                        <th className="border px-2 py-1">
                           Late Time
                         </th>
                       </tr>
