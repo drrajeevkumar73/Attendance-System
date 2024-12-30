@@ -30,12 +30,12 @@ export async function POST(req: NextRequest) {
     // Entry allowed only between 9:00 AM and 3:00 PM
     const startOfEntry = 540; // 9:00 AM in minutes
     const endOfEntry = 1080;  // 3:00 PM in minutes
-    // if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
-    //   return NextResponse.json({
-    //     success: false,
-    //     message: "Entry is allowed only between 9:00 AM to 5:00 PM.",
-    //   });
-    // }
+    if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
+      return NextResponse.json({
+        success: false,
+        message: "Entry is allowed only between 9:00 AM to 5:00 PM.",
+      });
+    }
 
     // Get today's entry for the user
     const todayStart = new Date(now.setHours(0, 0, 0, 0));

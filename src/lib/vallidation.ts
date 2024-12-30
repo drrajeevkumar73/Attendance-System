@@ -37,7 +37,6 @@ export const serchSchema = z.object({
 
 export type SerchValue = z.infer<typeof serchSchema>;
 
-
 export const autoserchSchema = z.object({
   username: requiredString,
 });
@@ -111,16 +110,10 @@ export const remarkSchema = z.object({
 
 export type RemarkValue = z.infer<typeof remarkSchema>;
 
-
 export type sanameValue = z.infer<typeof autoSelectSchema>;
 
-
-
-
-
-
 export const exelSchema = z.object({
-  date:z.string().trim(),
+  date: z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -128,26 +121,20 @@ export const exelSchema = z.object({
   task5: z.string().trim(),
   task6: z.string().trim(),
   task7: z.string().trim(),
- 
 });
 
 export type ExelValue = z.infer<typeof exelSchema>;
 
-
-
 export const exeadminSchema = z.object({
- userid:requiredString,
- monthname:requiredString,
- dipartment:requiredString
- 
+  userid: requiredString,
+  monthname: requiredString,
+  dipartment: requiredString,
 });
 
 export type ExeladminValue = z.infer<typeof exeadminSchema>;
 
-
-
 export const receptiomSchema = z.object({
-  date:z.string().trim(),
+  date: z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -164,11 +151,8 @@ export const receptiomSchema = z.object({
 
 export type ReceptopValue = z.infer<typeof receptiomSchema>;
 
-
-
-
 export const medicenSchema = z.object({
-  date:z.string().trim(),
+  date: z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -178,14 +162,12 @@ export const medicenSchema = z.object({
   task7: z.string().trim(),
   task8: z.string().trim(),
   task9: z.string().trim(),
-
 });
 
 export type MediceneValue = z.infer<typeof medicenSchema>;
 
-
 export const doctorOfflineSchema = z.object({
- date:z.string().trim(),
+  date: z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -203,9 +185,8 @@ export const doctorOfflineSchema = z.object({
 
 export type DoctorOffineValue = z.infer<typeof doctorOfflineSchema>;
 
-
 export const doctorOnlineSchema = z.object({
- date:z.string().trim(),
+  date: z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -223,13 +204,9 @@ export const doctorOnlineSchema = z.object({
   task15: z.string().trim(),
 });
 
-
 export type DoctorOnlineValue = z.infer<typeof doctorOnlineSchema>;
 
-
-
 export const revenutrackerSchema = z.object({
-
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
@@ -244,34 +221,39 @@ export const revenutrackerSchema = z.object({
   task12: z.string().trim(),
 });
 
-
 export type RevenueTrackerValue = z.infer<typeof revenutrackerSchema>;
 
-
 export const desiginerSchema = z.object({
-  date:z.string().trim(),
-   task1: requiredString,
-   task2: z.string().trim(),
-   task3: z.string().trim(),
-   task4: z.string().trim(),
-   task5: z.string().trim(),
-   task6: z.string().trim(),
-   task7: z.string().trim(),
-   task8: z.string().trim(),
-   task9: z.string().trim(),
-   task10: z.string().trim(),
-   task11: z.string().trim(),
-   task12: z.string().trim(),
-  
- });
- 
- export type DesugnerValue = z.infer<typeof desiginerSchema>;
+  date: z.string().trim(),
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+  task5: z.string().trim(),
+  task6: z.string().trim(),
+  task7: z.string().trim(),
+  task8: z.string().trim(),
+  task9: z.string().trim(),
+  task10: z.string().trim(),
+  task11: z.string().trim(),
+  task12: z.string().trim(),
+});
 
+export type DesugnerValue = z.infer<typeof desiginerSchema>;
 
- export const aSchema = z.object({
- cityname:requiredString,
- monthname:requiredString
-  
- });
- 
- export type AValue = z.infer<typeof aSchema>;
+export const aSchema = z.object({
+  cityname: requiredString,
+  monthname: requiredString,
+});
+
+export type AValue = z.infer<typeof aSchema>;
+
+export const mediceCHAGESchema = z.object({
+  date: z.string().trim(),
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+});
+
+export type MedicibeValue = z.infer<typeof mediceCHAGESchema>;

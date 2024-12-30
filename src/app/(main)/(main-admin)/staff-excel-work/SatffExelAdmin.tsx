@@ -837,31 +837,27 @@ export default function SatffExelAdmin() {
       ) : tabelex.dipartment === "medicen" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
          
-          <Table className="w-[2000px]">
+          <Table >
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
                 <TableHead className="border-2 border-blue-400">Date</TableHead>
                 <TableHead className="border-2 border-blue-400">
-                  TOTAL BILL
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">MARG</TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  LOOSE
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  TOTAL SALE
-                </TableHead>
+                                TOTAL BILL
+                            </TableHead>
+                            <TableHead className="border-2 border-blue-400">
+                                MARG Shell
+                            </TableHead>
+                            <TableHead className="border-2 border-blue-400">
+                                LOOSE Shell
+                            </TableHead>
+                            <TableHead className="border-2 border-blue-400">
+             TOTAL SHELL
+            </TableHead>
 
-                <TableHead className="border-2 border-blue-400">CASH</TableHead>
-                <TableHead className="border-2 border-blue-400">CARD</TableHead>
-                <TableHead className="border-2 border-blue-400">SCAN</TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  RETURN
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">CRDT</TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  DISC AMT
-                </TableHead>
+                          
+                            <TableHead className="border-2 border-blue-400">
+                            SALE QTY
+                            </TableHead>
                 <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
             </TableHeader>
@@ -904,21 +900,7 @@ export default function SatffExelAdmin() {
                     <TableCell className="border-2 border-blue-400">
                       {v.task4}
                     </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task5}
-                    </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task6}
-                    </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task7}
-                    </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task8}
-                    </TableCell>
-                    <TableCell className="border-2 border-blue-400">
-                      {v.task9}
-                    </TableCell>
+                    
 
                     <TableCell className="border-2 border-blue-400">
                       {formatRelativeTime(v.createdAt)}

@@ -102,25 +102,25 @@ export default function Vewdata() {
         </form>
       </Form>
 
-      <Table className="w-[2000px]">
+      <Table >
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Date</TableHead>
+
             <TableHead className="border-2 border-blue-400">
               TOTAL BILL
             </TableHead>
-            <TableHead className="border-2 border-blue-400">MARG</TableHead>
-            <TableHead className="border-2 border-blue-400">LOOSE</TableHead>
             <TableHead className="border-2 border-blue-400">
-              TOTAL SALE
+              MARG SHELL
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              LOOSE SHELL
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+             TOTAL SHELL
             </TableHead>
 
-            <TableHead className="border-2 border-blue-400">CASH</TableHead>
-            <TableHead className="border-2 border-blue-400">CARD</TableHead>
-            <TableHead className="border-2 border-blue-400">SCAN</TableHead>
-            <TableHead className="border-2 border-blue-400">RETURN</TableHead>
-            <TableHead className="border-2 border-blue-400">CRDT</TableHead>
-            <TableHead className="border-2 border-blue-400">DISC AMT</TableHead>
+            <TableHead className="border-2 border-blue-400">SALE QTY</TableHead>
             <TableHead className="border-2 border-blue-400">Time</TableHead>
           </TableRow>
         </TableHeader>
@@ -163,23 +163,9 @@ export default function Vewdata() {
                 <TableCell className="border-2 border-blue-400">
                   {Number(v.task2) + Number(v.task3)}
                 </TableCell>
+               
                 <TableCell className="border-2 border-blue-400">
                   {v.task4}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task5}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task6}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task7}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task8}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task9}
                 </TableCell>
 
                 <TableCell className="border-2 border-blue-400">
