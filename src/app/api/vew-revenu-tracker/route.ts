@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const userData = await prisma.revenuetracker.findMany({
       where: {
-        userId: username,
+        task1: username,
       },
       orderBy: {
         createdAt: "desc",

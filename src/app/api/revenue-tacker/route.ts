@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
     const endOfDay = inputDate.endOf("day").toDate();
     const existingEntry = await prisma.revenuetracker.findFirst({
       where: {
-        userId: user.city,
+        userId: user.id,
         createdAt: {
           gte: startOfDay,
           lte: endOfDay,
