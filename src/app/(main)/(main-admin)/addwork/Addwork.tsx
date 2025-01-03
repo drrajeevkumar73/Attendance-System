@@ -256,7 +256,6 @@ export default function Addwork() {
   };
   return (
     <div className="space-y-5">
-     
       <Form {...form2}>
         <form className="space-y-3">
           <FormField
@@ -274,46 +273,41 @@ export default function Addwork() {
                       <SelectValue placeholder="Select a dipartment" />
                     </SelectTrigger>
                     <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Dipartment</SelectLabel>
-                      <SelectItem value="CENTER OPS MANAGER">
-                        CENTER MANAGER
-                      </SelectItem>
-                      <SelectItem value="HR"> HR</SelectItem>
-                      <SelectItem value="CASHIER"> CASHIER</SelectItem>
-                      <SelectItem value="RECEPTIONS"> RECEPTIONS</SelectItem>
-                      <SelectItem value="MEDICINE COUNTER">
-                        MEDICINE COUNTER
-                      </SelectItem>
-                      <SelectItem value="HD / OD"> HD / OD</SelectItem>
-                      <SelectItem value="TELECALLER DEPT">
-                        TELECALLER 
-                      </SelectItem>
-                      <SelectItem value="MIXER">MIXER</SelectItem>
-                      <SelectItem value="ECART"> ECART</SelectItem>
-                      <SelectItem value="DESIGNER">DESIGNER</SelectItem>
-                      <SelectItem value="DIGITAL MARKETING">
-                        DIGITAL MARKETING
-                      </SelectItem>
-                      <SelectItem value="DOCTOR"> DOCTOR</SelectItem>
-                      <SelectItem value="MAID / OFFICE BOY">
-                        MAID / OFFICE BOY
-                      </SelectItem>
-                      <SelectItem value="GUARD"> GUARD</SelectItem>
-                      <SelectItem value="DRIVER"> DRIVER</SelectItem>
-                      <SelectItem value="ACCOUNTANT">
-                         ACCOUNTANT
-                      </SelectItem>
-                      <SelectItem value="INVENTORY">
-                         INVENTORY
-                      </SelectItem>
-                      <SelectItem value="TRUST MARKETING">
-                         TRUST MARKETING
-                      </SelectItem>
-                      <SelectItem value="SHOP RANCHI">
-                         SHOP RANCHI
-                      </SelectItem>
-                    </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel>Dipartment</SelectLabel>
+                        <SelectItem value="CENTER OPS MANAGER">
+                          CENTER MANAGER
+                        </SelectItem>
+                        <SelectItem value="HR"> HR</SelectItem>
+                        <SelectItem value="CASHIER"> CASHIER</SelectItem>
+                        <SelectItem value="RECEPTIONS"> RECEPTIONS</SelectItem>
+                        <SelectItem value="MEDICINE COUNTER">
+                          MEDICINE COUNTER
+                        </SelectItem>
+                        <SelectItem value="HD / OD"> HD / OD</SelectItem>
+                        <SelectItem value="TELECALLER DEPT">
+                          TELECALLER
+                        </SelectItem>
+                        <SelectItem value="MIXER">MIXER</SelectItem>
+                        <SelectItem value="ECART"> ECART</SelectItem>
+                        <SelectItem value="DESIGNER">DESIGNER</SelectItem>
+                        <SelectItem value="DIGITAL MARKETING">
+                          DIGITAL MARKETING
+                        </SelectItem>
+                        <SelectItem value="DOCTOR"> DOCTOR</SelectItem>
+                        <SelectItem value="MAID / OFFICE BOY">
+                          MAID / OFFICE BOY
+                        </SelectItem>
+                        <SelectItem value="GUARD"> GUARD</SelectItem>
+                        <SelectItem value="DRIVER"> DRIVER</SelectItem>
+                        <SelectItem value="ACCOUNTANT">ACCOUNTANT</SelectItem>
+                        <SelectItem value="INVENTORY">INVENTORY</SelectItem>
+                        <SelectItem value="TRUST MARKETING">
+                          TRUST MARKETING
+                        </SelectItem>
+                        <SelectItem value="SHOP RANCHI">SHOP RANCHI</SelectItem>
+                        <SelectItem value="MIS">MIS</SelectItem>
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -331,7 +325,12 @@ export default function Addwork() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel><p>Select department for give some today&lsquo;s task for staff.</p></FormLabel>
+                <FormLabel>
+                  <p>
+                    Select department for give some today&lsquo;s task for
+                    staff.
+                  </p>
+                </FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
@@ -341,46 +340,41 @@ export default function Addwork() {
                       <SelectValue placeholder="Select a dipartment" />
                     </SelectTrigger>
                     <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Dipartment</SelectLabel>
-                      <SelectItem value="CENTER OPS MANAGER">
-                         CENTER MANAGER
-                      </SelectItem>
-                      <SelectItem value="HR"> HR</SelectItem>
-                      <SelectItem value="CASHIER"> CASHIER</SelectItem>
-                      <SelectItem value="RECEPTIONS">RECEPTIONS</SelectItem>
-                      <SelectItem value="MEDICINE COUNTER">
-                        MEDICINE COUNTER
-                      </SelectItem>
-                      <SelectItem value="HD / OD"> HD / OD</SelectItem>
-                      <SelectItem value="TELECALLER DEPT">
-                      TELECALLER 
-                      </SelectItem>
-                      <SelectItem value="MIXER"> MIXER</SelectItem>
-                      <SelectItem value="ECART"> ECART</SelectItem>
-                      <SelectItem value="DESIGNER"> DESIGNER</SelectItem>
-                      <SelectItem value="DIGITAL MARKETING">
-                         DIGITAL MARKETING
-                      </SelectItem>
-                      <SelectItem value="DOCTOR"> DOCTOR</SelectItem>
-                      <SelectItem value="MAID / OFFICE BOY">
-                         MAID / OFFICE BOY
-                      </SelectItem>
-                      <SelectItem value="GUARD">GUARD</SelectItem>
-                      <SelectItem value="DRIVER"> DRIVER</SelectItem>
-                      <SelectItem value="ACCOUNTANT">
-                        ACCOUNTANT
-                      </SelectItem>
-                      <SelectItem value="INVENTORY">
-                         INVENTORY
-                      </SelectItem>
-                      <SelectItem value="TRUST MARKETING">
-                         TRUST MARKETING
-                      </SelectItem>
-                      <SelectItem value="SHOP RANCHI">
-                         SHOP RANCHI
-                      </SelectItem>
-                    </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel>Dipartment</SelectLabel>
+                        <SelectItem value="CENTER OPS MANAGER">
+                          CENTER MANAGER
+                        </SelectItem>
+                        <SelectItem value="HR"> HR</SelectItem>
+                        <SelectItem value="CASHIER"> CASHIER</SelectItem>
+                        <SelectItem value="RECEPTIONS">RECEPTIONS</SelectItem>
+                        <SelectItem value="MEDICINE COUNTER">
+                          MEDICINE COUNTER
+                        </SelectItem>
+                        <SelectItem value="HD / OD"> HD / OD</SelectItem>
+                        <SelectItem value="TELECALLER DEPT">
+                          TELECALLER
+                        </SelectItem>
+                        <SelectItem value="MIXER"> MIXER</SelectItem>
+                        <SelectItem value="ECART"> ECART</SelectItem>
+                        <SelectItem value="DESIGNER"> DESIGNER</SelectItem>
+                        <SelectItem value="DIGITAL MARKETING">
+                          DIGITAL MARKETING
+                        </SelectItem>
+                        <SelectItem value="DOCTOR"> DOCTOR</SelectItem>
+                        <SelectItem value="MAID / OFFICE BOY">
+                          MAID / OFFICE BOY
+                        </SelectItem>
+                        <SelectItem value="GUARD">GUARD</SelectItem>
+                        <SelectItem value="DRIVER"> DRIVER</SelectItem>
+                        <SelectItem value="ACCOUNTANT">ACCOUNTANT</SelectItem>
+                        <SelectItem value="INVENTORY">INVENTORY</SelectItem>
+                        <SelectItem value="TRUST MARKETING">
+                          TRUST MARKETING
+                        </SelectItem>
+                        <SelectItem value="SHOP RANCHI">SHOP RANCHI</SelectItem>
+                        <SelectItem value="MIS">MIS</SelectItem>
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                 </FormControl>

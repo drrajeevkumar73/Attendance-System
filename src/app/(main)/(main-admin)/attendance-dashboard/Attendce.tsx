@@ -166,7 +166,7 @@ export default function Attendce() {
         </form>
       </Form>
 
-      <Table>
+      <Table className="">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Name</TableHead>
@@ -176,7 +176,7 @@ export default function Attendce() {
             <TableHead className="border-2 border-blue-400">
               Present Count
             </TableHead>
-            <TableHead className="border-2 border-blue-400">Status</TableHead>
+            <TableHead className="border-2 border-blue-400 ">Status</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -190,7 +190,7 @@ export default function Attendce() {
           <TableBody>
             {late?.attendanceCountByUser.map((item: any, index) => (
               <TableRow key={index}>
-                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
+                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400" >
                   {item.displayname}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">

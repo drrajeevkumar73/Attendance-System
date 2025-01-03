@@ -207,6 +207,7 @@ export const doctorOnlineSchema = z.object({
 export type DoctorOnlineValue = z.infer<typeof doctorOnlineSchema>;
 
 export const revenutrackerSchema = z.object({
+  date: z.string().trim(),
   task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),

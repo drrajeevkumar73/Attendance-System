@@ -126,10 +126,7 @@ export default function SatffExelAdmin() {
   };
 
   const exportToExcel = () => {
-    if (
-      !tabelex?.data ||
-      tabelex?.data.length === 0 
-    ) {
+    if (!tabelex?.data || tabelex?.data.length === 0) {
       toast({
         description: "No data to export",
         variant: "destructive",
@@ -148,7 +145,7 @@ export default function SatffExelAdmin() {
         "Whatsapp / Text": v.task4,
         Appt: v.task5,
         Fees: v.task6,
-       " New  Patient":v.task7,
+        " New  Patient": v.task7,
         Time: formatRelativeTime(v.createdAt),
       }));
 
@@ -201,15 +198,10 @@ export default function SatffExelAdmin() {
       const excelData = tabelex?.data.map((v: any) => ({
         Date: formatRelativeMonthDate(v.createdAt),
         "TOTAL BILL": v.task1,
-        MARG: v.task2,
-        LOOSE: v.task3,
-        "TOTAL SALE": Number(v.task2) + Number(v.task3),
-        CASE: v.task4,
-        CARD: v.task5,
-        SCAN: v.task6,
-        RETURN: v.task7,
-        CRDT: v.task8,
-        "DISC AMT": v.task9,
+        "MARG SALE": v.task2,
+        "LOOSE SALE": v.task3,
+        "TOTAL SALE ": Number(v.task2) + Number(v.task3),
+        "SALE QTY": v.task4,
         Time: formatRelativeTime(v.createdAt),
       }));
 
@@ -323,24 +315,24 @@ export default function SatffExelAdmin() {
         // Write to file
         XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
       }
-    }else if (tabelex.dipartment === "hdod"){
+    } else if (tabelex.dipartment === "hdod") {
       const excelData = tabelex?.data.map((v: any) => ({
         Date: formatRelativeMonthDate(v.createdAt),
-        'O.G': v.task1,
-          "IN": v.task2,
-          "HD. ORDER": v.task3,
-          "HD DISP": v.task4,
-          "HD AMT": v.task5,
-          "PRES - Send": v.task6,
-          "OD. ORDER": v.task7,
-          "OD DISP": v.task8,
-          "OD PENDING": v.task9,
-          "MANUAL SENT": v.task10,
-          " LOOSE Medi": v.task11,
-          "OD AMT": v.task12,
-          "FRIGHT": v.task13,
-          TOTAL:Number(v.task12)+Number(v.task13),
-          Time: formatRelativeTime(v.createdAt),
+        "O.G": v.task1,
+        IN: v.task2,
+        "HD. ORDER": v.task3,
+        "HD DISP": v.task4,
+        "HD AMT": v.task5,
+        "PRES - Send": v.task6,
+        "OD. ORDER": v.task7,
+        "OD DISP": v.task8,
+        "OD PENDING": v.task9,
+        "MANUAL SENT": v.task10,
+        " LOOSE Medi": v.task11,
+        "OD AMT": v.task12,
+        FRIGHT: v.task13,
+        TOTAL: Number(v.task12) + Number(v.task13),
+        Time: formatRelativeTime(v.createdAt),
       }));
 
       // Create worksheet
@@ -356,17 +348,16 @@ export default function SatffExelAdmin() {
 
       // Write to file
       XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
-    }
-    else if (tabelex.dipartment === "ecart"){
+    } else if (tabelex.dipartment === "ecart") {
       const excelData = tabelex?.data.map((v: any) => ({
         Date: formatRelativeMonthDate(v.createdAt),
-        'Amazon': v.task1,
-          "Amazon:- Amount": v.task2,
-          "Amazon:- Listing": v.task3,
-          "Flipkart": v.task4,
-          "Flipkart:- Amount": v.task5,
-          "Flipkart:- Listing": v.task6,
-          Time: formatRelativeTime(v.createdAt),
+        Amazon: v.task1,
+        "Amazon:- Amount": v.task2,
+        "Amazon:- Listing": v.task3,
+        Flipkart: v.task4,
+        "Flipkart:- Amount": v.task5,
+        "Flipkart:- Listing": v.task6,
+        Time: formatRelativeTime(v.createdAt),
       }));
 
       // Create worksheet
@@ -382,23 +373,22 @@ export default function SatffExelAdmin() {
 
       // Write to file
       XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
-    }
-    else if (tabelex.dipartment === "designer"){
+    } else if (tabelex.dipartment === "designer") {
       const excelData = tabelex?.data.map((v: any) => ({
         Date: formatRelativeMonthDate(v.createdAt),
-        ' Video Count': v.task1,
-          "MADE": v.task2,
-          "EXPORT": v.task3,
-          "DOWNLOAD": v.task4,
-          "EDITING": v.task5,
-          "YouTube": v.task6,
-          '  Reel / short': v.task7,
-          "Banner": v.task8,
-          "Send to DR, Rajeev's sir (date)": v.task9,
-          "INSTAGRAM POST BY DR. RAJEEV SIR": v.task10,
-          "FACEBOOK POST BY RAJEEV SIR": v.task11,
-          " Post by Vikash Sir": v.task12,
-          Time: formatRelativeTime(v.createdAt),
+        " Video Count": v.task1,
+        MADE: v.task2,
+        EXPORT: v.task3,
+        DOWNLOAD: v.task4,
+        EDITING: v.task5,
+        YouTube: v.task6,
+        "  Reel / short": v.task7,
+        Banner: v.task8,
+        "Send to DR, Rajeev's sir (date)": v.task9,
+        "INSTAGRAM POST BY DR. RAJEEV SIR": v.task10,
+        "FACEBOOK POST BY RAJEEV SIR": v.task11,
+        " Post by Vikash Sir": v.task12,
+        Time: formatRelativeTime(v.createdAt),
       }));
 
       // Create worksheet
@@ -508,6 +498,7 @@ export default function SatffExelAdmin() {
                             {v.displayname}
                           </SelectItem>
                         ))}
+                        
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -590,7 +581,7 @@ export default function SatffExelAdmin() {
                         </SelectItem>
                         <SelectItem value="HD / OD"> HD / OD</SelectItem>
                         <SelectItem value="TELECALLER DEPT">
-                          TELECALLER 
+                          TELECALLER
                         </SelectItem>
                         <SelectItem value="MIXER">MIXER</SelectItem>
                         <SelectItem value="ECART">ECART</SelectItem>
@@ -610,6 +601,9 @@ export default function SatffExelAdmin() {
                           TRUST MARKETING
                         </SelectItem>
                         <SelectItem value="SHOP RANCHI">SHOP RANCHI</SelectItem>
+                        <SelectItem value="MIS">
+                        MIS
+                      </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -636,8 +630,6 @@ export default function SatffExelAdmin() {
 
       {tabelex.dipartment === "telecaller" ? (
         <>
-        
-
           <Table>
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
@@ -657,7 +649,9 @@ export default function SatffExelAdmin() {
                 </TableHead>
                 <TableHead className="border-2 border-blue-400">Appt</TableHead>
                 <TableHead className="border-2 border-blue-400">Fees</TableHead>
-                <TableHead className="border-2 border-blue-400">New  Patient</TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  New Patient
+                </TableHead>
                 <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
             </TableHeader>
@@ -721,7 +715,6 @@ export default function SatffExelAdmin() {
         </>
       ) : tabelex.dipartment === "reception" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-          
           <Table className="w-[2000px]">
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
@@ -836,28 +829,26 @@ export default function SatffExelAdmin() {
         </div>
       ) : tabelex.dipartment === "medicen" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-         
-          <Table >
+          <Table>
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
                 <TableHead className="border-2 border-blue-400">Date</TableHead>
                 <TableHead className="border-2 border-blue-400">
-                                TOTAL BILL
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                MARG Shell
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-                                LOOSE Shell
-                            </TableHead>
-                            <TableHead className="border-2 border-blue-400">
-             TOTAL SHELL
-            </TableHead>
+                  TOTAL BILL
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  MARG SALE
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  LOOSE SALE
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  TOTAL SALE
+                </TableHead>
 
-                          
-                            <TableHead className="border-2 border-blue-400">
-                            SALE QTY
-                            </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  SALE QTY
+                </TableHead>
                 <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
             </TableHeader>
@@ -900,7 +891,6 @@ export default function SatffExelAdmin() {
                     <TableCell className="border-2 border-blue-400">
                       {v.task4}
                     </TableCell>
-                    
 
                     <TableCell className="border-2 border-blue-400">
                       {formatRelativeTime(v.createdAt)}
@@ -913,7 +903,6 @@ export default function SatffExelAdmin() {
         </div>
       ) : tabelex.dipartment === "ranchi_shop" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-          
           <Table className="w-[2000px]">
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
@@ -1008,8 +997,6 @@ export default function SatffExelAdmin() {
         </div>
       ) : tabelex.dipartment === "Doctor" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-         
-
           <div className="space-y-6">
             <Button
               onClick={ofileHanlder}
@@ -1287,314 +1274,326 @@ export default function SatffExelAdmin() {
             </div>
           </div>
         </div>
-      ) : tabelex.dipartment === "hdod"?(
+      ) : tabelex.dipartment === "hdod" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-
-        <Table className="w-[2300px]">
-          <TableHeader>
-          <TableRow className="border border-primary bg-primary">
-        <TableHead className="border-2 border-blue-400">Date</TableHead>
-              <TableHead className="border-2 border-blue-400">O.G</TableHead>
-              <TableHead className="border-2 border-blue-400">
-              IN
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-               HD. ORDER
-              </TableHead>
-
-              <TableHead className="border-2 border-blue-400">HD DISP</TableHead>
-              <TableHead className="border-2 border-blue-400">
-              HD AMT
-              </TableHead>
-              <TableHead className="border-2 border-blue-400"> PRES - Send</TableHead>
-              <TableHead className="border-2 border-blue-400">
-              OD. ORDER
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-              OD DISP
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-              OD PENDING
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-              MANUAL SENT
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-              LOOSE Medi
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-              OD AMT
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">FRIGHT </TableHead>
-              <TableHead className="border-2 border-blue-400">TOTAL </TableHead>
-
-              <TableHead className="border-2 border-blue-400">Time</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          {ispending ? (
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={3} className="">
-                  Loading...
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          ) : tabelex?.data?.length === 0 ? (
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={3} className="">
-                  No Data Found
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          ) : (
-            tabelex?.data?.map((v: any, i) => (
-              <TableBody className="border border-primary" key={i}>
-              <TableRow>
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeMonthDate(v.createdAt)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task1}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task2}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task3}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task4}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task5}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task6}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task7}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task8}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task9}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task10}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task11}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task12}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task13}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {Number(v.task12)+Number(v.task13)}
-                </TableCell>
-
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeTime(v.createdAt)}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-            ))
-          )}
-        </Table>
-      </div>
-      ) : tabelex.dipartment === "ecart"?(
-        <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-       
-        <Table >
-          <TableHeader>
-          <TableRow className="border border-primary bg-primary">
-            <TableHead className="border-2 border-blue-400">Date</TableHead>
-            <TableHead className="border-2 border-blue-400">Amazon                </TableHead>
+          <Table className="w-[2300px]">
+            <TableHeader>
+              <TableRow className="border border-primary bg-primary">
+                <TableHead className="border-2 border-blue-400">Date</TableHead>
+                <TableHead className="border-2 border-blue-400">O.G</TableHead>
+                <TableHead className="border-2 border-blue-400">IN</TableHead>
                 <TableHead className="border-2 border-blue-400">
-                Amount
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                Listing
+                  HD. ORDER
                 </TableHead>
 
                 <TableHead className="border-2 border-blue-400">
-                Flipkart
+                  HD DISP
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">Amount
+                <TableHead className="border-2 border-blue-400">
+                  HD AMT
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">Listing</TableHead>
-            <TableHead className="border-2 border-blue-400">Time</TableHead>
-          </TableRow>
-          </TableHeader>
+                <TableHead className="border-2 border-blue-400">
+                  {" "}
+                  PRES - Send
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  OD. ORDER
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  OD DISP
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  OD PENDING
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  MANUAL SENT
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  LOOSE Medi
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  OD AMT
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  FRIGHT{" "}
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  TOTAL{" "}
+                </TableHead>
 
-          {ispending ? (
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={3} className="">
-                  Loading...
-                </TableCell>
+                <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
-            </TableBody>
-          ) : tabelex?.data?.length === 0 ? (
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={3} className="">
-                  No Data Found
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          ) : (
-            tabelex?.data?.map((v: any, i) => (
-              <TableBody className="border border-primary" key={i}>
-              <TableRow>
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeMonthDate(v.createdAt)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task1}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task2}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task3}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task4}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task5}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task6}
-                </TableCell>
-               
-            
+            </TableHeader>
 
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeTime(v.createdAt)}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-            ))
-          )}
-        </Table>
-      </div>
-      ): tabelex.dipartment === "designer"?(
+            {ispending ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : tabelex?.data?.length === 0 ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    No Data Found
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : (
+              tabelex?.data?.map((v: any, i) => (
+                <TableBody className="border border-primary" key={i}>
+                  <TableRow>
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeMonthDate(v.createdAt)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task1}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task2}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task3}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task4}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task5}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task6}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task7}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task8}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task9}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task10}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task11}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task12}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task13}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {Number(v.task12) + Number(v.task13)}
+                    </TableCell>
+
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeTime(v.createdAt)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))
+            )}
+          </Table>
+        </div>
+      ) : tabelex.dipartment === "ecart" ? (
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
-      
-        <Table className="w-[2300px]">
-          <TableHeader>
-          <TableRow className="border border-primary bg-primary">
-            <TableHead className="border-2 border-blue-400">Date</TableHead>
-            <TableHead className="border-2 border-blue-400">
-              Video Count
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">MADE</TableHead>
-            <TableHead className="border-2 border-blue-400">EXPORT</TableHead>
-            <TableHead className="border-2 border-blue-400">DOWNLOAD</TableHead>
-            <TableHead className="border-2 border-blue-400">EDITING</TableHead>
-            <TableHead className="border-2 border-blue-400">YouTube</TableHead>
-            <TableHead className="border-2 border-blue-400">
-              Reel / short
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">Banner</TableHead>
-            <TableHead className="border-2 border-blue-400">
-              Send to DR, Rajeev&lsquo;s sir (date)
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">
-              INSTAGRAM POST BY DR. RAJEEV SIR
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">
-              FACEBOOK POST BY RAJEEV SIR
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">
-              Post by Vikash Sir
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">Time</TableHead>
-          </TableRow>
-          </TableHeader>
+          <Table>
+            <TableHeader>
+              <TableRow className="border border-primary bg-primary">
+                <TableHead className="border-2 border-blue-400">Date</TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Amazon{" "}
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Amount
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Listing
+                </TableHead>
 
-          {ispending ? (
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={3} className="">
-                  Loading...
-                </TableCell>
+                <TableHead className="border-2 border-blue-400">
+                  Flipkart
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Amount
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Listing
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
-            </TableBody>
-          ) : tabelex?.data?.length === 0 ? (
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={3} className="">
-                  No Data Found
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          ) : (
-            tabelex?.data?.map((v: any, i) => (
-              <TableBody className="border border-primary" key={i}>
-              <TableRow>
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeMonthDate(v.createdAt)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task1}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task2}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task3}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task4}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task5}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task6}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task7}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task8}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task9}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task10}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task11}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task12}
-                </TableCell>
-               
-               
-              
-              
+            </TableHeader>
 
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeTime(v.createdAt)}
-                </TableCell>
+            {ispending ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : tabelex?.data?.length === 0 ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    No Data Found
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : (
+              tabelex?.data?.map((v: any, i) => (
+                <TableBody className="border border-primary" key={i}>
+                  <TableRow>
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeMonthDate(v.createdAt)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task1}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task2}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task3}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task4}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task5}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task6}
+                    </TableCell>
+
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeTime(v.createdAt)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))
+            )}
+          </Table>
+        </div>
+      ) : tabelex.dipartment === "designer" ? (
+        <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
+          <Table className="w-[2300px]">
+            <TableHeader>
+              <TableRow className="border border-primary bg-primary">
+                <TableHead className="border-2 border-blue-400">Date</TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Video Count
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">MADE</TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  EXPORT
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  DOWNLOAD
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  EDITING
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  YouTube
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Reel / short
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Banner
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Send to DR, Rajeev&lsquo;s sir (date)
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  INSTAGRAM POST BY DR. RAJEEV SIR
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  FACEBOOK POST BY RAJEEV SIR
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Post by Vikash Sir
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">Time</TableHead>
               </TableRow>
-            </TableBody>
-            ))
-          )}
-        </Table>
-      </div>
-      ):
-      (
+            </TableHeader>
+
+            {ispending ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : tabelex?.data?.length === 0 ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    No Data Found
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : (
+              tabelex?.data?.map((v: any, i) => (
+                <TableBody className="border border-primary" key={i}>
+                  <TableRow>
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeMonthDate(v.createdAt)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task1}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task2}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task3}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task4}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task5}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task6}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task7}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task8}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task9}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task10}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task11}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task12}
+                    </TableCell>
+
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeTime(v.createdAt)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))
+            )}
+          </Table>
+        </div>
+      ) : (
         ""
       )}
     </>

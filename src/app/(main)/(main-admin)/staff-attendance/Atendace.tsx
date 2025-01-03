@@ -148,7 +148,7 @@ export default function Atendace() {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel className="text-green-500">
-                          RANCHI Staff name
+                          RANCHI 
                         </SelectLabel>
                         {client?.RANCHI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -156,7 +156,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          RANCHI SHOP Staff name
+                          RANCHI SHOP 
                         </SelectLabel>
                         {client?.RANCHI_SHOP.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -164,7 +164,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          PATNA Staff name
+                          PATNA 
                         </SelectLabel>
                         {client?.PATNA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -173,7 +173,7 @@ export default function Atendace() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          KOLKATA Staff name
+                          KOLKATA 
                         </SelectLabel>
                         {client?.KOLKATA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -182,7 +182,7 @@ export default function Atendace() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          GAUR CITY Staff name
+                          GAUR CITY 
                         </SelectLabel>
                         {client?.GAUR_CITY.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -190,7 +190,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          SPECTRUM Staff name
+                          SPECTRUM 
                         </SelectLabel>
                         {client?.SPECTRUM.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -198,7 +198,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          JAGTAULI Staff name
+                          JAGTAULI 
                         </SelectLabel>
                         {client?.JAGTAULI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>

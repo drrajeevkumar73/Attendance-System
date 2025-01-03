@@ -111,13 +111,13 @@ export default function Vewdata() {
               TOTAL BILL
             </TableHead>
             <TableHead className="border-2 border-blue-400">
-              MARG SHELL
+              MARG SALE
             </TableHead>
             <TableHead className="border-2 border-blue-400">
-              LOOSE SHELL
+              LOOSE SALE
             </TableHead>
             <TableHead className="border-2 border-blue-400">
-             TOTAL SHELL
+             TOTAL SALE
             </TableHead>
 
             <TableHead className="border-2 border-blue-400">SALE QTY</TableHead>

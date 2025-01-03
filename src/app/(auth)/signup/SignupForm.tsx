@@ -155,6 +155,9 @@ export default function SignupForm() {
                       <SelectItem value="SHOP RANCHI">
                          SHOP RANCHI
                       </SelectItem>
+                      <SelectItem value="MIS">
+                        MIS
+                      </SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>

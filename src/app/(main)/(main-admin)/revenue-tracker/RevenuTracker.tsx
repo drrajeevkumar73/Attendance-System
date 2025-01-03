@@ -49,6 +49,7 @@ export default function RevenuTracker() {
   const form = useForm<RevenueTrackerValue>({
     resolver: zodResolver(revenutrackerSchema),
     defaultValues: {
+      date:"",
       task1: "",
       task2: "",
       task3: "",
@@ -67,6 +68,7 @@ export default function RevenuTracker() {
     try {
       setispending(true);
       const { data } = await axios.post("/api/revenue-tacker", {
+        date:value.date,
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -117,58 +119,56 @@ export default function RevenuTracker() {
       });
 
       setdatal(data);
-    } catch (error) {
-      console.error(error);
+      toast({
+        description: data.message,
+        variant: "default",
+    });
+    } catch (error:any) {
+      const errorMessage = error?.response?.data?.message || "Something went wrong";
+      toast({
+        description: errorMessage,
+        variant: "destructive",
+      });
     } finally {
       setsholoding(false);
     }
   };
 
-
-  const exportToExcel=()=>{
-    if (
-      !datal ||
-      datal?.length === 0 
-    ) {
+  const exportToExcel = () => {
+    if (!datal || datal?.length === 0) {
       toast({
         description: "No data to export",
         variant: "destructive",
       });
       return;
     }
-      const excelData = datal.map((v: any) => ({
-        Date: formatRelativeMonthDate(v.createdAt),
-        City: v.task1,
-        "PURCHASE :- AMOUNT": v.task2,
-        "PURCHASE :- QTY": v.task3,
-        "SALE :- AMOUNT": v.task4,
-        "SALE :- QTY": v.task5,
-        "SALE :- RETAIL": v.task6,
-        "SALE :- WHOLESALE": v.task7,
-        "SALE :- LOOSE": v.task8,
-        "SALE :- LAB":v.task9,
-        'SALE :- RECEPN':v.task10,
-        "TOTAL :- PATIENT":v.task11,
-        "NEW :- PATIENT":v.task12,
-        Time:formatRelativeTime(v.createdAt)
-      }));
+    const excelData = datal.map((v: any) => ({
+      Date: formatRelativeMonthDate(v.createdAt),
+      City: v.task1,
+      "PURCHASE :- AMOUNT": v.task2,
+      "PURCHASE :- QTY": v.task3,
+      "SALE :- AMOUNT": v.task4,
+      "SALE :- QTY": v.task5,
+      "SALE :- RETAIL": v.task6,
+      "SALE :- WHOLESALE": v.task7,
+      "SALE :- LOOSE": v.task8,
+      "SALE :- LAB": v.task9,
+      "SALE :- RECEPN": v.task10,
+      "TOTAL :- PATIENT": v.task11,
+      "NEW :- PATIENT": v.task12,
+      Time: formatRelativeTime(v.createdAt),
+    }));
 
-      // Create worksheet
-      const worksheet = XLSX.utils.json_to_sheet(excelData);
+    // Create worksheet
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
 
-      // Create workbook
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(
-        workbook,
-        worksheet,
-        `${"City"}`,
-      );
+    // Create workbook
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, `${"City"}`);
 
-      // Write to file
-      XLSX.writeFile(workbook, `City.xlsx`);
-    
- 
-  }
+    // Write to file
+    XLSX.writeFile(workbook, `City.xlsx`);
+  };
   return (
     <>
       <div className="mx-auto overflow-auto rounded-2xl border bg-card p-10 shadow-xl lg:w-[800px] 2xl:w-[1100px]">
@@ -180,6 +180,9 @@ export default function RevenuTracker() {
             <Table className="w-[2300px]">
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
+                <TableHead className="border-2 border-blue-400">
+                    Date for previous day
+                  </TableHead>
                   <TableHead className="border-2 border-blue-400">
                     City
                   </TableHead>
@@ -240,6 +243,25 @@ export default function RevenuTracker() {
 
               <TableBody>
                 <TableRow>
+                <TableCell className="border-2 border-blue-400">
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              className="border-foreground"
+                              {...field}
+                          
+                            />
+                          </FormControl>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TableCell>
                   <TableCell className="border-2 border-blue-400">
                     <FormField
                       control={form.control}
@@ -256,16 +278,22 @@ export default function RevenuTracker() {
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
-                                  <SelectItem value="Ranchi">Ranchi</SelectItem>
-                                  <SelectItem value="Patna">Patna</SelectItem>
-                                  <SelectItem value="Gaur City">
-                                    Gaur City
+                                  <SelectItem value="RANCHI">RANCHI</SelectItem>
+                                  <SelectItem value="RANCHI SHOP">
+                                    RANCHI SHOP
                                   </SelectItem>
-                                  <SelectItem value="Spectrum">
-                                    Spectrum
+                                  <SelectItem value="PATNA">PATNA</SelectItem>
+                                  <SelectItem value="KOLKATA">
+                                    KOLKATA
                                   </SelectItem>
-                                  <SelectItem value="Jagtauli">
-                                    Jagtauli
+                                  <SelectItem value="GAUR CITY">
+                                    GAUR CITY
+                                  </SelectItem>
+                                  <SelectItem value="SPECTRUM">
+                                    SPECTRUM
+                                  </SelectItem>
+                                  <SelectItem value="JAGTAULI">
+                                    JAGTAULI
                                   </SelectItem>
                                 </SelectGroup>
                               </SelectContent>
@@ -562,11 +590,13 @@ export default function RevenuTracker() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="Ranchi">Ranchi</SelectItem>
-                          <SelectItem value="Patna">Patna</SelectItem>
-                          <SelectItem value="Gaur City">Gaur City</SelectItem>
-                          <SelectItem value="Spectrum">Spectrum</SelectItem>
-                          <SelectItem value="Jagtauli">Jagtauli</SelectItem>
+                        <SelectItem value="RANCHI">RANCHI</SelectItem>
+                      <SelectItem value="RANCHI SHOP">RANCHI SHOP</SelectItem>
+                      <SelectItem value="PATNA">PATNA</SelectItem>
+                      <SelectItem value="KOLKATA">KOLKATA</SelectItem>
+                        <SelectItem value="GAUR CITY">GAUR CITY</SelectItem>
+                      <SelectItem value="SPECTRUM">SPECTRUM</SelectItem>
+                      <SelectItem value="JAGTAULI">JAGTAULI</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -582,15 +612,15 @@ export default function RevenuTracker() {
         </Form>
       </div>
 
-      <div className="flex justify-center mt-10">
-      <button
-        type="button"
-        onClick={exportToExcel}
-        className="rounded bg-blue-500 p-2 text-white"
-      >
-        {" "}
-        Export to Excel
-      </button>
+      <div className="mt-10 flex justify-center">
+        <button
+          type="button"
+          onClick={exportToExcel}
+          className="rounded bg-blue-500 p-2 text-white"
+        >
+          {" "}
+          Export to Excel
+        </button>
       </div>
       <Table className="mt-44">
         <TableHeader>
@@ -649,7 +679,9 @@ export default function RevenuTracker() {
                 <p className="">PATIENT</p>
               </div>
             </TableHead>
-            <TableHead className="border-2 border-blue-400 text-right">Time</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              Time
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -666,19 +698,44 @@ export default function RevenuTracker() {
                 <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(v.createdAt)}
                 </TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task1}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task2}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task3}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task4}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task5}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task6}</TableCell>
-                <TableCell className="border-2 border-blue-400"> {v.task7}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task8}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task9}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task10}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task11}</TableCell>
-                <TableCell className="border-2 border-blue-400">{v.task12}</TableCell>
-             
+                <TableCell className="border-2 border-blue-400">
+                  {v.task1}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task2}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task3}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task4}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task5}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task6}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {" "}
+                  {v.task7}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task8}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task9}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task10}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task11}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task12}
+                </TableCell>
+
                 <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(v.createdAt)}
                 </TableCell>

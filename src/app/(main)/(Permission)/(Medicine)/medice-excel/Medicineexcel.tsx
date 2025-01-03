@@ -79,10 +79,10 @@ export default function Medicineexcel() {
                                 TOTAL BILL
                             </TableHead>
                             <TableHead className="border-2 border-blue-400">
-                                MARG Shell
+                                MARG SALE
                             </TableHead>
                             <TableHead className="border-2 border-blue-400">
-                                LOOSE Shell
+                                LOOSE SALE
                             </TableHead>
 
                           
