@@ -119,10 +119,7 @@ export default function RevenuTracker() {
       });
 
       setdatal(data);
-      toast({
-        description: data.message,
-        variant: "default",
-    });
+     
     } catch (error:any) {
       const errorMessage = error?.response?.data?.message || "Something went wrong";
       toast({
@@ -630,7 +627,7 @@ export default function RevenuTracker() {
             <TableHead colSpan={2} className="border-2 border-blue-400">
               <p className="mt-3 text-center">PURCHASE</p>
               <p className="mt-2 w-full border border-blue-500"></p>
-              <div className="flex items-center justify-around py-2">
+              <div className="flex items-center gap-6 justify-around py-2">
                 <p className="">AMOUNT</p>
                 <p className="">QTY</p>
               </div>
@@ -647,7 +644,7 @@ export default function RevenuTracker() {
             <TableHead colSpan={1} className="border-2 border-blue-400">
               <p className="mt-3 text-center">SALE</p>
               <p className="mt-2 w-full border border-blue-500"></p>
-              <div className="flex items-center justify-around py-2">
+              <div className="flex items-center  justify-around py-2">
                 <p className="">QTY</p>
               </div>
             </TableHead>
@@ -655,7 +652,7 @@ export default function RevenuTracker() {
             <TableHead colSpan={5} className="border-2 border-blue-400">
               <p className="mt-3 text-center">SALE</p>
               <p className="mt-2 w-full border border-blue-500"></p>
-              <div className="flex items-center justify-around py-2">
+              <div className="flex items-center  gap-8 justify-around py-2">
                 <p className="">RETAIL</p>
                 <p className="">WHOLESALE</p>
                 <p className="">LOOSE</p>
