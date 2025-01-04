@@ -266,13 +266,7 @@ export default function Menubar({ className }: MenuBarProps) {
           >
             <Link href={"/addwork"}>Add Task</Link>
           </Button>
-          <Button
-            className={`flex items-center justify-start gap-3 ${pathname == "/admin" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-            title="Today Work History"
-            asChild
-          >
-            <Link href={"/admin"}>Today Work History</Link>
-          </Button>
+          
 
           <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/permission" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
