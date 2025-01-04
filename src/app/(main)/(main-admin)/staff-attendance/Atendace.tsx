@@ -109,28 +109,47 @@ export default function Atendace() {
         username: value.username,
         monthname: value.monthname,
       });
-
-      // Update state correctly
-      setuserdat((prevState) => ({
-        Totalwork: {
+  
+      // Update state correctly, avoiding duplicates
+      setuserdat((prevState) => {
+        const newTotalwork = {
           "10am to 1pm": [
             ...prevState.Totalwork["10am to 1pm"],
-            ...data.data.timeSlots["10am to 1pm"],
+            ...data.data.timeSlots["10am to 1pm"].filter(
+              (newItem: any) =>
+                !prevState.Totalwork["10am to 1pm"].some(
+                  (existingItem: any) => existingItem.createdAt === newItem.createdAt
+                )
+            ),
           ],
           "1pm to 4pm": [
             ...prevState.Totalwork["1pm to 4pm"],
-            ...data.data.timeSlots["1pm to 4pm"],
+            ...data.data.timeSlots["1pm to 4pm"].filter(
+              (newItem: any) =>
+                !prevState.Totalwork["1pm to 4pm"].some(
+                  (existingItem: any) => existingItem.createdAt === newItem.createdAt
+                )
+            ),
           ],
           "4pm to 7pm": [
             ...prevState.Totalwork["4pm to 7pm"],
-            ...data.data.timeSlots["4pm to 7pm"],
+            ...data.data.timeSlots["4pm to 7pm"].filter(
+              (newItem: any) =>
+                !prevState.Totalwork["4pm to 7pm"].some(
+                  (existingItem: any) => existingItem.createdAt === newItem.createdAt
+                )
+            ),
           ],
-        },
-        Atendace: data.data.Atendace,
-        dipartment: data.data.dipartment,
-        displayname: data.data.displayname,
-        city: data.data.city,
-      }));
+        };
+  
+        return {
+          Totalwork: newTotalwork,
+          Atendace: data.data.Atendace,
+          dipartment: data.data.dipartment,
+          displayname: data.data.displayname,
+          city: data.data.city,
+        };
+      });
     } catch (error) {
       toast({
         description: "Failed to send data.",
@@ -139,6 +158,7 @@ export default function Atendace() {
       setispending(false);
     }
   };
+  
 
   return (
     <>
