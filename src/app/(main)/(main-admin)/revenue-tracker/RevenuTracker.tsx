@@ -62,6 +62,8 @@ export default function RevenuTracker() {
       task10: "",
       task11: "",
       task12: "",
+      task13:"",
+     
     },
   });
   const submithandler = async (value: RevenueTrackerValue) => {
@@ -81,6 +83,8 @@ export default function RevenuTracker() {
         task10: value.task10,
         task11: value.task11,
         task12: value.task12,
+        task13: value.task13,
+      
       });
       form.reset();
       toast({
@@ -208,7 +212,7 @@ export default function RevenuTracker() {
                     </div>
                   </TableHead>
 
-                  <TableHead colSpan={5} className="border-2 border-blue-400">
+                  <TableHead colSpan={4} className="border-2 border-blue-400">
                     <p className="mt-3 text-center">SALE</p>
                     <p className="mt-2 w-full border border-blue-500"></p>
                     <div className="flex items-center justify-around py-2">
@@ -216,7 +220,17 @@ export default function RevenuTracker() {
                       <p className="">WHOLESALE</p>
                       <p className="">LOOSE</p>
                       <p className="">LAB</p>
-                      <p className="">RECEPN</p>
+                  
+                    </div>
+                  </TableHead>
+                  <TableHead colSpan={2} className="border-2 border-blue-400">
+                    <p className="mt-3 text-center">RECEPTION</p>
+                    <p className="mt-2 w-full border border-blue-500"></p>
+                    <div className="flex items-center justify-around py-2">
+                      <p className="">FEE</p>
+                      <p className="">NEW</p>
+                      
+                  
                     </div>
                   </TableHead>
 
@@ -512,6 +526,26 @@ export default function RevenuTracker() {
                       )}
                     />
                   </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    <FormField
+                      control={form.control}
+                      name="task13"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              className="border-foreground"
+                              {...field}
+                              type="number"
+                            />
+                          </FormControl>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TableCell>
+
                 </TableRow>
               </TableBody>
             </Table>
@@ -649,7 +683,7 @@ export default function RevenuTracker() {
               </div>
             </TableHead>
 
-            <TableHead colSpan={5} className="border-2 border-blue-400">
+            <TableHead colSpan={4} className="border-2 border-blue-400">
               <p className="mt-3 text-center">SALE</p>
               <p className="mt-2 w-full border border-blue-500"></p>
               <div className="flex items-center  gap-8 justify-around py-2">
@@ -657,7 +691,16 @@ export default function RevenuTracker() {
                 <p className="">WHOLESALE</p>
                 <p className="">LOOSE</p>
                 <p className="">LAB</p>
-                <p className="">RECEPN</p>
+
+              </div>
+            </TableHead>
+            <TableHead colSpan={2} className="border-2 border-blue-400">
+              <p className="mt-3 text-center">RECEPTION</p>
+              <p className="mt-2 w-full border border-blue-500"></p>
+              <div className="flex items-center  gap-8 justify-around py-2">
+                <p className="">FEE</p>
+                <p className="">NEW</p>
+
               </div>
             </TableHead>
 
@@ -732,6 +775,10 @@ export default function RevenuTracker() {
                 <TableCell className="border-2 border-blue-400">
                   {v.task12}
                 </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {v.task13}
+                </TableCell>
+               
 
                 <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(v.createdAt)}

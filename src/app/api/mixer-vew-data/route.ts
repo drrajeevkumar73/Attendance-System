@@ -13,9 +13,9 @@ export async function POST(req: NextRequest) {
     if (!user) throw Error("unauthorized");
     const { monthname } = await req.json();
    
-    // const body = calenderSchema.parse({ monthname });
+    const body = calenderSchema.parse({ monthname });
 
-    const userdata = await prisma.hdod.findMany({
+    const userdata = await prisma.mixer.findMany({
       where: {
         userId: user.id,
       },
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
         createdAt:"desc"
       }
     });
+    console.log(userdata)
 
     if (!userdata) {
       return NextResponse.json(
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     // Month-wise filtering
     const filteredTodaysWork = userdata.filter(
-      (work: any) => formatRelativeMonth(work.createdAt) === monthname,
+      (work: any) => formatRelativeMonth(work.createdAt) === body.monthname,
     );
     
     return NextResponse.json(filteredTodaysWork);

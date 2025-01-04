@@ -217,7 +217,24 @@ export default function Menubar({ className }: MenuBarProps) {
                 </Button>
               </>
             )
-              :
+              : user.dipartment === "MIXER" ? (
+                <>
+                  <Button
+                    className={`flex items-center justify-start gap-3 ${pathname == "/mixer-excel-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                    title="Excel Part "
+                    asChild
+                  >
+                    <Link href={"/mixer-excel-data"}>Excel Part</Link>
+                  </Button>
+                  <Button
+                    className={`flex items-center justify-start gap-3 ${pathname == "/mixer-vew-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                    title="Veiw Excel Data"
+                    asChild
+                  >
+                    <Link href={"/mixer-vew-data"}>Veiw Excel Data</Link>
+                  </Button>
+                </>
+              ):
           (
             ""
           )}

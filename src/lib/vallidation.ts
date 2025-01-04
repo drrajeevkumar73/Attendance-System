@@ -220,6 +220,7 @@ export const revenutrackerSchema = z.object({
   task10: z.string().trim(),
   task11: z.string().trim(),
   task12: z.string().trim(),
+  task13: z.string().trim(),
 });
 
 export type RevenueTrackerValue = z.infer<typeof revenutrackerSchema>;
@@ -258,3 +259,16 @@ export const mediceCHAGESchema = z.object({
 });
 
 export type MedicibeValue = z.infer<typeof mediceCHAGESchema>;
+
+
+export const mixerSchema = z.object({
+  date: z.string().trim(),
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+  task5: z.string().trim(),
+  task6: z.string().trim(),
+});
+
+export type MixerValue = z.infer<typeof mixerSchema>;

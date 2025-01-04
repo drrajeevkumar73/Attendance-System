@@ -404,6 +404,31 @@ export default function SatffExelAdmin() {
 
       // Write to file
       XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
+    }else if (tabelex.dipartment === "mixer") {
+      const excelData = tabelex?.data.map((v: any) => ({
+        Date: formatRelativeMonthDate(v.createdAt),
+        "Medicine Name": v.task1,
+        "QTY": v.task2,
+        "Order by": v.task3,
+        "Marg Entry": v.task4,
+        "Breakge": v.task5,
+        "Marg Entry by": v.task6,
+        Time: formatRelativeTime(v.createdAt),
+      }));
+
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        `${tabelex.deipartment}`,
+      );
+
+      // Write to file
+      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
     }
   };
 
@@ -1593,7 +1618,84 @@ export default function SatffExelAdmin() {
             )}
           </Table>
         </div>
-      ) : (
+      ) : tabelex.dipartment === "mixer" ? (
+        <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
+          <Table >
+            <TableHeader>
+            <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Date</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Medicine Name
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">QTY</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Order by{" "}
+            </TableHead>
+
+            <TableHead className="border-2 border-blue-400">
+              Marg Entry{" "}
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Breakge </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Marg Entry by{" "}
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Time</TableHead>
+          </TableRow>
+            </TableHeader>
+
+            {ispending ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : tabelex?.data?.length === 0 ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={3} className="">
+                    No Data Found
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : (
+              tabelex?.data?.map((v: any, i) => (
+                <TableBody className="border border-primary" key={i}>
+                  <TableRow>
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeMonthDate(v.createdAt)}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task1}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task2}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task3}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task4}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task5}
+                    </TableCell>
+                    <TableCell className="border-2 border-blue-400">
+                      {v.task6}
+                    </TableCell>
+                    
+
+                    <TableCell className="border-2 border-blue-400">
+                      {formatRelativeTime(v.createdAt)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))
+            )}
+          </Table>
+        </div>
+      ) :  (
         ""
       )}
     </>
