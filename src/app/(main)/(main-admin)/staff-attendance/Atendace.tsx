@@ -76,15 +76,31 @@ export default function Atendace() {
     selctor();
   }, []);
 
-  const [userdate, setuserdat] = useState({
-    Totalwork: [],
+  interface Totalwork {
+    "10am to 1pm": any[];
+    "1pm to 4pm": any[];
+    "4pm to 7pm": any[];
+  }
+
+  interface Userdata {
+    Totalwork: Totalwork;
+    Atendace: any; // Adjust this to the actual type of Atendace
+    dipartment: string;
+    displayname: string;
+    city: string;
+  }
+
+  const [userdate, setuserdat] = useState<Userdata>({
+    Totalwork: {
+      "10am to 1pm": [],
+      "1pm to 4pm": [],
+      "4pm to 7pm": [],
+    },
     Atendace: "",
     dipartment: "",
     displayname: "",
     city: "",
   });
-
-  const [late, setlate] = useState([]);
 
   const onSubmit = async (value: SerchValue) => {
     try {
@@ -93,37 +109,37 @@ export default function Atendace() {
         username: value.username,
         monthname: value.monthname,
       });
-      setuserdat({
-        Totalwork: data.data.Totalwork,
+
+      // Update state correctly
+      setuserdat((prevState) => ({
+        Totalwork: {
+          "10am to 1pm": [
+            ...prevState.Totalwork["10am to 1pm"],
+            ...data.data.timeSlots["10am to 1pm"],
+          ],
+          "1pm to 4pm": [
+            ...prevState.Totalwork["1pm to 4pm"],
+            ...data.data.timeSlots["1pm to 4pm"],
+          ],
+          "4pm to 7pm": [
+            ...prevState.Totalwork["4pm to 7pm"],
+            ...data.data.timeSlots["4pm to 7pm"],
+          ],
+        },
         Atendace: data.data.Atendace,
         dipartment: data.data.dipartment,
         displayname: data.data.displayname,
         city: data.data.city,
-      });
-    
-      setlate(data.data.filteredLatesatus);
+      }));
     } catch (error) {
       toast({
-        description: "Faild to send deta.",
+        description: "Failed to send data.",
       });
     } finally {
       setispending(false);
     }
   };
 
-  const [tab, setTad] = useState(1);
-  const plushHandler = () => {
-    setTad(1);
-  };
-  const minusHandler = () => {
-    setTad(0);
-  };
-  function formatMinutesToHoursMinutes(minutes:any) {
-  if (!minutes) return "0h 0m"; // Handle null or undefined
-  const hours = Math.floor(minutes / 60); // Calculate hours
-  const remainingMinutes = minutes % 60; // Calculate remaining minutes
-  return `${hours}h ${remainingMinutes}m`; // Return formatted string
-}
   return (
     <>
       <Form {...form}>
@@ -148,7 +164,7 @@ export default function Atendace() {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel className="text-green-500">
-                          RANCHI 
+                          RANCHI
                         </SelectLabel>
                         {client?.RANCHI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -156,7 +172,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          RANCHI SHOP 
+                          RANCHI SHOP
                         </SelectLabel>
                         {client?.RANCHI_SHOP.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -164,7 +180,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          PATNA 
+                          PATNA
                         </SelectLabel>
                         {client?.PATNA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -173,7 +189,7 @@ export default function Atendace() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          KOLKATA 
+                          KOLKATA
                         </SelectLabel>
                         {client?.KOLKATA.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -182,7 +198,7 @@ export default function Atendace() {
                         ))}
 
                         <SelectLabel className="text-green-500">
-                          GAUR CITY 
+                          GAUR CITY
                         </SelectLabel>
                         {client?.GAUR_CITY.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -190,7 +206,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          SPECTRUM 
+                          SPECTRUM
                         </SelectLabel>
                         {client?.SPECTRUM.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -198,7 +214,7 @@ export default function Atendace() {
                           </SelectItem>
                         ))}
                         <SelectLabel className="text-green-500">
-                          JAGTAULI 
+                          JAGTAULI
                         </SelectLabel>
                         {client?.JAGTAULI.map((v: any, i: any) => (
                           <SelectItem key={i} value={v.id}>
@@ -232,6 +248,9 @@ export default function Atendace() {
 
                   <SelectContent>
                     <SelectGroup>
+                      <SelectItem value="Today">Today</SelectItem>
+                      <SelectItem value="Yesterday">Yesterday</SelectItem>
+
                       <SelectItem value="January">January</SelectItem>
                       <SelectItem value="February">February</SelectItem>
                       <SelectItem value="March">March</SelectItem>
@@ -302,21 +321,7 @@ export default function Atendace() {
         </CardFooter>
       </Card>
 
-      <div>
-        <Button
-          onClick={plushHandler}
-          className={` ${tab === 1 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
-        >
-          Task
-        </Button>{" "}
-        <Button
-          onClick={minusHandler}
-          className={` ${tab === 0 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
-        >
-          Late
-        </Button>
-      </div>
-      <div className={`w-full ${tab === 1 ? "block" : "hidden"}`}>
+      {/* Time Slot 10AM to 1PM */}
       <Table>
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
@@ -325,20 +330,53 @@ export default function Atendace() {
             </TableHead>
             <TableHead className="border-2 border-blue-400">Work</TableHead>
             <TableHead className="border-2 border-blue-400 text-right">
-              Time
+              10AM - 1PM
             </TableHead>
           </TableRow>
         </TableHeader>
 
-        {ispending ? (
-          <TableBody>
+        <TableBody>
+          {userdate.Totalwork["10am to 1pm"].length > 0 ? (
+            userdate.Totalwork["10am to 1pm"].map(
+              (item: any, index: number) => (
+                <TableRow key={index}>
+                  <TableCell className="border-2 border-blue-400 font-medium">
+                    {formatRelativeMonthDate(item.createdAt)}
+                  </TableCell>
+                  <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
+                    {item.content}
+                  </TableCell>
+                  <TableCell className="w-[200px] border-2 border-blue-400 text-right">
+                    {formatRelativeTime(item.createdAt)}
+                  </TableCell>
+                </TableRow>
+              ),
+            )
+          ) : (
             <TableRow>
-              <TableCell className="font-medium">Loading...</TableCell>
+              <TableCell colSpan={3}>No data available</TableCell>
             </TableRow>
-          </TableBody>
-        ) : userdate.Totalwork.length > 0 ? (
-          <TableBody>
-            {userdate.Totalwork.map((item: any, index) => (
+          )}
+        </TableBody>
+      </Table>
+
+      {/* Time Slot 1PM to 4PM */}
+      <Table>
+        <TableHeader>
+          <TableRow className="border border-primary bg-primary">
+            <TableHead className="w-[100px] border-2 border-blue-400">
+              Date
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Work</TableHead>
+            <TableHead className="border-2 border-blue-400 text-right">
+              1PM - 4PM
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {userdate.Totalwork["1pm to 4pm"].length > 0 ? (
+            userdate.Totalwork["1pm to 4pm"].map((item: any, index: number) => (
               <TableRow key={index}>
                 <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(item.createdAt)}
@@ -350,75 +388,51 @@ export default function Atendace() {
                   {formatRelativeTime(item.createdAt)}
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        ) : (
-          <tbody>
+            ))
+          ) : (
             <TableRow>
               <TableCell colSpan={3}>No data available</TableCell>
             </TableRow>
-          </tbody>
-        )}
+          )}
+        </TableBody>
       </Table>
-      </div>
-      <div className={`w-full ${tab === 0 ? "block" : "hidden"}`}>
+
+      {/* Time Slot 4PM to 7PM */}
       <Table>
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="w-[100px] border-2 border-blue-400">
               Date
             </TableHead>
-            <TableHead className="border-2 border-blue-400">Status</TableHead>
-            <TableHead className="border-2 border-blue-400">Late Time</TableHead>
+            <TableHead className="border-2 border-blue-400">Work</TableHead>
             <TableHead className="border-2 border-blue-400 text-right">
-              Time
+              4PM - 7PM
             </TableHead>
           </TableRow>
         </TableHeader>
 
-        {ispending ? (
-          <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">Loading...</TableCell>
-            </TableRow>
-          </TableBody>
-        ) : late?.length > 0 ? (
-          <TableBody>
-            {late?.map((item: any, index) => (
+        <TableBody>
+          {userdate.Totalwork["4pm to 7pm"].length > 0 ? (
+            userdate.Totalwork["4pm to 7pm"].map((item: any, index: number) => (
               <TableRow key={index}>
                 <TableCell className="border-2 border-blue-400 font-medium">
                   {formatRelativeMonthDate(item.createdAt)}
                 </TableCell>
-               
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
-                  {item.status}
-                </TableCell>
-                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
-                  {/* {formatMinutesToHoursMinutes(item.lateMinutes)} */}
-                  {
-                    item.lateMinutes>60?
-                    formatMinutesToHoursMinutes(item.lateMinutes)
-                    :
-                    item.lateMinutes+'m'
-                  }
+                  {item.content}
                 </TableCell>
                 <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                   {formatRelativeTime(item.createdAt)}
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        ) : (
-          <tbody>
+            ))
+          ) : (
             <TableRow>
               <TableCell colSpan={3}>No data available</TableCell>
             </TableRow>
-          </tbody>
-        )}
+          )}
+        </TableBody>
       </Table>
-      </div>
-
-     
     </>
   );
 }

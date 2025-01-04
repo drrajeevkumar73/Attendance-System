@@ -1,132 +1,3 @@
-// import moment from "moment-timezone";
-// import prisma from "@/lib/prisma";
-// import { NextRequest, NextResponse } from "next/server";
-// import { validateRequest } from "@/auth";
-// import { formSchema } from "@/lib/vallidation";
-
-// export async function POST(req: NextRequest) {
-//   try {
-//     const { user } = await validateRequest();
-//     if (!user) throw new Error("unauthorized");
-
-//     const { content } = await req.json();
-//     const data = formSchema.parse({ content });
-
-//     // Set timezone to India (Asia/Kolkata)
-//     const currentDate = moment().tz('Asia/Kolkata'); // Set current date and time in India
-//     const currentHour = currentDate.hour(); // Get current hour in India
-
-//     // Define time ranges, including 6 PM - 8 PM
-//     const timeRanges = [
-//       { start: 10, end: 12 }, // 10 AM to 12 PM
-//       { start: 12, end: 14 }, // 12 PM to 2 PM
-//       { start: 14, end: 16 }, // 2 PM to 4 PM
-//       { start: 16, end: 18 }, // 4 PM to 6 PM
-//       { start: 18, end: 20 }, // 6 PM to 8 PM
-//     ];
-
-//     // Determine the current time range
-//     const timeRange = timeRanges.find(
-//       (range) => currentHour >= range.start && currentHour < range.end,
-//     );
-
-//     if (!timeRange) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           message: "Invalid time range for task submission.",
-//         },
-//         { status: 400 },
-//       );
-//     }
-
-//     // Restrict to one task submission per time range
-//     const existingTask = await prisma.todayswork.findFirst({
-//       where: {
-//         userId: user.id,
-//         createdAt: {
-//           gte: currentDate.clone().startOf('hour').set('hour', timeRange.start).toDate(),
-//           lte: currentDate.clone().endOf('hour').set('hour', timeRange.end).toDate(),
-//         },
-//       },
-//     });
-
-//     if (existingTask) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           message: `You can only submit one task between ${timeRange.start}:00 and ${timeRange.end}:00.`,
-//         },
-//         { status: 400 },
-//       );
-//     }
-
-//     // Save the task for the current slot
-//     const savedTask = await prisma.todayswork.create({
-//       data: {
-//         userId: user.id,
-//         content: data.content,
-//         createdAt: currentDate.toDate(), // Store in India time
-//       },
-//     });
-
-//     // Attendance remains tied to the 4 PM - 6 PM slot only
-//     if (currentHour >= 16 && currentHour < 18) {
-//       let isPresent = true;
-
-//       // Check all previous slots (10 AM to 4 PM) and the 4 PM - 6 PM slot
-//       for (let { start, end } of timeRanges.slice(0, 4)) {
-//         const slotData = await prisma.todayswork.findFirst({
-//           where: {
-//             userId: user.id,
-//             createdAt: {
-//               gte: currentDate.clone().startOf('hour').set('hour', start).toDate(),
-//               lte: currentDate.clone().endOf('hour').set('hour', end).toDate(),
-//             },
-//           },
-//         });
-
-//         // Check if slot has valid content
-//         if (!slotData || !slotData.content) {
-//           isPresent = false;
-//           break;
-//         }
-
-//         // Count line breaks
-//         const breaksCount = (slotData.content.match(/\n/g) || []).length;
-
-//         if (breaksCount < 2) {
-//           isPresent = false;
-//           break;
-//         }
-//       }
-
-//       // Save attendance record
-//       await prisma.attendance.create({
-//         data: {
-//           userId: user.id,
-//           createdAt: currentDate.toDate(), // Store in India time
-//           status: isPresent ? "present" : "absent",
-//         },
-//       });
-//     }
-
-//     return NextResponse.json(savedTask);
-//   } catch (error) {
-//     console.error("Error occurred:", error);
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         message: "Internal server error",
-//       },
-//       { status: 500 },
-//     );
-//   }
-// }
-
-
-
-
 import moment from "moment-timezone";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
@@ -145,50 +16,49 @@ export async function POST(req: NextRequest) {
     const currentDate = moment().tz("Asia/Kolkata");
     const currentHour = currentDate.hour();
 
-    // Define time ranges
-    const timeRanges = [
-      { start: 10, end: 12 }, // 10 AM to 12 PM
-      { start: 12, end: 14 }, // 12 PM to 2 PM
-      { start: 14, end: 16 }, // 2 PM to 4 PM
-      { start: 16, end: 18 }, // 4 PM to 6 PM
-      { start: 18, end: 20 }, // 6 PM to 8 PM
+    // Updated time slots (10 AM - 1 PM, 1 PM - 4 PM, 4 PM - 7 PM)
+    const timeSlots = [
+      { start: 10, end: 13 }, // 10 AM to 1 PM
+      { start: 13, end: 16 }, // 1 PM to 4 PM
+      { start: 16, end: 19 }, // 4 PM to 7 PM
     ];
 
-    // Determine current time range
-    const timeRange = timeRanges.find(
-      (range) => currentHour >= range.start && currentHour < range.end
+    // Check if current time falls in any slot
+    const timeSlot = timeSlots.find(
+      (slot) => currentHour >= slot.start && currentHour < slot.end
     );
 
-    if (!timeRange) {
+    if (!timeSlot) {
       return NextResponse.json(
-        { success: false, message: "Invalid time range for task submission." },
+        { success: false, message: "Entries allowed only between 10 AM and 7 PM." },
         { status: 400 }
       );
     }
 
-    // Check for duplicate entry in current time range
+    // Check for duplicate entry in the current time slot
     const existingEntry = await prisma.todayswork.findFirst({
       where: {
         userId: user.id,
         createdAt: {
-          gte: currentDate.clone().startOf("hour").set("hour", timeRange.start).toDate(),
-          lte: currentDate.clone().endOf("hour").set("hour", timeRange.end).toDate(),
+          gte: currentDate.clone().set("hour", timeSlot.start).minute(0).second(0).toDate(),
+          lte: currentDate.clone().set("hour", timeSlot.end).minute(59).second(59).toDate(),
         },
       },
     });
-
+    
     if (existingEntry) {
       return NextResponse.json(
-        { success: false, message: "Entry already exists for this time range." },
+        { success: false, message: "Entry already exists for this time slot." },
         { status: 400 }
       );
     }
+    
 
-    // Validate `/n` count in content
+    // Validate content (minimum 2 points required)
     const newlineCount = (data.content.match(/\n/g) || []).length;
     if (newlineCount < 1) {
       return NextResponse.json(
-        { success: false, message: "Content must contain at least one newline character." },
+        { success: false, message: "Content must contain at least 2 points." },
         { status: 400 }
       );
     }
@@ -202,24 +72,24 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Attendance calculation only for 4 PM - 6 PM
-    if (currentHour >= 16 && currentHour < 18) {
+    // Attendance calculation for the 4 PM to 7 PM slot
+    if (currentHour >= 16 && currentHour < 19) {
       let isPresent = true;
 
-      // Check all previous slots (10 AM to 4 PM)
-      for (let { start, end } of timeRanges.slice(0, 3)) {
+      // Check content for all time slots
+      for (let slot of timeSlots) {
         const slotData = await prisma.todayswork.findFirst({
           where: {
             userId: user.id,
             createdAt: {
-              gte: currentDate.clone().startOf("hour").set("hour", start).toDate(),
-              lte: currentDate.clone().endOf("hour").set("hour", end).toDate(),
+              gte: currentDate.clone().set("hour", slot.start).toDate(),
+              lte: currentDate.clone().set("hour", slot.end).toDate(),
             },
           },
         });
 
-        // Validate slot content and `/n` count
-        if (!slotData || !slotData.content || (slotData.content.match(/\n/g) || []).length < 1) {
+        // Validate if content exists and meets the minimum points requirement
+        if (!slotData || (slotData.content.match(/\n/g) || []).length < 2) {
           isPresent = false;
           break;
         }
@@ -235,7 +105,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json(savedTask);
+    return NextResponse.json({ success: true, data: savedTask });
   } catch (error) {
     console.error("Error occurred:", error);
     return NextResponse.json(

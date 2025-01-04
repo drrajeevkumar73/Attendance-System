@@ -7,10 +7,13 @@ import "./style.css";
 
 import { EditorContent } from "@tiptap/react";
 import LodingButton from "@/components/LodingButton";
-import { useSubmitPost } from "./submitpost";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
 export default function DailyWork() {
-  const useSubmitPostmuation = useSubmitPost();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -39,19 +42,53 @@ export default function DailyWork() {
         acc.push(current);
       }
       return acc;
-    }, [])
+    }, [] )
     .join("\n");
 
-  const onSubmit = async () => {
-    useSubmitPostmuation.mutate(
-      { content: cleanedPost }, // Send cleaned post content with unique lines
-      {
-        onSuccess: () => {
-          editor?.commands.clearContent(); // Clear editor on success
-        },
-      },
-    );
-  };
+    const onSubmit = async () => {
+      setLoading(true); // Start loading
+    
+      try {
+        // Log the payload before sending
+        console.log("Posting data:", { content: cleanedPost });
+    
+        // Replace this with the actual API URL for your backend
+        const response = await axios.post("/api/work", { content: cleanedPost });
+    
+        if (response.status === 200) {
+          toast({
+            title: "Success",
+            description: "Post submitted successfully!",
+          });
+          editor?.commands.clearContent(); // Clear editor content on success
+        }
+      } catch (error: any) {
+      
+    
+        // Check if error is an AxiosError
+        if (axios.isAxiosError(error)) {
+          // Try to extract the backend error message from the response
+          const errorMessage = error?.response?.data?.message || "There was an issue while submitting your post.";
+          
+          // Display the backend error message in the toast
+          toast({
+            title: "Error",
+            description: errorMessage,
+            variant: "destructive",
+          });
+        } else {
+          // Handle non-Axios errors
+          toast({
+            title: "Error",
+            description: "An unknown error occurred.",
+            variant: "destructive",
+          });
+        }
+      } finally {
+        setLoading(false); // Stop loading regardless of success or failure
+      }
+    };
+    
 
   return (
     <div className="space-y-6">
@@ -62,7 +99,7 @@ export default function DailyWork() {
 
       <LodingButton
         onClick={onSubmit}
-        loding={useSubmitPostmuation.isPending}
+        loding={loading} // Use your own loading state
         disabled={!cleanedPost.trim()}
         className="min-w-20"
       >
