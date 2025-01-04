@@ -154,9 +154,10 @@ export default function RevenuTracker() {
       "SALE :- WHOLESALE": v.task7,
       "SALE :- LOOSE": v.task8,
       "SALE :- LAB": v.task9,
-      "SALE :- RECEPN": v.task10,
-      "TOTAL :- PATIENT": v.task11,
-      "NEW :- PATIENT": v.task12,
+      "RECEPTION :- FEE": v.task10,
+      "RECEPTION :- NEW": v.task11,
+      "TOTAL :- PATIENT": v.task12,
+      "NEW :- PATIENT": v.task13,
       Time: formatRelativeTime(v.createdAt),
     }));
 
