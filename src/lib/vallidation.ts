@@ -272,3 +272,14 @@ export const mixerSchema = z.object({
 });
 
 export type MixerValue = z.infer<typeof mixerSchema>;
+export const ecartSchema = z.object({
+  date: z.string().trim(),
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+  task5: z.string().trim(),
+  task6: z.string().trim(),
+});
+
+export type EcartValue = z.infer<typeof exelSchema>;

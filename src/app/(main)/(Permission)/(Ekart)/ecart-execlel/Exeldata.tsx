@@ -23,6 +23,8 @@ import { useToast } from "@/hooks/use-toast";
 import {
   addtaskSchema,
   AddtaskValue,
+  ecartSchema,
+  EcartValue,
   exelSchema,
   ExelValue,
 } from "@/lib/vallidation";
@@ -34,8 +36,8 @@ import { date } from "zod";
 
 export default function Exeldata() {
   const { toast } = useToast();
-  const form = useForm<ExelValue>({
-    resolver: zodResolver(exelSchema),
+  const form = useForm<EcartValue>({
+    resolver: zodResolver(ecartSchema),
     defaultValues: {
       date:"",
       task1: "",
