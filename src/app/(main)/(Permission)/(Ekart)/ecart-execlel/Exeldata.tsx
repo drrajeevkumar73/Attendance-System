@@ -53,7 +53,7 @@ export default function Exeldata() {
   const [ispending, setispending] = useState(false);
  
 
-  const submithandler = async (value: ExelValue) => {
+  const submithandler = async (value: EcartValue) => {
     try {
       setispending(true);
       
