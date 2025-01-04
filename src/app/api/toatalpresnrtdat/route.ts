@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import moment from "moment-timezone";
 import { formatRelativeMonth } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -55,22 +56,19 @@ export async function POST(req: NextRequest) {
       "4pm to 7pm": [],
     };
 
-    // Get today's date
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Get today's date in IST
+    const today = moment().tz("Asia/Kolkata").startOf("day");
 
     // Filter works based on monthname
     const filteredTodaysWork = userdata.Todayswork?.filter((work: any) => {
-      const createdAt = new Date(work.createdAt);
+      const createdAt = moment(work.createdAt).tz("Asia/Kolkata");
 
       if (monthname === "Today") {
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
-        return createdAt >= today && createdAt < tomorrow;
+        const tomorrow = today.clone().add(1, "days");
+        return createdAt.isSameOrAfter(today) && createdAt.isBefore(tomorrow);
       } else if (monthname === "Yesterday") {
-        const yesterdayStart = new Date(today);
-        yesterdayStart.setDate(today.getDate() - 1);
-        return createdAt >= yesterdayStart && createdAt < today;
+        const yesterdayStart = today.clone().subtract(1, "days");
+        return createdAt.isSameOrAfter(yesterdayStart) && createdAt.isBefore(today);
       } else if (monthname) {
         return monthname === formatRelativeMonth(work.createdAt);
       }
@@ -79,8 +77,8 @@ export async function POST(req: NextRequest) {
 
     // Distribute works into time slots
     filteredTodaysWork?.forEach((work: any) => {
-      const createdAt = new Date(work.createdAt);
-      const hour = createdAt.getHours();
+      const createdAt = moment(work.createdAt).tz("Asia/Kolkata");
+      const hour = createdAt.hour();
 
       if (hour >= 10 && hour < 13) {
         timeSlots["10am to 1pm"].push(work);
@@ -93,14 +91,13 @@ export async function POST(req: NextRequest) {
 
     // Filter attendance based on the monthname
     const filteredAttendance = userdata.Atendace?.filter((att: any) => {
-      const createdAt = new Date(att.createdAt);
+      const createdAt = moment(att.createdAt).tz("Asia/Kolkata");
 
       if (monthname === "Today") {
-        return createdAt >= today;
+        return createdAt.isSameOrAfter(today);
       } else if (monthname === "Yesterday") {
-        const yesterdayStart = new Date(today);
-        yesterdayStart.setDate(today.getDate() - 1);
-        return createdAt >= yesterdayStart && createdAt < today;
+        const yesterdayStart = today.clone().subtract(1, "days");
+        return createdAt.isSameOrAfter(yesterdayStart) && createdAt.isBefore(today);
       } else if (monthname) {
         return monthname === formatRelativeMonth(att.createdAt);
       }
