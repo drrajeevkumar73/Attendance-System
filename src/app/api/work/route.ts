@@ -16,14 +16,14 @@ export async function POST(req: NextRequest) {
     const currentDate = moment().tz("Asia/Kolkata");
     const currentHour = currentDate.hour();
 
-    // Updated time slots (10 AM - 1 PM, 1 PM - 4 PM, 4 PM - 7 PM)
+    // Define time slots
     const timeSlots = [
       { start: 10, end: 13 }, // 10 AM to 1 PM
       { start: 13, end: 16 }, // 1 PM to 4 PM
       { start: 16, end: 19 }, // 4 PM to 7 PM
     ];
 
-    // Check if current time falls in any slot
+    // Check if current time falls within any slot
     const timeSlot = timeSlots.find(
       (slot) => currentHour >= slot.start && currentHour < slot.end
     );
@@ -45,14 +45,13 @@ export async function POST(req: NextRequest) {
         },
       },
     });
-    
+
     if (existingEntry) {
       return NextResponse.json(
         { success: false, message: "Entry already exists for this time slot." },
         { status: 400 }
       );
     }
-    
 
     // Validate content (minimum 2 points required)
     const newlineCount = (data.content.match(/\n/g) || []).length;
@@ -76,7 +75,6 @@ export async function POST(req: NextRequest) {
     if (currentHour >= 16 && currentHour < 19) {
       let isPresent = true;
 
-      // Check content for all time slots
       for (let slot of timeSlots) {
         const slotData = await prisma.todayswork.findFirst({
           where: {
@@ -88,8 +86,8 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        // Validate if content exists and meets the minimum points requirement
-        if (!slotData || (slotData.content.match(/\n/g) || []).length < 2) {
+        // Check if valid content exists for the slot
+        if (!slotData || (slotData.content.match(/\n/g) || []).length < 1) {
           isPresent = false;
           break;
         }
