@@ -72,36 +72,38 @@ export async function POST(req: NextRequest) {
     });
 
     // Attendance calculation for the 4 PM to 7 PM slot
-    if (currentHour >= 16 && currentHour < 19) {
-      let isPresent = true;
+   // Attendance calculation for the 4 PM to 7 PM slot
+if (currentHour >= 16 && currentHour < 19) {
+  let isPresent = true;
 
-      for (let slot of timeSlots) {
-        const slotData = await prisma.todayswork.findFirst({
-          where: {
-            userId: user.id,
-            createdAt: {
-              gte: currentDate.clone().set("hour", slot.start).toDate(),
-              lte: currentDate.clone().set("hour", slot.end).toDate(),
-            },
-          },
-        });
-
-        // Check if valid content exists for the slot
-        if (!slotData || (slotData.content.match(/\n/g) || []).length < 1) {
-          isPresent = false;
-          break;
-        }
-      }
-
-      // Save attendance
-      await prisma.attendance.create({
-        data: {
-          userId: user.id,
-          createdAt: currentDate.toDate(),
-          status: isPresent ? "present" : "absent",
+  for (let slot of timeSlots) {
+    const slotData = await prisma.todayswork.findFirst({
+      where: {
+        userId: user.id,
+        createdAt: {
+          gte: currentDate.clone().set("hour", slot.start).minute(0).second(0).toDate(),
+          lte: currentDate.clone().set("hour", slot.end).minute(59).second(59).toDate(),
         },
-      });
+      },
+    });
+
+    // Check if valid content exists for the slot
+    if (!slotData || (slotData.content.match(/\n/g) || []).length < 1) {
+      isPresent = false;
+      break;
     }
+  }
+
+  // Save attendance
+  await prisma.attendance.create({
+    data: {
+      userId: user.id,
+      createdAt: currentDate.toDate(),
+      status: isPresent ? "present" : "absent",
+    },
+  });
+}
+
 
     return NextResponse.json({ success: true, data: savedTask });
   } catch (error) {
