@@ -72,10 +72,11 @@ export async function POST(req: NextRequest) {
     });
 
     // Attendance calculation for the 4 PM to 7 PM slot
-   // Attendance calculation for the 4 PM to 7 PM slot
+// Attendance calculation for the 4 PM to 7 PM slot
 if (currentHour >= 16 && currentHour < 19) {
   let isPresent = true;
 
+  // Iterate through all time slots and check content
   for (let slot of timeSlots) {
     const slotData = await prisma.todayswork.findFirst({
       where: {
@@ -87,14 +88,14 @@ if (currentHour >= 16 && currentHour < 19) {
       },
     });
 
-    // Check if valid content exists for the slot
+    // Mark absent if any slot is missing valid content
     if (!slotData || (slotData.content.match(/\n/g) || []).length < 1) {
       isPresent = false;
       break;
     }
   }
 
-  // Save attendance
+  // Save attendance based on validation
   await prisma.attendance.create({
     data: {
       userId: user.id,
@@ -103,6 +104,7 @@ if (currentHour >= 16 && currentHour < 19) {
     },
   });
 }
+
 
 
     return NextResponse.json({ success: true, data: savedTask });
