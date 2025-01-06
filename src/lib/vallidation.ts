@@ -128,7 +128,7 @@ export type ExelValue = z.infer<typeof exelSchema>;
 export const exeadminSchema = z.object({
   userid: requiredString,
   monthname: requiredString,
-  dipartment: requiredString,
+  
 });
 
 export type ExeladminValue = z.infer<typeof exeadminSchema>;

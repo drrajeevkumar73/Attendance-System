@@ -5,11 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
 
-    const { userid,monthname,dipartment } = await req.json();
+    const { userid,monthname } = await req.json();
 
     const userdata =await prisma.user.findFirst({
         where:{
-            dipartment:dipartment,
+            // dipartment:dipartment,
+            id:userid
         },
 
     })

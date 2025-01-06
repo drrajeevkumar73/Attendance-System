@@ -49,7 +49,7 @@ export default function SatffExelAdmin() {
     defaultValues: {
       userid: "",
       monthname: "",
-      dipartment: "",
+ 
     },
   });
 
@@ -97,7 +97,7 @@ export default function SatffExelAdmin() {
       const { data } = await axios.post("/api/Staffexceladmin", {
         userid: value.userid,
         monthname: value.monthname,
-        dipartment: value.dipartment,
+     
       });
 
       settablseex({
@@ -430,32 +430,6 @@ export default function SatffExelAdmin() {
       // Write to file
       XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
     }
-    else if (tabelex.dipartment === "accounstant") {
-      const excelData = tabelex?.data.map((v: any) => ({
-        Date: formatRelativeMonthDate(v.createdAt),
-        "Medicine Name": v.task1,
-        QTY: v.task2,
-        "Order by": v.task3,
-        "Marg Entry": v.task4,
-        Breakge: v.task5,
-        "Marg Entry by": v.task6,
-        Time: formatRelativeTime(v.createdAt),
-      }));
-
-      // Create worksheet
-      const worksheet = XLSX.utils.json_to_sheet(excelData);
-
-      // Create workbook
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(
-        workbook,
-        worksheet,
-        `${tabelex.deipartment}`,
-      );
-
-      // Write to file
-      XLSX.writeFile(workbook, `${tabelex.name}.xlsx`);
-    }
   };
 
   const [of, setof] = useState(1);
@@ -603,78 +577,24 @@ export default function SatffExelAdmin() {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="dipartment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Dipartment</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a dipartment" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Dipartment</SelectLabel>
-                        <SelectItem value="CENTER OPS MANAGER">
-                          CENTER MANAGER
-                        </SelectItem>
-                        <SelectItem value="HR">HR</SelectItem>
-                        <SelectItem value="CASHIER">CASHIER</SelectItem>
-                        <SelectItem value="RECEPTIONS">RECEPTIONS</SelectItem>
-                        <SelectItem value="MEDICINE COUNTER">
-                          MEDICINE COUNTER
-                        </SelectItem>
-                        <SelectItem value="HD / OD"> HD / OD</SelectItem>
-                        <SelectItem value="TELECALLER DEPT">
-                          TELECALLER
-                        </SelectItem>
-                        <SelectItem value="MIXER">MIXER</SelectItem>
-                        <SelectItem value="ECART">ECART</SelectItem>
-                        <SelectItem value="DESIGNER"> DESIGNER</SelectItem>
-                        <SelectItem value="DIGITAL MARKETING">
-                          DIGITAL MARKETING
-                        </SelectItem>
-                        <SelectItem value="DOCTOR"> DOCTOR</SelectItem>
-                        <SelectItem value="MAID / OFFICE BOY">
-                          MAID / OFFICE BOY
-                        </SelectItem>
-                        <SelectItem value="GUARD"> GUARD</SelectItem>
-                        <SelectItem value="DRIVER"> DRIVER</SelectItem>
-                        <SelectItem value="ACCOUNTANT">ACCOUNTANT</SelectItem>
-                        <SelectItem value="INVENTORY"> INVENTORY</SelectItem>
-                        <SelectItem value="TRUST MARKETING">
-                          TRUST MARKETING
-                        </SelectItem>
-                        <SelectItem value="SHOP RANCHI">SHOP RANCHI</SelectItem>
-                        <SelectItem value="MIS">MIS</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <LodingButton loding={ispending} type="submit" className="w-full">
             Submit
           </LodingButton>
         </form>
       </Form>
 
-      <button
-        type="button"
-        onClick={exportToExcel}
-        className="rounded bg-blue-500 p-2 text-white"
-      >
-        {" "}
-        Export to Excel
-      </button>
+      {tabelex.dipartment === "accountant" ? (
+        ""
+      ) : (
+        <button
+          type="button"
+          onClick={exportToExcel}
+          className="rounded bg-blue-500 p-2 text-white"
+        >
+          {" "}
+          Export to Excel
+        </button>
+      )}
 
       {tabelex.dipartment === "telecaller" ? (
         <>
