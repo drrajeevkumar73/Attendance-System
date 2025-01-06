@@ -71,41 +71,46 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Attendance calculation for the 4 PM to 7 PM slot
-// Attendance calculation for the 4 PM to 7 PM slot
-if (currentHour >= 16 && currentHour < 19) {
-  let isPresent = true;
+    // Check attendance for all time slots
+    if (currentHour >= 16 && currentHour < 19) {
+      let isPresent = true; // Default to present
 
-  // Iterate through all time slots and check content
-  for (let slot of timeSlots) {
-    const slotData = await prisma.todayswork.findFirst({
-      where: {
-        userId: user.id,
-        createdAt: {
-          gte: currentDate.clone().set("hour", slot.start).minute(0).second(0).toDate(),
-          lte: currentDate.clone().set("hour", slot.end).minute(59).second(59).toDate(),
+      // Check 10 AM to 1 PM and 1 PM to 4 PM slots for valid content
+      for (let slot of timeSlots.slice(0, 2)) { // Only checking the first two slots (10-1 and 1-4)
+        const slotStart = currentDate.clone().set("hour", slot.start).minute(0).second(0).toDate();
+        const slotEnd = currentDate.clone().set("hour", slot.end).minute(59).second(59).toDate();
+
+        const slotData = await prisma.todayswork.findFirst({
+          where: {
+            userId: user.id,
+            createdAt: {
+              gte: slotStart,
+              lte: slotEnd,
+            },
+          },
+        });
+
+        // Check if content is missing or blank
+        if (!slotData || !slotData.content || slotData.content.trim() === "") {
+          console.log(`Attendance marked as ABSENT: Missing or blank content in slot ${slot.start} - ${slot.end}`);
+          isPresent = false;
+          break; // If any slot is invalid, set as absent
+        }
+      }
+
+      // Save attendance based on final status (present or absent)
+      const attendanceStatus = isPresent ? "present" : "absent";
+
+      await prisma.attendance.create({
+        data: {
+          userId: user.id,
+          createdAt: currentDate.toDate(),
+          status: attendanceStatus,
         },
-      },
-    });
+      });
 
-    // Mark absent if any slot is missing valid content
-    if (!slotData || (slotData.content.match(/\n/g) || []).length < 1) {
-      isPresent = false;
-      break;
+      console.log(`Attendance saved as ${attendanceStatus}`);
     }
-  }
-
-  // Save attendance based on validation
-  await prisma.attendance.create({
-    data: {
-      userId: user.id,
-      createdAt: currentDate.toDate(),
-      status: isPresent ? "present" : "absent",
-    },
-  });
-}
-
-
 
     return NextResponse.json({ success: true, data: savedTask });
   } catch (error) {
