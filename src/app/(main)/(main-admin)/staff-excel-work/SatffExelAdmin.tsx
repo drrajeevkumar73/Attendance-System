@@ -1699,10 +1699,10 @@ export default function SatffExelAdmin() {
               tabelex?.data?.map((v: any, i) => (
                 <>
                   <TableRow className="bg-yellow-300">
-                    <TableCell className="border-2 border-blue-400">
+                    <TableCell className="border-2 border-blue-400 text-black">
                       Date
                     </TableCell>
-                    <TableCell className="border-2 border-blue-400" colSpan={5}>
+                    <TableCell className="border-2 border-blue-400 text-black" colSpan={5}>
                       {formatRelativeMonthDate(v.createdAt)}
                     </TableCell>
                   </TableRow>
@@ -2230,10 +2230,10 @@ export default function SatffExelAdmin() {
                     </TableCell>
                   </TableRow>
                   <TableRow className="bg-green-200">
-                    <TableCell className="border-2 border-blue-400">
+                    <TableCell className="border-2 border-blue-400 text-black">
                       Time
                     </TableCell>
-                    <TableCell className="border-2 border-blue-400" colSpan={5}>
+                    <TableCell className="border-2 border-blue-400 text-black" colSpan={5}>
                       {formatRelativeTime(v.createdAt)}
                     </TableCell>
                   </TableRow>
