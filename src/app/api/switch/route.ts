@@ -9,9 +9,16 @@ export async function POST(req: NextRequest) {
     const { user } = await validateRequest();
 
     if (!user) throw new Error("Unauthorized");
-   
-
-    // Calculate IST time
+    // const data = {
+    //   serialNumber: "RSTOTBJPE155364",
+    //   macID: "a8:88:1f:07:df:27",
+    // };
+    // const { serialNumber, macID } = await req.json(); // Calculate IST time
+    // if (serialNumber === data.serialNumber && macID === data.macID) {
+    //   console.log("helo");
+    // } else {
+    //   console.log("Condition not matched");
+    // }
     const now = new Date();
     const options = { timeZone: "Asia/Kolkata", hour12: false };
     const formatter = new Intl.DateTimeFormat("en-US", {
@@ -21,16 +28,21 @@ export async function POST(req: NextRequest) {
     });
 
     const parts = formatter.formatToParts(now);
-    const hour = parseInt(parts.find((part) => part.type === "hour")?.value || "0");
-    const minute = parseInt(parts.find((part) => part.type === "minute")?.value || "0");
+    const hour = parseInt(
+      parts.find((part) => part.type === "hour")?.value || "0",
+    );
+    const minute = parseInt(
+      parts.find((part) => part.type === "minute")?.value || "0",
+    );
     const currentTimeInMinutes = hour * 60 + minute;
-
-    
 
     // Entry allowed only between 9:00 AM and 3:00 PM
     const startOfEntry = 540; // 9:00 AM in minutes
-    const endOfEntry = 1080;  // 3:00 PM in minutes
-    if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
+    const endOfEntry = 1080; // 3:00 PM in minutes
+    if (
+      currentTimeInMinutes < startOfEntry ||
+      currentTimeInMinutes > endOfEntry
+    ) {
       return NextResponse.json({
         success: false,
         message: "Entry is allowed only between 9:00 AM to 5:00 PM.",
@@ -51,7 +63,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-   
     if (existingEntry) {
       return NextResponse.json({
         success: false,
@@ -62,12 +73,15 @@ export async function POST(req: NextRequest) {
 
     // Define entry time ranges
     const onTimeStart = 540; // 9:00 AM in minutes
-    const onTimeEnd = 615;   // 10:15 AM in minutes
+    const onTimeEnd = 615; // 10:15 AM in minutes
 
     let status = "";
     let lateMinutes = 0;
 
-    if (currentTimeInMinutes >= onTimeStart && currentTimeInMinutes <= onTimeEnd) {
+    if (
+      currentTimeInMinutes >= onTimeStart &&
+      currentTimeInMinutes <= onTimeEnd
+    ) {
       status = "on-time";
     } else if (currentTimeInMinutes > onTimeEnd) {
       status = "late";
@@ -80,10 +94,9 @@ export async function POST(req: NextRequest) {
         userId: user.id,
         status,
         lateMinutes,
-        statusR:"present"
+        statusR: "present",
       },
     });
-
 
     // Convert late minutes to hours and minutes for response
     const lateHours = Math.floor(lateMinutes / 60);
@@ -95,7 +108,9 @@ export async function POST(req: NextRequest) {
       status,
       lateMinutes: lateMinutes
         ? `${lateHours > 0 ? `${lateHours} hour${lateHours > 1 ? "s" : ""} ` : ""}${
-            lateRemainingMinutes > 0 ? `${lateRemainingMinutes} minute${lateRemainingMinutes > 1 ? "s" : ""}` : ""
+            lateRemainingMinutes > 0
+              ? `${lateRemainingMinutes} minute${lateRemainingMinutes > 1 ? "s" : ""}`
+              : ""
           }`
         : "No delay",
     });
@@ -106,7 +121,7 @@ export async function POST(req: NextRequest) {
         success: false,
         message: "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

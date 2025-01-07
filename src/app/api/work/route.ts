@@ -6,6 +6,7 @@ import { formSchema } from "@/lib/vallidation";
 
 export async function POST(req: NextRequest) {
   try {
+    // Validate user request
     const { user } = await validateRequest();
     if (!user) throw new Error("unauthorized");
 
@@ -36,12 +37,28 @@ export async function POST(req: NextRequest) {
     }
 
     // Check for duplicate entry in the current time slot
+    const slotStart = currentDate
+      .clone()
+      .set("hour", timeSlot.start)
+      .minute(0)
+      .second(0)
+      .millisecond(0)
+      .toDate();
+
+    const slotEnd = currentDate
+      .clone()
+      .set("hour", timeSlot.end)
+      .minute(59)
+      .second(59)
+      .millisecond(999)
+      .toDate();
+
     const existingEntry = await prisma.todayswork.findFirst({
       where: {
         userId: user.id,
         createdAt: {
-          gte: currentDate.clone().set("hour", timeSlot.start).minute(0).second(0).toDate(),
-          lte: currentDate.clone().set("hour", timeSlot.end).minute(59).second(59).toDate(),
+          gte: slotStart,
+          lte: slotEnd,
         },
       },
     });
@@ -75,10 +92,29 @@ export async function POST(req: NextRequest) {
     if (currentHour >= 16 && currentHour < 19) {
       let isPresent = true; // Default to present
 
-      // Check 10 AM to 1 PM and 1 PM to 4 PM slots for valid content
-      for (let slot of timeSlots.slice(0, 2)) { // Only checking the first two slots (10-1 and 1-4)
-        const slotStart = currentDate.clone().set("hour", slot.start).minute(0).second(0).toDate();
-        const slotEnd = currentDate.clone().set("hour", slot.end).minute(59).second(59).toDate();
+      // Check only today's data
+      const todayStart = currentDate.clone().startOf("day").toDate();
+      const todayEnd = currentDate.clone().endOf("day").toDate();
+
+      // Validate each required slot
+      for (let slot of timeSlots.slice(0, 2)) {
+        const slotStart = currentDate
+          .clone()
+          .set("hour", slot.start)
+          .minute(0)
+          .second(0)
+          .millisecond(0)
+          .toDate();
+
+        const slotEnd = currentDate
+          .clone()
+          .set("hour", slot.end)
+          .minute(59)
+          .second(59)
+          .millisecond(999)
+          .toDate();
+
+        console.log(`Checking slot ${slot.start}-${slot.end}: gte=${slotStart}, lte=${slotEnd}`);
 
         const slotData = await prisma.todayswork.findFirst({
           where: {
@@ -90,21 +126,23 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        // Check if content is missing or blank
         if (!slotData || !slotData.content || slotData.content.trim() === "") {
-          console.log(`Attendance marked as ABSENT: Missing or blank content in slot ${slot.start} - ${slot.end}`);
-          isPresent = false;
-          break; // If any slot is invalid, set as absent
+          console.log(
+            `Slot ${slot.start}-${slot.end} is missing or blank for user ${user.id}`
+          );
+          isPresent = false; // Mark as absent if any slot is invalid
+          break;
         }
       }
 
-      // Save attendance based on final status (present or absent)
+      // Determine attendance status
       const attendanceStatus = isPresent ? "present" : "absent";
 
+      // Save attendance for today
       await prisma.attendance.create({
         data: {
           userId: user.id,
-          createdAt: currentDate.toDate(),
+          createdAt: todayStart,
           status: attendanceStatus,
         },
       });
