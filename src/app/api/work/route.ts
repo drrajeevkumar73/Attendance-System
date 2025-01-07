@@ -88,67 +88,53 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Check attendance for all time slots
-    if (currentHour >= 16 && currentHour < 19) {
-      let isPresent = true; // Default to present
+    // Validate the first two slots (10-1 and 1-4)
+    let isPresent = true;
 
-      // Check only today's data
-      const todayStart = currentDate.clone().startOf("day").toDate();
+    for (let slot of timeSlots.slice(0, 2)) {
+      const slotStart = currentDate
+        .clone()
+        .set("hour", slot.start)
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+        .toDate();
 
-      // Validate 10-13 and 13-16 slots for today's attendance
-      for (let slot of timeSlots.slice(0, 2)) {
-        const slotStart = currentDate
-          .clone()
-          .set("hour", slot.start)
-          .minute(0)
-          .second(0)
-          .millisecond(0)
-          .toDate();
+      const slotEnd = currentDate
+        .clone()
+        .set("hour", slot.end)
+        .minute(59)
+        .second(59)
+        .millisecond(999)
+        .toDate();
 
-        const slotEnd = currentDate
-          .clone()
-          .set("hour", slot.end)
-          .minute(59)
-          .second(59)
-          .millisecond(999)
-          .toDate();
-
-        console.log(`Checking slot ${slot.start}-${slot.end}: gte=${slotStart}, lte=${slotEnd}`);
-
-        const slotData = await prisma.todayswork.findFirst({
-          where: {
-            userId: user.id,
-            createdAt: {
-              gte: slotStart,
-              lte: slotEnd,
-            },
-          },
-        });
-
-        // If any slot is missing or invalid, mark as absent
-        if (!slotData || !slotData.content || slotData.content.trim() === "") {
-          console.log(
-            `Slot ${slot.start}-${slot.end} is missing or blank for user ${user.id}`
-          );
-          isPresent = false;
-          break;
-        }
-      }
-
-      // Determine attendance status
-      const attendanceStatus = isPresent ? "present" : "absent";
-
-      // Save attendance for today
-      await prisma.attendance.create({
-        data: {
+      const slotData = await prisma.todayswork.findFirst({
+        where: {
           userId: user.id,
-          createdAt: todayStart,
-          status: attendanceStatus,
+          createdAt: {
+            gte: slotStart,
+            lte: slotEnd,
+          },
         },
       });
 
-      console.log(`Attendance saved as ${attendanceStatus}`);
+      if (!slotData || !slotData.content || slotData.content.trim() === "") {
+        isPresent = false;
+        break;
+      }
     }
+
+    // Mark attendance for the 4-7 PM slot
+    const todayStart = currentDate.clone().startOf("day").toDate();
+    const attendanceStatus = isPresent ? "present" : "absent";
+
+    await prisma.attendance.create({
+      data: {
+        userId: user.id,
+        createdAt: todayStart,
+        status: attendanceStatus,
+      },
+    });
 
     return NextResponse.json({ success: true, data: savedTask });
   } catch (error) {
