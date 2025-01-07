@@ -94,9 +94,8 @@ export async function POST(req: NextRequest) {
 
       // Check only today's data
       const todayStart = currentDate.clone().startOf("day").toDate();
-      const todayEnd = currentDate.clone().endOf("day").toDate();
 
-      // Validate each required slot
+      // Validate 10-13 and 13-16 slots for today's attendance
       for (let slot of timeSlots.slice(0, 2)) {
         const slotStart = currentDate
           .clone()
@@ -126,11 +125,12 @@ export async function POST(req: NextRequest) {
           },
         });
 
+        // If any slot is missing or invalid, mark as absent
         if (!slotData || !slotData.content || slotData.content.trim() === "") {
           console.log(
             `Slot ${slot.start}-${slot.end} is missing or blank for user ${user.id}`
           );
-          isPresent = false; // Mark as absent if any slot is invalid
+          isPresent = false;
           break;
         }
       }
@@ -159,4 +159,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
