@@ -101,10 +101,11 @@ const clinicLocations = [
 ];
 
 // Function to fetch IP-based location without API key (using ip-api.com)
+// Function to fetch IP-based location using HTTPS
 const getIpLocation = async () => {
   try {
-    // Use ip-api.com without the API key and fetch location info
-    const response = await axios.get("http://ip-api.com/json/");
+    // Use ip-api.com with HTTPS
+    const response = await axios.get("https://ip-api.com/json/");
     
     if (response.data.status !== 'fail') {
       const { lat, lon, city } = response.data;
