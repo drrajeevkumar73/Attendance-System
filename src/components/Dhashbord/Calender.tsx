@@ -125,60 +125,10 @@ const isUserNearClinic = (userLat: number, userLng: number) => {
   });
 };
 
+
 // Main function to check location and make API call
 const checkHandler = async () => {
-  try {
-    if (navigator.geolocation) {
-      // Get user's current location
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-
-          console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
-
-          // Check if user is near any clinic
-          if (isUserNearClinic(userLat, userLng)) {
-            console.log("User is within 500 meters of a clinic.");
-            
-            // Send API request
-            const { data } = await axios.post("/api/switch");
-            
-            // Show success message
-            toast({
-              title: data.message || "Request successful!",
-              variant: "default",
-            });
-          } else {
-            console.log("User is NOT within 500 meters of any clinic.");
-            toast({
-              description: "You are not within 500 meters of any clinic.",
-              variant: "destructive",
-            });
-          }
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          toast({
-            description: "Unable to retrieve your location.",
-            variant: "destructive",
-          });
-        }
-      );
-    } else {
-      console.log("Geolocation is not supported by this browser.");
-      toast({
-        description: "Your browser does not support location services.",
-        variant: "destructive",
-      });
-    }
-  } catch (error) {
-    console.error("Error in checkHandler:", error);
-    toast({
-      description: "An error occurred while processing your request.",
-      variant: "destructive",
-    });
-  }
+  const { data } = await axios.post("/api/switch")
 };
 
   
@@ -233,14 +183,12 @@ const checkHandler = async () => {
           />
         </form>
       </Form>
-      {user.permisionToggal ? (
+      
         <div className="flex items-center space-x-2">
           <Switch id="airplane-mode" onClick={checkHandler} />
           <Label htmlFor="airplane-mode"></Label>
         </div>
-      ) : (
-        ""
-      )}
+      
 
       <Card>
         <CardHeader>
