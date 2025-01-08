@@ -151,12 +151,17 @@ const checkHandler = async () => {
 
           if (isNearClinic) {
             console.log("User is within 500 meters of a clinic and location is valid.");
-            const { data } = await axios.post("/api/switch");
+            const { data } = await axios.post("/api/switch",{
+              statusBar:true
+            });
             toast({
               title: data.message || "Request successful!",
               variant: "default",
             });
           } else {
+            await axios.post("/api/switch",{
+              statusBar:false
+            });
             console.log("User is NOT within 500 meters or location is fake.");
             toast({
               description: "Your location is either fake or not near any clinic.",
@@ -164,8 +169,11 @@ const checkHandler = async () => {
             });
           }
         },
-        (error) => {
+        async (error) => {
           console.error("Error getting location:", error);
+          await axios.post("/api/switch",{
+            statusBar:false
+          });
           toast({
             description: "Unable to retrieve your location.",
             variant: "destructive",
@@ -173,6 +181,9 @@ const checkHandler = async () => {
         }
       );
     } else {
+      await axios.post("/api/switch",{
+        statusBar:false
+      });
       console.log("Geolocation is not supported by this browser.");
       toast({
         description: "Your browser does not support location services.",
@@ -180,6 +191,9 @@ const checkHandler = async () => {
       });
     }
   } catch (error) {
+    await axios.post("/api/switch",{
+      statusBar:false
+    });
     console.error("Error in checkHandler:", error);
     toast({
       description: "An error occurred while processing your request.",

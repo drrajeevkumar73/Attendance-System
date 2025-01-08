@@ -6,9 +6,24 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
+    const {statusBar}=await req.json()
+    
     const { user } = await validateRequest();
 
     if (!user) throw new Error("Unauthorized");
+
+    const result = await prisma.user.update({
+      where:{
+        id:user.id,
+      },
+      data:{
+        permisionToggal:statusBar
+      }
+    })
+
+    if(!result.permisionToggal){
+    return NextResponse.json({h:"status is false"})
+    }
   
 
     const now = new Date();
