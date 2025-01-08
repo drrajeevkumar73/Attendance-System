@@ -70,77 +70,91 @@ export default function Calender({ className }: classNameProps) {
     }
   };
 
-  // Clinic location coordinates (latitude, longitude)
-  const clinicLocation = {
-    lat: 23.352205, // Clinic latitude
-    lng: 85.324268, // Clinic longitude
-  };
-
-  // Haversine formula to calculate distance between two points in km
-  const haversineDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
-    const R = 6371; // Radius of the Earth in km
-    const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
+  
+  // Define clinic locations
+  const clinicLocations = [
+    {
+      city: "Kolkata",
+      lat: 22.5669053,
+      lng: 88.3688203,
+    },
+    {
+      city: "Ranchi",
+      lat: 23.352205,
+      lng: 85.324268,
+    },
+  ];
+  
+  // Haversine formula to calculate distance between two points
+  const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) *
-        Math.cos(lat2 * (Math.PI / 180)) *
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
+  
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in km
-    return distance; // Returns distance in kilometers
+    return R * c; // Distance in kilometers
   };
-
-  // Function to check if the user's location is within the clinic's area
-  const isWithinRange = (userLat:any, userLng:any) => {
-    const distance = haversineDistance(
-      userLat,
-      userLng,
-      clinicLocation.lat,
-      clinicLocation.lng,
-    );
-    return distance < 0.5; // Allowing a range of 0.5 km (500 meters)
+  
+  // Check if user is near any clinic
+  const isUserNearClinic = (userLat: number, userLng: number) => {
+    const radiusInKm = 0.5; // 500 meters
+    return clinicLocations.some((clinic) => {
+      const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
+      return distance <= radiusInKm;
+    });
   };
-
+  
+  // Main function to check location and make API call
   const checkHandler = async () => {
     try {
-      // Get the user's current location
       if (navigator.geolocation) {
+        // Get user's current location
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const userLat = position.coords.latitude;
             const userLng = position.coords.longitude;
-
-            // Check if the user is at the clinic location
-            if (isWithinRange(userLat, userLng)) {
-              // If the user is near the clinic, proceed with the API request
+  
+            console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
+  
+            // Check if user is near any clinic
+            if (isUserNearClinic(userLat, userLng)) {
+              console.log("User is within 500 meters of a clinic.");
+              
+              // Send API request
               const { data } = await axios.post("/api/switch");
-
+              
+              // Show success message
               toast({
-                title: data.message,
+                title: data.message || "Request successful!",
                 variant: "default",
               });
             } else {
-              // If the user is not at the clinic location
+              console.log("User is NOT within 500 meters of any clinic.");
               toast({
-                description: "You are not at the clinic's location.",
+                description: "You are not within 500 meters of any clinic.",
                 variant: "destructive",
               });
             }
           },
           (error) => {
-            console.error("Error getting location: ", error);
+            console.error("Error getting location:", error);
             toast({
               description: "Unable to retrieve your location.",
               variant: "destructive",
             });
-          },
+          }
         );
       } else {
         console.log("Geolocation is not supported by this browser.");
         toast({
-          description: "Geolocation is not supported.",
+          description: "Your browser does not support location services.",
           variant: "destructive",
         });
       }
@@ -152,6 +166,7 @@ export default function Calender({ className }: classNameProps) {
       });
     }
   };
+  
   const { user } = useAppSelector((state) => state.loginlice);
   if (!user) throw new Error("unauthorized");
   return (
