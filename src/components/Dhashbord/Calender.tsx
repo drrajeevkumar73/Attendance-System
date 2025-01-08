@@ -72,38 +72,10 @@ export default function Calender({ className }: classNameProps) {
 
 
 
+  
 
-// Define clinic locations
-const clinicLocations = [
-  {
-    city: "Kolkata",
-    lat: 22.5669053,
-    lng: 88.3688203,
-  },
-  {
-    city: "Ranchi",
-    lat: 23.352205,
-    lng: 85.324268,
-  },
-  {
-    city: "Patna",
-    lat: 25.620046477441246,
-    lng: 85.05265837517814,
-  },
-  {
-    city: "Noida (Spectrum City)",
-    lat: 28.572742875697358,
-    lng: 77.37681757528678,
-  },
-  {
-    city: "Greater Noida (Gaur City)",
-    lat: 28.618369675672465,
-    lng: 77.42171397528851,
-  },
-];
-
-// Haversine formula to calculate distance
-const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+// Haversine formula to calculate distance in kilometers
+const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const R = 6371; // Earth's radius in kilometers
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
@@ -119,30 +91,38 @@ const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c; // Distance in kilometers
 };
 
-// Interface for IP-based location
-interface IpLocation {
-  lat: number;
-  lon: number;
-  city: string;
-}
+// Define clinic locations
+const clinicLocations = [
+  { city: "Kolkata", lat: 22.5669053, lng: 88.3688203 },
+  { city: "Ranchi", lat: 23.352205, lng: 85.324268 },
+  { city: "Patna", lat: 25.620046477441246, lng: 85.05265837517814 },
+  { city: "Noida (Spectrum City)", lat: 28.572742875697358, lng: 77.37681757528678 },
+  { city: "Greater Noida (Gaur City)", lat: 28.618369675672465, lng: 77.42171397528851 },
+];
 
-// Get IP-based location using an external API
-const getIpLocation = async (): Promise<IpLocation> => {
+// Function to fetch IP-based location without API key (using ip-api.com)
+const getIpLocation = async () => {
   try {
-    const response = await axios.get("https://ip-api.com/json/"); // Replace with a better API in production
-    const { lat, lon, city } = response.data;
-    return { lat, lon, city };
-  } catch (error) {
-    console.error("Error fetching IP-based location:", error);
+    // Use ip-api.com without the API key and fetch location info
+    const response = await axios.get("http://ip-api.com/json/");
+    
+    if (response.data.status !== 'fail') {
+      const { lat, lon, city } = response.data;
+      return { lat, lon, city };
+    } else {
+      throw new Error("Unable to fetch IP-based location. Service may be down.");
+    }
+  } catch (error:any) {
+    console.error("Error fetching IP-based location:", error.message || error);
     throw new Error("Unable to validate IP-based location.");
   }
 };
 
-// Validate location against geocoding API
-const validateGeocodedLocation = async (lat: number, lng: number): Promise<boolean> => {
+// Function to validate location via geocoding API (Google Maps)
+const validateGeocodedLocation = async (lat: number, lng: number) => {
   try {
     const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_GOOGLE_MAPS_API_KEY`
     );
     const address = response.data.results[0]?.formatted_address || "";
     const isValidCity = clinicLocations.some((clinic) =>
@@ -155,28 +135,22 @@ const validateGeocodedLocation = async (lat: number, lng: number): Promise<boole
   }
 };
 
-// Check if location is fake
-const isFakeLocation = async (userLat: number, userLng: number): Promise<boolean> => {
+// Check if location is fake based on IP and geocoding validation
+const isFakeLocation = async (userLat: number, userLng: number) => {
   const ipLocation = await getIpLocation();
   const ipDistance = haversineDistance(userLat, userLng, ipLocation.lat, ipLocation.lon);
 
-  // If IP-based distance is too large (>50 km), location might be fake
+  // If the distance between IP location and user location is too far (>50 km), location might be fake
   if (ipDistance > 50) {
-    console.log("IP location and GPS location are too far apart.");
     return true;
   }
 
   // Validate address using geocoding
   const isValidAddress = await validateGeocodedLocation(userLat, userLng);
-  if (!isValidAddress) {
-    console.log("Geocoded location validation failed.");
-    return true;
-  }
-
-  return false; // Location is valid
+  return !isValidAddress; // If geocoding fails, location is considered fake
 };
 
-// Main function to check location and make API call
+// Main function to check location and make API request
 const checkHandler = async () => {
   try {
     if (navigator.geolocation) {
@@ -190,24 +164,39 @@ const checkHandler = async () => {
           // Check if user is near any clinic
           const isNearClinic = clinicLocations.some((clinic) => {
             const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
-            return distance <= 0.55; // Slight buffer for accuracy (500 meters)
+            return distance <= 0.55; // Slight buffer for accuracy
           });
 
-          console.log("Is near clinic:", isNearClinic);
-
-          // Check if location is valid (fake check)
+          // Check if location is fake
           const isLocationValid = await isFakeLocation(userLat, userLng);
+
+          // If user is within 500 meters of a clinic and location is valid, proceed with the request
           if (isNearClinic && !isLocationValid) {
             console.log("User is within 500 meters of a clinic and location is valid.");
 
-            // Send API request (replace with your actual API call logic)
-            const { data } = await axios.post("/api/switch");
-
-            // Show success message
+            // Show success message before API call
             toast({
-              title: data.message || "Request successful!",
+              title: "User is valid and within range of a clinic!",
               variant: "default",
             });
+
+            // Send API request
+            try {
+              const { data } = await axios.post("/api/switch");
+              console.log("API response:", data); // Log response
+
+              // Show success message after API call
+              toast({
+                title: data.message || "Request successful!",
+                variant: "default",
+              });
+            } catch (error:any) {
+              console.error("Error in API request:", error);
+              toast({
+                description: error.response?.data?.message || "Failed to process the request.",
+                variant: "destructive",
+              });
+            }
           } else {
             console.log("User is NOT within 500 meters or location is fake.");
             toast({
@@ -239,6 +228,9 @@ const checkHandler = async () => {
     });
   }
 };
+
+// Sample button click event to trigger checkHandler function
+document.getElementById("switchButton")?.addEventListener("click", checkHandler);
 
 
 
