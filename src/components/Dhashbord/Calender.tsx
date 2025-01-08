@@ -70,6 +70,8 @@ export default function Calender({ className }: classNameProps) {
     }
   };
 
+
+
   // Define clinic locations
 const clinicLocations = [
   {
@@ -99,7 +101,7 @@ const clinicLocations = [
   },
 ];
 
-// Haversine formula to calculate distance
+// Haversine formula to calculate distance between two points
 const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const R = 6371; // Earth's radius in kilometers
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -116,22 +118,42 @@ const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c; // Distance in kilometers
 };
 
-// Check for fake location
-const isFakeLocation = (userLat: number, userLng: number, clinicLat: number, clinicLng: number) => {
-  // Reverse Geocoding Mock API (You need to replace with real API)
-  const validateLocation = async (lat: number, lng: number) => {
-    const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`);
-    const address = response.data.results[0]?.formatted_address || "";
-    // Check if address contains any valid city name
-    return clinicLocations.some((clinic) => address.includes(clinic.city));
-  };
-
-  // Check distance and validate address
-  const distance = haversineDistance(userLat, userLng, clinicLat, clinicLng);
-  return distance > 50 || !validateLocation(userLat, userLng); // Fake if distance > 50km or invalid address
+// Fetch IP-based location
+const getIpLocation = async () => {
+  try {
+    const response = await axios.get("https://ip-api.com/json/"); // Replace with a better API in production
+    const { lat, lon, city } = response.data; // Extract latitude, longitude, and city
+    return { lat, lon, city };
+  } catch (error) {
+    console.error("Error fetching IP-based location:", error);
+    throw new Error("Unable to validate IP-based location.");
+  }
 };
 
-// Main function to check location
+// Check if location is fake
+const isFakeLocation = async (userLat: number, userLng: number) => {
+  try {
+    // Fetch IP-based location
+    const ipLocation = await getIpLocation();
+
+    // Calculate distance between IP and GPS locations
+    const distance = haversineDistance(userLat, userLng, ipLocation.lat, ipLocation.lon);
+
+    // If the distance is too large, consider it as fake
+    if (distance > 50) {
+      console.log("GPS and IP location do not match. Potential spoofing detected.");
+      return true;
+    }
+
+    console.log("IP location and GPS location match.");
+    return false;
+  } catch (error) {
+    console.error("Error validating location:", error);
+    return true; // Assume fake if validation fails
+  }
+};
+
+// Main handler to check location and make API call
 const checkHandler = async () => {
   try {
     if (navigator.geolocation) {
@@ -142,22 +164,34 @@ const checkHandler = async () => {
 
           console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
 
-          const isNearClinic = clinicLocations.some((clinic) => {
-            const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
-            return distance <= 0.5 && !isFakeLocation(userLat, userLng, clinic.lat, clinic.lng);
-          });
+          // Check for fake location
+          const isFake = await isFakeLocation(userLat, userLng);
 
-          if (isNearClinic) {
-            console.log("User is within 500 meters of a clinic and location is valid.");
-            const { data } = await axios.post("/api/switch");
-            toast({
-              title: data.message || "Request successful!",
-              variant: "default",
+          if (!isFake) {
+            // Check if user is near any clinic
+            const isNearClinic = clinicLocations.some((clinic) => {
+              const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
+              return distance <= 0.5; // Within 500 meters
             });
+
+            if (isNearClinic) {
+              console.log("User is within 500 meters of a clinic.");
+              const { data } = await axios.post("/api/switch");
+              toast({
+                title: data.message || "Request successful!",
+                variant: "default",
+              });
+            } else {
+              console.log("User is NOT within 500 meters of any clinic.");
+              toast({
+                description: "You are not within 500 meters of any clinic.",
+                variant: "destructive",
+              });
+            }
           } else {
-            console.log("User is NOT within 500 meters or location is fake.");
+            console.log("Location is fake. Denying access.");
             toast({
-              description: "Your location is either fake or not near any clinic.",
+              description: "Fake location detected. Access denied.",
               variant: "destructive",
             });
           }
@@ -185,6 +219,12 @@ const checkHandler = async () => {
     });
   }
 };
+
+
+
+
+
+
 
   const { user } = useAppSelector((state) => state.loginlice);
   if (!user) throw new Error("unauthorized");
