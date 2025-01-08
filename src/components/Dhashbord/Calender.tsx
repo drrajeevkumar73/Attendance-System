@@ -72,9 +72,36 @@ export default function Calender({ className }: classNameProps) {
 
 
 
-  
+  // Define clinic locations
+const clinicLocations = [
+  {
+    city: "Kolkata",
+    lat: 22.5669053,
+    lng: 88.3688203,
+  },
+  {
+    city: "Ranchi",
+    lat: 23.352205,
+    lng: 85.324268,
+  },
+  {
+    city: "Patna",
+    lat: 25.620046477441246,
+    lng: 85.05265837517814,
+  },
+  {
+    city: "Noida (Spectrum City)",
+    lat: 28.572742875697358,
+    lng: 77.37681757528678,
+  },
+  {
+    city: "Greater Noida (Gaur City)",
+    lat: 28.618369675672465,
+    lng: 77.42171397528851,
+  },
+];
 
-// Haversine formula to calculate distance in kilometers
+// Haversine formula to calculate distance
 const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const R = 6371; // Earth's radius in kilometers
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -91,67 +118,22 @@ const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c; // Distance in kilometers
 };
 
-// Define clinic locations
-const clinicLocations = [
-  { city: "Kolkata", lat: 22.5669053, lng: 88.3688203 },
-  { city: "Ranchi", lat: 23.352205, lng: 85.324268 },
-  { city: "Patna", lat: 25.620046477441246, lng: 85.05265837517814 },
-  { city: "Noida (Spectrum City)", lat: 28.572742875697358, lng: 77.37681757528678 },
-  { city: "Greater Noida (Gaur City)", lat: 28.618369675672465, lng: 77.42171397528851 },
-];
-
-// Function to fetch IP-based location without API key (using ip-api.com)
-// Function to fetch IP-based location using HTTPS
-const getIpLocation = async () => {
-  try {
-    // Use ip-api.com with HTTPS
-    const response = await axios.get("https://ip-api.com/json/");
-    
-    if (response.data.status !== 'fail') {
-      const { lat, lon, city } = response.data;
-      return { lat, lon, city };
-    } else {
-      throw new Error("Unable to fetch IP-based location. Service may be down.");
-    }
-  } catch (error:any) {
-    console.error("Error fetching IP-based location:", error.message || error);
-    throw new Error("Unable to validate IP-based location.");
-  }
-};
-
-// Function to validate location via geocoding API (Google Maps)
-const validateGeocodedLocation = async (lat: number, lng: number) => {
-  try {
-    const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_GOOGLE_MAPS_API_KEY`
-    );
+// Check for fake location
+const isFakeLocation = (userLat: number, userLng: number, clinicLat: number, clinicLng: number) => {
+  // Reverse Geocoding Mock API (You need to replace with real API)
+  const validateLocation = async (lat: number, lng: number) => {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`);
     const address = response.data.results[0]?.formatted_address || "";
-    const isValidCity = clinicLocations.some((clinic) =>
-      address.toLowerCase().includes(clinic.city.toLowerCase())
-    );
-    return isValidCity;
-  } catch (error) {
-    console.error("Error validating geocoded location:", error);
-    return false; // Default to invalid if geocoding fails
-  }
+    // Check if address contains any valid city name
+    return clinicLocations.some((clinic) => address.includes(clinic.city));
+  };
+
+  // Check distance and validate address
+  const distance = haversineDistance(userLat, userLng, clinicLat, clinicLng);
+  return distance > 50 || !validateLocation(userLat, userLng); // Fake if distance > 50km or invalid address
 };
 
-// Check if location is fake based on IP and geocoding validation
-const isFakeLocation = async (userLat: number, userLng: number) => {
-  const ipLocation = await getIpLocation();
-  const ipDistance = haversineDistance(userLat, userLng, ipLocation.lat, ipLocation.lon);
-
-  // If the distance between IP location and user location is too far (>50 km), location might be fake
-  if (ipDistance > 50) {
-    return true;
-  }
-
-  // Validate address using geocoding
-  const isValidAddress = await validateGeocodedLocation(userLat, userLng);
-  return !isValidAddress; // If geocoding fails, location is considered fake
-};
-
-// Main function to check location and make API request
+// Main function to check location
 const checkHandler = async () => {
   try {
     if (navigator.geolocation) {
@@ -162,42 +144,18 @@ const checkHandler = async () => {
 
           console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
 
-          // Check if user is near any clinic
           const isNearClinic = clinicLocations.some((clinic) => {
             const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
-            return distance <= 0.55; // Slight buffer for accuracy
+            return distance <= 0.5 && !isFakeLocation(userLat, userLng, clinic.lat, clinic.lng);
           });
 
-          // Check if location is fake
-          const isLocationValid = await isFakeLocation(userLat, userLng);
-
-          // If user is within 500 meters of a clinic and location is valid, proceed with the request
-          if (isNearClinic && !isLocationValid) {
+          if (isNearClinic) {
             console.log("User is within 500 meters of a clinic and location is valid.");
-
-            // Show success message before API call
+            const { data } = await axios.post("/api/switch");
             toast({
-              title: "User is valid and within range of a clinic!",
+              title: data.message || "Request successful!",
               variant: "default",
             });
-
-            // Send API request
-            try {
-              const { data } = await axios.post("/api/switch");
-              console.log("API response:", data); // Log response
-
-              // Show success message after API call
-              toast({
-                title: data.message || "Request successful!",
-                variant: "default",
-              });
-            } catch (error:any) {
-              console.error("Error in API request:", error);
-              toast({
-                description: error.response?.data?.message || "Failed to process the request.",
-                variant: "destructive",
-              });
-            }
           } else {
             console.log("User is NOT within 500 meters or location is fake.");
             toast({
@@ -229,9 +187,6 @@ const checkHandler = async () => {
     });
   }
 };
-
-// Sample button click event to trigger checkHandler function
-document.getElementById("switchButton")?.addEventListener("click", checkHandler);
 
 
 
