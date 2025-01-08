@@ -99,7 +99,7 @@ const clinicLocations = [
   },
 ];
 
-// Haversine formula to calculate distance between two points
+// Haversine formula to calculate distance
 const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const R = 6371; // Earth's radius in kilometers
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -116,20 +116,25 @@ const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c; // Distance in kilometers
 };
 
-// Check if user is near any clinic
-const isUserNearClinic = (userLat: number, userLng: number) => {
-  const radiusInKm = 0.5; // 500 meters
-  return clinicLocations.some((clinic) => {
-    const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
-    return distance <= radiusInKm;
-  });
+// Check for fake location
+const isFakeLocation = (userLat: number, userLng: number, clinicLat: number, clinicLng: number) => {
+  // Reverse Geocoding Mock API (You need to replace with real API)
+  const validateLocation = async (lat: number, lng: number) => {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`);
+    const address = response.data.results[0]?.formatted_address || "";
+    // Check if address contains any valid city name
+    return clinicLocations.some((clinic) => address.includes(clinic.city));
+  };
+
+  // Check distance and validate address
+  const distance = haversineDistance(userLat, userLng, clinicLat, clinicLng);
+  return distance > 50 || !validateLocation(userLat, userLng); // Fake if distance > 50km or invalid address
 };
 
-// Main function to check location and make API call
+// Main function to check location
 const checkHandler = async () => {
   try {
     if (navigator.geolocation) {
-      // Get user's current location
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const userLat = position.coords.latitude;
@@ -137,22 +142,22 @@ const checkHandler = async () => {
 
           console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
 
-          // Check if user is near any clinic
-          if (isUserNearClinic(userLat, userLng)) {
-            console.log("User is within 500 meters of a clinic.");
-            
-            // Send API request
+          const isNearClinic = clinicLocations.some((clinic) => {
+            const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
+            return distance <= 0.5 && !isFakeLocation(userLat, userLng, clinic.lat, clinic.lng);
+          });
+
+          if (isNearClinic) {
+            console.log("User is within 500 meters of a clinic and location is valid.");
             const { data } = await axios.post("/api/switch");
-            
-            // Show success message
             toast({
               title: data.message || "Request successful!",
               variant: "default",
             });
           } else {
-            console.log("User is NOT within 500 meters of any clinic.");
+            console.log("User is NOT within 500 meters or location is fake.");
             toast({
-              description: "You are not within 500 meters of any clinic.",
+              description: "Your location is either fake or not near any clinic.",
               variant: "destructive",
             });
           }
