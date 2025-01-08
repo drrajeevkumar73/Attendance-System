@@ -101,8 +101,9 @@ const clinicLocations = [
   },
 ];
 
-// Haversine formula to calculate distance
-const haversineDistance = (lat1:any, lon1:any, lat2:any, lon2:any) => {
+
+// Improved Haversine formula to calculate distance
+const haversineDistance = (lat1, lon1, lat2, lon2) => {
   const R = 6371; // Earth's radius in kilometers
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
@@ -118,39 +119,29 @@ const haversineDistance = (lat1:any, lon1:any, lat2:any, lon2:any) => {
   return R * c; // Distance in kilometers
 };
 
-// Fetch IP-based location
-const getIpLocation = async () => {
-  try {
-    const response = await axios.get("https://ip-api.com/json/"); // Replace with a better API in production
-    const { lat, lon, city } = response.data; // Extract latitude, longitude, and city
-    return { lat, lon, city };
-  } catch (error) {
-    console.error("Error fetching IP-based location:", error);
-    throw new Error("Unable to validate IP-based location.");
-  }
-};
-
 // Validate location against geocoding API
-const validateGeocodedLocation = async (lat:any, lng:any) => {
+const validateGeocodedLocation = async (lat, lng) => {
   try {
     const response = await axios.get(
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`
     );
     const address = response.data.results[0]?.formatted_address || "";
+    console.log("Address from geocoding:", address);
     const isValidCity = clinicLocations.some((clinic) =>
       address.toLowerCase().includes(clinic.city.toLowerCase())
     );
     return isValidCity;
   } catch (error) {
     console.error("Error validating geocoded location:", error);
-    return false; // Default to invalid if geocoding fails
+    return false;
   }
 };
 
 // Check if location is fake
-const isFakeLocation = async (userLat:any, userLng:any) => {
+const isFakeLocation = async (userLat, userLng) => {
   const ipLocation = await getIpLocation();
   const ipDistance = haversineDistance(userLat, userLng, ipLocation.lat, ipLocation.lon);
+  console.log("IP distance:", ipDistance);
 
   // If IP-based distance is too large (>50km), location might be fake
   if (ipDistance > 50) {
@@ -160,6 +151,7 @@ const isFakeLocation = async (userLat:any, userLng:any) => {
 
   // Validate address using geocoding
   const isValidAddress = await validateGeocodedLocation(userLat, userLng);
+  console.log("Is valid address:", isValidAddress);
   if (!isValidAddress) {
     console.log("Geocoded location validation failed.");
     return true;
@@ -185,7 +177,11 @@ const checkHandler = async () => {
             return distance <= 0.55; // Slight buffer for accuracy
           });
 
-          if (isNearClinic && !(await isFakeLocation(userLat, userLng))) {
+          console.log("Is near clinic:", isNearClinic);
+
+          // Check if location is valid (fake check)
+          const isLocationValid = await isFakeLocation(userLat, userLng);
+          if (isNearClinic && !isLocationValid) {
             console.log("User is within 500 meters of a clinic and location is valid.");
 
             // Send API request
