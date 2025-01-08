@@ -70,102 +70,117 @@ export default function Calender({ className }: classNameProps) {
     }
   };
 
-  
   // Define clinic locations
-  const clinicLocations = [
-    {
-      city: "Kolkata",
-      lat: 22.5669053,
-      lng: 88.3688203,
-    },
-    {
-      city: "Ranchi",
-      lat: 23.352205,
-      lng: 85.324268,
-    },
-  ];
-  
-  // Haversine formula to calculate distance between two points
-  const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    const R = 6371; // Earth's radius in kilometers
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-  
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in kilometers
-  };
-  
-  // Check if user is near any clinic
-  const isUserNearClinic = (userLat: number, userLng: number) => {
-    const radiusInKm = 0.5; // 500 meters
-    return clinicLocations.some((clinic) => {
-      const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
-      return distance <= radiusInKm;
-    });
-  };
-  
-  // Main function to check location and make API call
-  const checkHandler = async () => {
-    try {
-      if (navigator.geolocation) {
-        // Get user's current location
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
-  
-            console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
-  
-            // Check if user is near any clinic
-            if (isUserNearClinic(userLat, userLng)) {
-              console.log("User is within 500 meters of a clinic.");
-              
-              // Send API request
-              const { data } = await axios.post("/api/switch");
-              
-              // Show success message
-              toast({
-                title: data.message || "Request successful!",
-                variant: "default",
-              });
-            } else {
-              console.log("User is NOT within 500 meters of any clinic.");
-              toast({
-                description: "You are not within 500 meters of any clinic.",
-                variant: "destructive",
-              });
-            }
-          },
-          (error) => {
-            console.error("Error getting location:", error);
+const clinicLocations = [
+  {
+    city: "Kolkata",
+    lat: 22.5669053,
+    lng: 88.3688203,
+  },
+  {
+    city: "Ranchi",
+    lat: 23.352205,
+    lng: 85.324268,
+  },
+  {
+    city: "Patna",
+    lat: 25.620046477441246,
+    lng: 85.05265837517814,
+  },
+  {
+    city: "Noida (Spectrum City)",
+    lat: 28.572742875697358,
+    lng: 77.37681757528678,
+  },
+  {
+    city: "Greater Noida (Gaur City)",
+    lat: 28.618369675672465,
+    lng: 77.42171397528851,
+  },
+];
+
+// Haversine formula to calculate distance between two points
+const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Distance in kilometers
+};
+
+// Check if user is near any clinic
+const isUserNearClinic = (userLat: number, userLng: number) => {
+  const radiusInKm = 0.5; // 500 meters
+  return clinicLocations.some((clinic) => {
+    const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
+    return distance <= radiusInKm;
+  });
+};
+
+// Main function to check location and make API call
+const checkHandler = async () => {
+  try {
+    if (navigator.geolocation) {
+      // Get user's current location
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+
+          console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
+
+          // Check if user is near any clinic
+          if (isUserNearClinic(userLat, userLng)) {
+            console.log("User is within 500 meters of a clinic.");
+            
+            // Send API request
+            const { data } = await axios.post("/api/switch");
+            
+            // Show success message
             toast({
-              description: "Unable to retrieve your location.",
+              title: data.message || "Request successful!",
+              variant: "default",
+            });
+          } else {
+            console.log("User is NOT within 500 meters of any clinic.");
+            toast({
+              description: "You are not within 500 meters of any clinic.",
               variant: "destructive",
             });
           }
-        );
-      } else {
-        console.log("Geolocation is not supported by this browser.");
-        toast({
-          description: "Your browser does not support location services.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Error in checkHandler:", error);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          toast({
+            description: "Unable to retrieve your location.",
+            variant: "destructive",
+          });
+        }
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser.");
       toast({
-        description: "An error occurred while processing your request.",
+        description: "Your browser does not support location services.",
         variant: "destructive",
       });
     }
-  };
+  } catch (error) {
+    console.error("Error in checkHandler:", error);
+    toast({
+      description: "An error occurred while processing your request.",
+      variant: "destructive",
+    });
+  }
+};
+
   
   const { user } = useAppSelector((state) => state.loginlice);
   if (!user) throw new Error("unauthorized");
