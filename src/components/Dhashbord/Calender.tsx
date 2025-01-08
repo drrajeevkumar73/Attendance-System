@@ -259,14 +259,13 @@ const checkHandler = async () => {
           />
         </form>
       </Form>
-      {user.permisionToggal ? (
+      
         <div className="flex items-center space-x-2">
           <Switch id="airplane-mode" onClick={checkHandler} />
           <Label htmlFor="airplane-mode"></Label>
         </div>
-      ) : (
-        ""
-      )}
+   
+  
 
       <Card>
         <CardHeader>
