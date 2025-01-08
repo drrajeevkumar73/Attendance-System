@@ -70,17 +70,84 @@ export default function Calender({ className }: classNameProps) {
     }
   };
 
+  // Clinic location coordinates (latitude, longitude)
+  const clinicLocation = {
+    lat: 23.352205, // Clinic latitude
+    lng: 85.324268, // Clinic longitude
+  };
+
+  // Haversine formula to calculate distance between two points in km
+  const haversineDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance; // Returns distance in kilometers
+  };
+
+  // Function to check if the user's location is within the clinic's area
+  const isWithinRange = (userLat:any, userLng:any) => {
+    const distance = haversineDistance(
+      userLat,
+      userLng,
+      clinicLocation.lat,
+      clinicLocation.lng,
+    );
+    return distance < 0.5; // Allowing a range of 0.5 km (500 meters)
+  };
+
   const checkHandler = async () => {
     try {
-      const { data } = await axios.post("/api/switch");
+      // Get the user's current location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
 
-      toast({
-        title: data.message,
-        variant: "default",
-      });
+            // Check if the user is at the clinic location
+            if (isWithinRange(userLat, userLng)) {
+              // If the user is near the clinic, proceed with the API request
+              const { data } = await axios.post("/api/switch");
+
+              toast({
+                title: data.message,
+                variant: "default",
+              });
+            } else {
+              // If the user is not at the clinic location
+              toast({
+                description: "You are not at the clinic's location.",
+                variant: "destructive",
+              });
+            }
+          },
+          (error) => {
+            console.error("Error getting location: ", error);
+            toast({
+              description: "Unable to retrieve your location.",
+              variant: "destructive",
+            });
+          },
+        );
+      } else {
+        console.log("Geolocation is not supported by this browser.");
+        toast({
+          description: "Geolocation is not supported.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error("Error in checkHandler:", error);
       toast({
-        description: " Error",
+        description: "An error occurred while processing your request.",
         variant: "destructive",
       });
     }
@@ -136,17 +203,15 @@ export default function Calender({ className }: classNameProps) {
           />
         </form>
       </Form>
-      {
-        user.permisionToggal?
+      {user.permisionToggal ? (
         <div className="flex items-center space-x-2">
-        <Switch id="airplane-mode" onClick={checkHandler} />
-        <Label htmlFor="airplane-mode"></Label>
-      </div>
+          <Switch id="airplane-mode" onClick={checkHandler} />
+          <Label htmlFor="airplane-mode"></Label>
+        </div>
+      ) : (
+        ""
+      )}
 
-:
-""
-      }
-   
       <Card>
         <CardHeader>
           <CardTitle>

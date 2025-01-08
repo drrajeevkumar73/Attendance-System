@@ -1,7 +1,6 @@
 import { validateRequest } from "@/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
@@ -9,16 +8,17 @@ export async function POST(req: NextRequest) {
     const { user } = await validateRequest();
 
     if (!user) throw new Error("Unauthorized");
-    // const data = {
-    //   serialNumber: "RSTOTBJPE155364",
-    //   macID: "a8:88:1f:07:df:27",
-    // };
-    // const { serialNumber, macID } = await req.json(); // Calculate IST time
-    // if (serialNumber === data.serialNumber && macID === data.macID) {
-    //   console.log("helo");
-    // } else {
-    //   console.log("Condition not matched");
-    // }
+    // const allowedIP = "49.37.64.101"; //  office Wi-Fi public IP
+    // const clientIP = await axios
+    //   .get("https://api.ipify.org?format=json")
+    //   .then((res) => res.data.ip);
+
+    
+
+    // // Check if the client's public IP matches the allowed office Wi-Fi IP
+    // const isAllowed = clientIP === allowedIP;
+    // console.log("Client IP:", isAllowed);
+
     const now = new Date();
     const options = { timeZone: "Asia/Kolkata", hour12: false };
     const formatter = new Intl.DateTimeFormat("en-US", {
