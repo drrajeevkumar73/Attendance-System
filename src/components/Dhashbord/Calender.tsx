@@ -159,7 +159,7 @@ const checkHandler = async () => {
               variant: "default",
             });
           } else {
-            await axios.post("/api/switch",{
+            await axios.post("/api/not-tas",{
               statusBar:false
             });
             console.log("User is NOT within 500 meters or location is fake.");
@@ -171,7 +171,7 @@ const checkHandler = async () => {
         },
         async (error) => {
           console.error("Error getting location:", error);
-          await axios.post("/api/switch",{
+          await axios.post("/api/not-tas",{
             statusBar:false
           });
           toast({
@@ -181,7 +181,7 @@ const checkHandler = async () => {
         }
       );
     } else {
-      await axios.post("/api/switch",{
+      await axios.post("/api/not-tas",{
         statusBar:false
       });
       console.log("Geolocation is not supported by this browser.");
@@ -191,7 +191,7 @@ const checkHandler = async () => {
       });
     }
   } catch (error) {
-    await axios.post("/api/switch",{
+    await axios.post("/api/not-tas",{
       statusBar:false
     });
     console.error("Error in checkHandler:", error);

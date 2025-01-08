@@ -10,7 +10,25 @@ export async function POST(req: NextRequest) {
     const { user } = await validateRequest();
     if (!user) throw new Error("Unauthorized access");
 
+    const res=await prisma.user.findFirst({
+      where:{
+         id:user.id
+      }
+    })
+
+    if(!res?.permisionToggal){
+      return NextResponse.json({
+        message:"You are not in clinic."
+      })
+    }
+
+
     const { content } = await req.json();
+
+   
+
+
+
     const data = formSchema.parse({ content });
 
     // Step 2: Set timezone to India (Asia/Kolkata)
