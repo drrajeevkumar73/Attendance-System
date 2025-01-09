@@ -189,7 +189,7 @@ export default function Onlinedoctor() {
                               <SelectItem value="Dr.Ansari">
                                 Dr.Ansari
                               </SelectItem>
-                              <SelectItem value="Dr.Rahul">Dr.Rahul</SelectItem>
+                              <SelectItem value="Dr.Rahul">Dr.Prtima</SelectItem>
                               <SelectItem value="Dr.Priti">Dr.Priti</SelectItem>
                               <SelectItem value="Dr.Ram Parvesh">
                                 Dr.Ram Parvesh

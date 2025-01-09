@@ -159,9 +159,7 @@ const checkHandler = async () => {
               variant: "default",
             });
           } else {
-            await axios.post("/api/not-tas",{
-              statusBar:false
-            });
+            
             console.log("User is NOT within 500 meters or location is fake.");
             toast({
               description: "Your location is either fake or not near any clinic.",
@@ -171,9 +169,7 @@ const checkHandler = async () => {
         },
         async (error) => {
           console.error("Error getting location:", error);
-          await axios.post("/api/not-tas",{
-            statusBar:false
-          });
+       
           toast({
             description: "Unable to retrieve your location.",
             variant: "destructive",
@@ -181,9 +177,7 @@ const checkHandler = async () => {
         }
       );
     } else {
-      await axios.post("/api/not-tas",{
-        statusBar:false
-      });
+  
       console.log("Geolocation is not supported by this browser.");
       toast({
         description: "Your browser does not support location services.",
