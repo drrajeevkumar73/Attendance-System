@@ -477,17 +477,26 @@ export type AccountValue = z.infer<typeof ecaountantSchema>;
 
 export const intervewSchema = z.object({
   task1: requiredString,
-  task2: z.string().trim(),
-  task3: z.string().trim(),
-  task4: z.string().trim(),
-  task5: z.string().trim(),
-  task6: z.string().trim(),
-  task7: z.string().trim(),
-  task8: z.string().trim(),
-  task9: z.string().trim(),
-  task10: z.string().trim(),
-  task11: z.string().trim(),
-  task12: z.string().trim(),
+  task2: z.date({
+    required_error: "A date of birth is required.",
+  }).nullable(),
+
+  task3: requiredString,
+  task4: requiredString,
+  task5: requiredString,
+  task6: requiredString,
+  task7: requiredString,
+  task8: requiredString,
+  task9: requiredString,
+  task10: requiredString,
+  task11: requiredString,
+  task12:  z.date({
+    required_error: "A date of birth is required.",
+  }).nullable(),
+  task13: requiredString,
+  task14: requiredString,
+  task15: requiredString,
+
 });
 
 

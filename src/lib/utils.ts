@@ -15,8 +15,20 @@ export function formatRelativeMonthDate(from: Date) {
   return format(from, "dd/MM/yy");
 }
 
+
 export function formatRelativeTime(from: Date) {
   return format(from, "h:m:s a");
 }
+
+
+import {
+  generateUploadButton,
+  generateUploadDropzone,
+} from "@uploadthing/react";
+
+import type { OurFileRouter } from "@/app/api/uploadthing/core";
+
+export const UploadButton = generateUploadButton<OurFileRouter>();
+export const UploadDropzone = generateUploadDropzone<OurFileRouter>();
 
 

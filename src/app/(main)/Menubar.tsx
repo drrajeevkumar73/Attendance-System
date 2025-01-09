@@ -263,6 +263,20 @@ export default function Menubar({ className }: MenuBarProps) {
           >
             <Link href={"/setask"}>See Task</Link>
           </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/interview" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Interview"
+            asChild
+          >
+            <Link href={"/interview"}>Interview</Link>
+          </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/vew-documents" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Vew Document"
+            asChild
+          >
+            <Link href={"/vew-documents"}>Vew Document</Link>
+          </Button>
         </div>
 
         <Button

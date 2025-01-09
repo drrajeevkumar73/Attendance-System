@@ -34,6 +34,7 @@ import {
   IntervewValue,
 } from "@/lib/vallidation";
 import { Textarea } from "@/components/ui/textarea";
+import { UploadButton, UploadDropzone } from "@/lib/utils";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -43,6 +44,8 @@ import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import axios from "axios";
+import { date } from "zod";
 
 export default function InterveForm() {
   const { toast } = useToast();
@@ -50,7 +53,7 @@ export default function InterveForm() {
     resolver: zodResolver(intervewSchema),
     defaultValues: {
       task1: "",
-      task2: "",
+      task2: new Date(),
       task3: "",
       task4: "",
       task5: "",
@@ -60,13 +63,101 @@ export default function InterveForm() {
       task9: "",
       task10: "",
       task11: "",
-      task12: "",
+      task12: new Date(),
+      task13: "",
+      task14: "",
+      task15: "",
     },
   });
 
-  const [ispending, setispending] = useState(false);
+  const [ispending, setIsPending] = useState(false);
+  const [img, setImg] = useState({
+    panCard: [],
+    aadharCard: [],
+    DebitCard: [],
+    YourPhoto: [],
+  });
 
-  const submithandler = () => {};
+  const submithandler = async (value: IntervewValue) => {
+    try {
+      if (
+        !img.panCard.length ||
+        !img.aadharCard.length ||
+        !img.DebitCard.length ||
+        !img.YourPhoto.length
+      ) {
+        toast({
+          description: "Please upload all the documents",
+          variant: "destructive",
+        });
+        return; // Exit the function if validation fails
+      }
+
+      setIsPending(true);
+
+      // API call
+      const { data } = await axios.post("/api/uplodPhoto", {
+        task1: value.task1,
+        task2: value.task2,
+        task3: value.task3,
+        task4: value.task4,
+        task5: value.task5,
+        task6: value.task6,
+        task7: value.task7,
+        task8: value.task8,
+        task9: value.task9,
+        task10: value.task10,
+        task11: value.task11,
+        task12: value.task12,
+        task13: value.task13,
+        task14: value.task14,
+        task15: value.task15,
+        panCard: img.panCard,
+        aadharCard: img.aadharCard,
+        DebitCard: img.DebitCard,
+        YourPhoto: img.YourPhoto,
+      });
+
+      // Reset form and image state
+      form.reset({
+        task1: "",
+        task2: new Date(),
+        task3: "",
+        task4: "",
+        task5: "",
+        task6: "",
+        task7: "",
+        task8: "",
+        task9: "",
+        task10: "",
+        task11: "",
+        task12: new Date(),
+        task13: "",
+        task14: "",
+        task15: "",
+      });
+
+      setImg({
+        panCard: [],
+        aadharCard: [],
+        DebitCard: [],
+        YourPhoto: [],
+      });
+
+      toast({
+        description: data.message,
+        variant: "default",
+      });
+    } catch (error) {
+      toast({
+        description: "An error occurred during submission.",
+        variant: "destructive",
+      });
+      console.error(error);
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <div className="w-full space-y-6 rounded-md border p-5 shadow-inner">
@@ -157,10 +248,23 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="task4"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel> Gender</FormLabel>
+                <FormControl>
+                  <Input placeholder="Gender" {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task5"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Marital Status</FormLabel>
@@ -175,7 +279,7 @@ export default function InterveForm() {
 
           <FormField
             control={form.control}
-            name="task5"
+            name="task6"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
@@ -192,7 +296,7 @@ export default function InterveForm() {
 
           <FormField
             control={form.control}
-            name="task6"
+            name="task7"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
@@ -208,7 +312,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task7"
+            name="task8"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
@@ -224,7 +328,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task8"
+            name="task9"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Current address</FormLabel>
@@ -243,7 +347,7 @@ export default function InterveForm() {
 
           <FormField
             control={form.control}
-            name="task9"
+            name="task10"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Permanent address</FormLabel>
@@ -266,7 +370,7 @@ export default function InterveForm() {
 
           <FormField
             control={form.control}
-            name="task7"
+            name="task11"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
@@ -282,7 +386,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task2"
+            name="task12"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel className="text-[19px]">Year of Passing</FormLabel>
@@ -324,7 +428,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task9"
+            name="task13"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
@@ -344,7 +448,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task9"
+            name="task14"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Marks(%)</FormLabel>
@@ -358,7 +462,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task9"
+            name="task15"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
@@ -379,68 +483,101 @@ export default function InterveForm() {
           <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
             Required Documents
           </h4>
-          <FormField
-            control={form.control}
-            name="task9"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[19px]">Upload Pan Card</FormLabel>
-                <FormControl>
-                  <Input {...field} type="file" />
-                </FormControl>
+          <p>Pan Card</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                panCard: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
 
-                <FormMessage />
-              </FormItem>
-            )}
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              toast({
+                description: "Upload Failed",
+                variant: "default",
+              });
+            }}
           />
-          <FormField
-            control={form.control}
-            name="task9"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[19px]">
-                  Upload Aadhar Card
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="file" />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+          <p>Aadhar Card</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                aadharCard: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
+              // Do something with the response
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              toast({
+                description: "Upload Failed",
+                variant: "default",
+              });
+            }}
           />
-          <FormField
-            control={form.control}
-            name="task9"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[19px]">
-                  Upload Debit or Credit Card
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="file" />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+          <p>Debit or Credit Card</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                DebitCard: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              toast({
+                description: "Upload Failed",
+                variant: "default",
+              });
+            }}
           />
-          <FormField
-            control={form.control}
-            name="task9"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[19px]">
-                  Upload your own photo
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="file" />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+          <p>Your Photo</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                YourPhoto: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              toast({
+                description: "Upload Failed",
+                variant: "destructive",
+              });
+            }}
           />
+          <LodingButton loding={ispending} type="submit" className="w-full">
+            Submit
+          </LodingButton>
         </form>
       </Form>
     </div>

@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
       dynamic: 30,
     },
   },
+  images:{
+    domains: ['mybillbook.in','utfs.io'],
+  },
   serverExternalPackages:["@node-rs/argon2"],
 };
 
