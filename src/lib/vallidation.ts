@@ -470,3 +470,25 @@ export const ecaountantSchema = z.object({
 });
 
 export type AccountValue = z.infer<typeof ecaountantSchema>;
+
+
+
+
+
+export const intervewSchema = z.object({
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+  task5: z.string().trim(),
+  task6: z.string().trim(),
+  task7: z.string().trim(),
+  task8: z.string().trim(),
+  task9: z.string().trim(),
+  task10: z.string().trim(),
+  task11: z.string().trim(),
+  task12: z.string().trim(),
+});
+
+
+export type IntervewValue = z.infer<typeof intervewSchema>;
