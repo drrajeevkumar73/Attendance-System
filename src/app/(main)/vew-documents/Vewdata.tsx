@@ -51,48 +51,46 @@ export default function Vewdata() {
   const generatePDF = async () => {
     const element = document.getElementById("pdf-content");
     if (element) {
-      const canvas = await html2canvas(element);
+      const canvas = await html2canvas(element, {
+        scale: 2, // Higher scale for better quality
+      });
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-
+  
+      // Get PDF dimensions (in mm)
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
+  
+      // Get image dimensions from the canvas (in pixels)
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
-
-      let yOffset = 0;
-      while (yOffset < imgHeight) {
-        const croppedCanvas = document.createElement("canvas");
-        const croppedContext = croppedCanvas.getContext("2d");
-
-        croppedCanvas.width = imgWidth;
-        croppedCanvas.height = Math.min(imgHeight - yOffset, pdfHeight * (imgWidth / pdfWidth));
-
-        croppedContext?.drawImage(
-          canvas,
-          0,
-          yOffset,
-          imgWidth,
-          croppedCanvas.height,
-          0,
-          0,
-          imgWidth,
-          croppedCanvas.height
-        );
-
-        const croppedImgData = croppedCanvas.toDataURL("image/png");
-        pdf.addImage(croppedImgData, "PNG", 0, 0, pdfWidth, (pdfWidth / imgWidth) * croppedCanvas.height);
-
-        yOffset += croppedCanvas.height;
-
-        if (yOffset < imgHeight) {
-          pdf.addPage();
-        }
+  
+      // Calculate scale factor based on PDF width
+      const scaleFactor = pdfWidth / imgWidth;
+  
+      // Scale the image to fit the PDF width
+      const scaledWidth = pdfWidth;
+      const scaledHeight = imgHeight * scaleFactor;
+  
+      // If the scaled height exceeds the PDF height, scale both width and height down proportionally
+      if (scaledHeight > pdfHeight) {
+        const scaleFactorHeight = pdfHeight / imgHeight;
+        const adjustedWidth = imgWidth * scaleFactorHeight;
+        const adjustedHeight = imgHeight * scaleFactorHeight;
+        pdf.addImage(imgData, "PNG", (pdfWidth - adjustedWidth) / 2, 0, adjustedWidth, adjustedHeight);
+      } else {
+        // Center the content horizontally and vertically (no overflow)
+        const yOffset = (pdfHeight - scaledHeight) / 2; // Vertically center
+        pdf.addImage(imgData, "PNG", (pdfWidth - scaledWidth) / 2, yOffset, scaledWidth, scaledHeight);
       }
-
+  
       pdf.save("document.pdf");
     }
   };
+  
+  
+  
+  
 
   if (!data) {
     return <p className="text-center">No Document Found</p>;
