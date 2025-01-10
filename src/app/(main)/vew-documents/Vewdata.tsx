@@ -122,7 +122,7 @@ export default function Vewdata() {
           <Detail label="Bank Branch" value={data.task20} />
         </div>
         {/* Uploaded Documents Section */}
-        <SectionTitle title="Uploaded Documents" />
+        <SectionTitle title="Uploaded Documents"  />
         <div className="flex flex-wrap justify-between space-x-4 space-y-4">
           {data.panCard && <Document title="Pan Card" src={data.panCard} />}
           {data.aadharCard && <Document title="Aadhar Card" src={data.aadharCard} />}
