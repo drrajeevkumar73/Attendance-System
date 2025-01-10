@@ -128,7 +128,6 @@ export type ExelValue = z.infer<typeof exelSchema>;
 export const exeadminSchema = z.object({
   userid: requiredString,
   monthname: requiredString,
-  
 });
 
 export type ExeladminValue = z.infer<typeof exeadminSchema>;
@@ -471,15 +470,13 @@ export const ecaountantSchema = z.object({
 
 export type AccountValue = z.infer<typeof ecaountantSchema>;
 
-
-
-
-
 export const intervewSchema = z.object({
   task1: requiredString,
-  task2: z.date({
-    required_error: "A date of birth is required.",
-  }).nullable(),
+  task2: z
+    .date({
+      required_error: "A date of birth is required.",
+    })
+    .nullable(),
 
   task3: requiredString,
   task4: requiredString,
@@ -490,19 +487,49 @@ export const intervewSchema = z.object({
   task9: requiredString,
   task10: requiredString,
   task11: requiredString,
-  task12:  z.date({
-    required_error: "A date of birth is required.",
-  }).nullable(),
+  task12: z
+    .date({
+      required_error: "A date of birth is required.",
+    })
+    .nullable(),
   task13: requiredString,
   task14: requiredString,
-  task15: requiredString,
+
   task16: requiredString,
   task17: requiredString,
   task18: requiredString,
   task19: requiredString,
   task20: requiredString,
- 
-});
 
+  task21: z.string().trim(),
+  task22: z.string().trim(),
+  task23: requiredString,
+  task24: z.string().trim(),
+  task25: z.string().trim(),
+  task26: requiredString,
+  task27: z.string().trim(),
+  task28: z.string().trim(),
+  task29: requiredString,
+  task30: z.string().trim(),
+  task31: z.string().trim(),
+  task32: requiredString,
+  task34: z.string().trim(),
+  task35: z.string().trim(),
+  task36: requiredString,
+  task37: z.string().trim(),
+  task38: z.string().trim(),
+  task39: requiredString,
+  task40: z.string().trim(),
+  task41: z.string().trim(),
+  task42: requiredString,
+  task43: z.string().trim(),
+  task44: z.string().trim(),
+  task45: requiredString,
+  task46: z.string().trim(),
+  task47: z.string().trim(),
+  task48: requiredString,
+  task49: z.string().trim(),
+  task50: z.string().trim(),
+});
 
 export type IntervewValue = z.infer<typeof intervewSchema>;

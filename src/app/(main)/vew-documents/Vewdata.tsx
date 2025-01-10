@@ -5,8 +5,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 
-export default function Vewdata() {
+export default function ViewData() {
   const [data, setData] = useState<any>(null);
 
   // Format ISO date to "DD-MMM-YYYY"
@@ -37,7 +45,7 @@ export default function Vewdata() {
               return [key, capitalizeFirstLetter(value)];
             }
             return [key, value];
-          })
+          }),
         );
         setData(transformedData);
       } catch (error) {
@@ -51,44 +59,52 @@ export default function Vewdata() {
   const generatePDF = async () => {
     const element = document.getElementById("pdf-content");
     if (element) {
+      const contentWidth = element.scrollWidth;
+      const contentHeight = element.scrollHeight;
+  
+      // Generate canvas with higher scale for better quality
       const canvas = await html2canvas(element, {
         scale: 2, // Higher scale for better quality
+        useCORS: true, // To handle cross-origin issues
       });
+  
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
   
-      // Get PDF dimensions (in mm)
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
   
-      // Get image dimensions from the canvas (in pixels)
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
+      // Calculate scale factor to make the width fit
+      const scaleFactor = pdfWidth / contentWidth;
+      const scaledHeight = contentHeight * scaleFactor;
   
-      // Calculate scale factor based on PDF width
-      const scaleFactor = pdfWidth / imgWidth;
-  
-      // Scale the image to fit the PDF width
-      const scaledWidth = pdfWidth;
-      const scaledHeight = imgHeight * scaleFactor;
-  
-      // If the scaled height exceeds the PDF height, scale both width and height down proportionally
-      if (scaledHeight > pdfHeight) {
-        const scaleFactorHeight = pdfHeight / imgHeight;
-        const adjustedWidth = imgWidth * scaleFactorHeight;
-        const adjustedHeight = imgHeight * scaleFactorHeight;
-        pdf.addImage(imgData, "PNG", (pdfWidth - adjustedWidth) / 2, 0, adjustedWidth, adjustedHeight);
+      if (scaledHeight <= pdfHeight) {
+        // If content fits on one page
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, scaledHeight);
       } else {
-        // Center the content horizontally and vertically (no overflow)
-        const yOffset = (pdfHeight - scaledHeight) / 2; // Vertically center
-        pdf.addImage(imgData, "PNG", (pdfWidth - scaledWidth) / 2, yOffset, scaledWidth, scaledHeight);
+        // Content needs to be split across multiple pages
+        let position = 0;
+  
+        while (position < contentHeight) {
+          const canvasChunk = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            y: position,
+            height: pdfHeight / scaleFactor,
+          });
+  
+          const chunkData = canvasChunk.toDataURL("image/png");
+  
+          pdf.addImage(chunkData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          position += pdfHeight / scaleFactor;
+  
+          if (position < contentHeight) pdf.addPage();
+        }
       }
   
       pdf.save("document.pdf");
     }
   };
-  
-  
   
   
 
@@ -98,67 +114,281 @@ export default function Vewdata() {
 
   return (
     <>
-      <div id="pdf-content" className="w-full space-y-6 rounded-md border p-5 shadow-inner">
-        <Image src={Logo} width={200} height={200} alt="Logo" className="mx-auto" />
+      <div
+        id="pdf-content"
+        className="w-full space-y-6 rounded-md border p-5 text-[23px] shadow-inner"
+      >
+        <Image
+          src={Logo}
+          width={300}
+          height={300}
+          alt="Logo"
+          className="mx-auto"
+        />
 
-        <h1 className="text-center text-2xl font-bold">Staff Onboarding Form</h1>
+        <h1 className="text-center text-[50px] font-bold">
+          Staff Onboarding Form
+        </h1>
 
         {/* Personal Details Section */}
         <SectionTitle title="Personal Details" />
-        <div className="space-y-4">
-          <Detail label="Name" value={data.task1} />
-          <DetailGroup>
-            <Detail label="DOB" value={data.task2 ? formatDate(data.task2) : "N/A"} />
-            <Detail label="Place of Birth" value={data.task3} />
-            <Detail label="Gender" value={data.task4} />
-          </DetailGroup>
-          <DetailGroup>
-            <Detail label="Marital Status" value={data.task5} />
-            <Detail label="Father / Spouse's Name" value={data.task6} />
-          </DetailGroup>
-          <DetailGroup>
-            <Detail label="Personal Contact" value={data.task7} />
-            <Detail label="Guardian Contact" value={data.task8} />
-          </DetailGroup>
-          <Detail label="Current Address" value={data.task9} />
-          <Detail label="Permanent Address" value={data.task10} />
-        </div>
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold">Name</TableHead>
+              <TableHead className="border font-extrabold">DOB</TableHead>
+              <TableHead className="border font-extrabold">
+                Place of Birth
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border text-black">{data.task1}</TableCell>
+              <TableCell className="border text-black">
+                {data.task2 ? formatDate(data.task2) : "N/A"}
+              </TableCell>
+              <TableCell className="border text-black">{data.task3}</TableCell>
+            </TableRow>
+          </TableBody>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold">Gender</TableHead>
+              <TableHead className="border font-extrabold">
+                Marital Status
+              </TableHead>
+              <TableHead className="border font-extrabold">
+                Father&apos;s / Spouse name
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border text-black">{data.task4}</TableCell>
+              <TableCell className="border text-black">{data.task5}</TableCell>
+              <TableCell className="border text-black">{data.task6}</TableCell>
+            </TableRow>
+          </TableBody>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold">
+                Personal contact no.
+              </TableHead>
+              <TableHead className="border font-extrabold">
+                Personal contact no 2.
+              </TableHead>
+              <TableHead className="border font-extrabold">
+                Guardian&apos;s contect no.
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border text-black">{data.task7}</TableCell>
+              <TableCell className="border text-black">{data.task21}</TableCell>
+              <TableCell className="border text-black">{data.task8}</TableCell>
+            </TableRow>
+          </TableBody>
+
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold">
+                Guardian&apos;s contect no 2.
+              </TableHead>
+              <TableHead className="border font-extrabold">
+                Current address
+              </TableHead>
+              <TableHead className="border font-extrabold">
+                Permanent address
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border text-black">{data.task22}</TableCell>
+              <TableCell className="border text-black">{data.task9}</TableCell>
+              <TableCell className="border text-black">{data.task10}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         {/* Educational Details Section */}
         <SectionTitle title="Educational Details" />
-        <div className="space-y-4">
-          <DetailGroup>
-            <Detail label="Highest Qualification" value={data.task11} />
-            <Detail label="Year of Passing" value={data.task12 ? formatDate(data.task12) : "N/A"} />
-          </DetailGroup>
-          <DetailGroup>
-            <Detail label="Institution / University Name" value={data.task13} />
-            <Detail label="Marks (%)" value={data.task14} />
-          </DetailGroup>
-          <Detail label="Training / Certificates" value={data.task15} />
-        </div>
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold">
+                Highest Qualification
+              </TableHead>
+              <TableHead className="border font-extrabold">
+                Year of Passing
+              </TableHead>
+              <TableHead className="border font-extrabold" colSpan={2}>
+                Institution / University Name
+              </TableHead>
+              
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border text-black">{data.task11}</TableCell>
+              <TableCell className="border text-black">
+                {data.task12 ? formatDate(data.task12) : "N/A"}
+              </TableCell>
+              <TableCell className="border text-black" colSpan={2}>{data.task13}</TableCell>
+            </TableRow>
+          </TableBody>
+
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold" colSpan={4}>Marks (%)</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border text-black" colSpan={4}>{data.task14}</TableCell>
+            </TableRow>
+          </TableBody>
+
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold"> List School(s) and college(s)</TableHead>
+              <TableHead className="border font-extrabold">  Major Course of Study</TableHead>
+              <TableHead className="border font-extrabold">  Grade / Level Completed</TableHead>
+              <TableHead className="border font-extrabold">  Degree Obtained</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="border text-lg">
+              <TableCell className="border text-black ">{data.task23}</TableCell>
+              <TableCell className="border text-black ">{data.task26}</TableCell>
+              <TableCell className="border text-black ">{data.task29}</TableCell>
+              <TableCell className="border text-black ">{data.task32}</TableCell>
+            </TableRow>
+          
+              <TableRow className="border text-lg">
+              <TableCell className="border text-black">{data.task24}</TableCell>
+              <TableCell className="border text-black">{data.task27}</TableCell>
+              <TableCell className="border text-black ">{data.task30}</TableCell>
+              <TableCell className="border text-black ">{data.task34}</TableCell>
+            </TableRow>
+           
+              <TableRow className="border text-lg">
+              <TableCell className="border text-black">{data.task25}</TableCell>
+              <TableCell className="border text-black">{data.task28}</TableCell>
+              <TableCell className="border text-black ">{data.task31}</TableCell>
+              <TableCell className="border text-black ">{data.task35}</TableCell>
+            </TableRow>
+            
+           
+           
+          </TableBody>
+          
+        </Table>
+
+ {/* Work Expreence Details Section */}
+ <SectionTitle title=" Work Experience" />
+ <Table className="w-full">
+        
+
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold"> Company / Organization</TableHead>
+              <TableHead className="border font-extrabold">  Designation</TableHead>
+              <TableHead className="border font-extrabold">  From</TableHead>
+              <TableHead className="border font-extrabold">  To</TableHead>
+              <TableHead className="border font-extrabold">  Ctc / Monthly</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="border text-lg">
+              <TableCell className="border text-black ">{data.task36}</TableCell>
+              <TableCell className="border text-black ">{data.task39}</TableCell>
+              <TableCell className="border text-black ">{data.task42}</TableCell>
+              <TableCell className="border text-black ">{data.task45}</TableCell>
+              <TableCell className="border text-black ">{data.task48}</TableCell>
+            </TableRow>
+          
+              <TableRow className="border text-lg">
+              <TableCell className="border text-black">{data.task37}</TableCell>
+              <TableCell className="border text-black">{data.task40}</TableCell>
+              <TableCell className="border text-black ">{data.task43}</TableCell>
+              <TableCell className="border text-black ">{data.task46}</TableCell>
+              <TableCell className="border text-black ">{data.task49}</TableCell>
+            </TableRow>
+           
+              <TableRow className="border text-lg">
+              <TableCell className="border text-black">{data.task38}</TableCell>
+              <TableCell className="border text-black">{data.task41}</TableCell>
+              <TableCell className="border text-black ">{data.task44}</TableCell>
+              <TableCell className="border text-black ">{data.task47}</TableCell>
+              <TableCell className="border text-black ">{data.task50}</TableCell>
+            </TableRow>
+            
+           
+           
+          </TableBody>
+          
+        </Table>
 
         {/* Required Details Section */}
         <SectionTitle title="Required Details" />
-        <div className="space-y-4">
-          <DetailGroup>
-            <Detail label="Employee Name" value={data.task16} />
-            <Detail label="Bank Name" value={data.task17} />
-          </DetailGroup>
-          <DetailGroup>
-            <Detail label="Account Number" value={data.task18} />
-            <Detail label="IFSC Code" value={data.task19} />
-          </DetailGroup>
-          <Detail label="Bank Branch" value={data.task20} />
-        </div>
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold">
+                Employee Name
+              </TableHead>
+              <TableHead className="border font-extrabold">Bank Name</TableHead>
+              <TableHead className="border font-extrabold">
+                Account Number
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border">{data.task16}</TableCell>
+              <TableCell className="border">{data.task17}</TableCell>
+              <TableCell className="border">{data.task18}</TableCell>
+            </TableRow>
+          </TableBody>
+
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="border font-extrabold">IFSC Code</TableHead>
+              <TableHead className="border font-extrabold" colSpan={2}>
+                Bank Branch
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="border">{data.task19}</TableCell>
+              <TableCell className="border" colSpan={2}>{data.task20}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         {/* Uploaded Documents Section */}
         <SectionTitle title="Uploaded Documents" />
         <div className="flex flex-wrap justify-between space-x-4 space-y-4">
           {data.panCard && <Document title="Pan Card" src={data.panCard} />}
-          {data.aadharCard && <Document title="Aadhar Card" src={data.aadharCard} />}
-          {data.DebitCard && <Document title="Debit or Credit Card" src={data.DebitCard} />}
-          {data.YourPhoto && <Document title="Your Photo" src={data.YourPhoto} />}
+          {data.aadharCard && (
+            <Document title="Aadhar Card" src={data.aadharCard} />
+          )}
+          {data.DebitCard && (
+            <Document title="Your Marksheet" src={data.DebitCard} />
+          )}
+          {data.YourPhoto && (
+            <Document title="Your Photo" src={data.YourPhoto} />
+          )}
+           {data.YourPhoto && (
+            <Document title="Parent's Aadhar Card" src={data.parentAdhar} />
+          )}
+          {data.YourPhoto && (
+            <Document title="Parent's Pan Card" src={data.ParentPancard} />
+          )}
         </div>
       </div>
 
@@ -179,21 +409,6 @@ function SectionTitle({ title }: { title: string }) {
       {title}
     </h4>
   );
-}
-
-// Component to display a single detail item
-function Detail({ label, value }: { label: string; value: string }) {
-  return (
-    <p>
-      <span className="font-bold text-muted-foreground">{label}: </span>
-      {value}
-    </p>
-  );
-}
-
-// Component to group details in a row
-function DetailGroup({ children }: { children: React.ReactNode }) {
-  return <div className="flex items-center justify-between">{children}</div>;
 }
 
 // Component to display a document with an image

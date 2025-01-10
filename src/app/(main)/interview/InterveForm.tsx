@@ -66,13 +66,42 @@ export default function InterveForm() {
       task12: new Date(),
       task13: "",
       task14: "",
-      task15: "",
+
       task16: "",
       task17: "",
       task18: "",
       task19: "",
       task20: "",
-    
+
+      task21: "",
+      task22: "",
+      task23: "",
+      task24: "",
+      task25: "",
+       task26:"",
+        task27: "",
+        task28: "",
+        task29:"",
+        task30: "",
+        task31: "",
+        task32:"",
+        task34: "",
+        task35: "",
+        task36:"",
+        task37: "",
+        task38: "",
+        task39:"",
+        task40: "",
+        task41: "",
+        task42:"",
+        task43: "",
+        task44: "",
+        task45:"",
+        task46: "",
+        task47: "",
+        task48:"",
+        task49: "",
+        task50: "",
     },
   });
 
@@ -82,6 +111,8 @@ export default function InterveForm() {
     aadharCard: [],
     DebitCard: [],
     YourPhoto: [],
+    parentAdhar: [],
+    ParentPancard: [],
   });
 
   const submithandler = async (value: IntervewValue) => {
@@ -90,7 +121,9 @@ export default function InterveForm() {
         !img.panCard.length ||
         !img.aadharCard.length ||
         !img.DebitCard.length ||
-        !img.YourPhoto.length
+        !img.YourPhoto.length ||
+        !img.parentAdhar.length ||
+        !img.ParentPancard.length 
       ) {
         toast({
           description: "Please upload all the documents",
@@ -117,16 +150,48 @@ export default function InterveForm() {
         task12: value.task12,
         task13: value.task13,
         task14: value.task14,
-        task15: value.task15,
+
         task16: value.task16,
         task17: value.task17,
         task18: value.task18,
         task19: value.task19,
         task20: value.task20,
+
+        task21: value.task21,
+        task22: value.task22,
+        task23: value.task23,
+        task24: value.task24,
+        task25: value.task25,
+        task26:value.task26,
+        task27: value.task27,
+        task28: value.task28,
+        task29:value.task29,
+        task30: value.task30,
+        task31: value.task31,
+        task32:value.task32,
+        task34: value.task34,
+        task35: value.task35,
+        task36:value.task36,
+        task37: value.task37,
+        task38: value.task38,
+        task39:value.task39,
+        task40: value.task40,
+        task41: value.task41,
+        task42:value.task42,
+        task43: value.task43,
+        task44: value.task44,
+        task45:value.task45,
+        task46: value.task46,
+        task47: value.task47,
+        task48:value.task48,
+        task49: value.task49,
+        task50: value.task50,
         panCard: img.panCard,
         aadharCard: img.aadharCard,
         DebitCard: img.DebitCard,
         YourPhoto: img.YourPhoto,
+        parentAdhar:img.parentAdhar,
+        ParentPancard:img.ParentPancard
       });
 
       // Reset form and image state
@@ -145,12 +210,42 @@ export default function InterveForm() {
         task12: new Date(),
         task13: "",
         task14: "",
-        task15: "",
+
         task16: "",
         task17: "",
         task18: "",
         task19: "",
         task20: "",
+
+        task21: "",
+        task22: "",
+        task23: "",
+        task24: "",
+        task25: "",
+        task26:"",
+        task27: "",
+        task28: "",
+        task29:"",
+        task30: "",
+        task31: "",
+        task32:"",
+        task34: "",
+        task35: "",
+        task36:"",
+        task37: "",
+        task38: "",
+        task39:"",
+        task40: "",
+        task41: "",
+        task42:"",
+        task43: "",
+        task44: "",
+        task45:"",
+        task46: "",
+        task47: "",
+        task48:"",
+        task49: "",
+        task50: "",
       });
 
       setImg({
@@ -158,6 +253,8 @@ export default function InterveForm() {
         aadharCard: [],
         DebitCard: [],
         YourPhoto: [],
+        parentAdhar: [],
+        ParentPancard: [],
       });
 
       toast({
@@ -201,15 +298,17 @@ export default function InterveForm() {
             )}
           />
           <FormField
+          
             control={form.control}
             name="task2"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col" >
                 <FormLabel className="text-[19px]">D.O.B</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
+                      
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
@@ -322,6 +421,22 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
+            name="task21"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Personal contact no 2.
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Personal contact no 2." />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="task8"
             render={({ field }) => (
               <FormItem>
@@ -330,6 +445,22 @@ export default function InterveForm() {
                 </FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Guardian's contect no." />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task22"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Guardian&apos;s contect no 2.
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Guardian's contect no 2." />
                 </FormControl>
 
                 <FormMessage />
@@ -381,7 +512,7 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
-                  Highest qualification
+                Highest Qualification
                 </FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Highest qualification" />
@@ -469,17 +600,369 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task15"
+            name="task23"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
-                  Any other training / certificates
+                  List School(s) and college(s)
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="Any other training / certificates"
-                  />
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task24"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task25"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task26"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Major Course of Study
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task27"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task28"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task29"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Grade / Level Completed
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task30"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task31"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task32"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Degree Obtained</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task34"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task35"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
+            Work Experience
+          </h4>
+          <FormField
+            control={form.control}
+            name="task36"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Company / Organization
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task37"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task38"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task39"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Designation</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task40"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task41"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task42"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">From</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task43"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task44"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task45"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">To</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task46"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task47"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task48"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Ctc / Monthly</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task49"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task50"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
@@ -531,7 +1014,6 @@ export default function InterveForm() {
               </FormItem>
             )}
           />{" "}
-     
           <FormField
             control={form.control}
             name="task19"
@@ -561,7 +1043,7 @@ export default function InterveForm() {
             )}
           />
           <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
-            Upload Documents
+            Upload Your Documents
           </h4>
           <p>Pan Card</p>
           <UploadDropzone
@@ -610,7 +1092,7 @@ export default function InterveForm() {
               });
             }}
           />
-          <p>Debit or Credit Card</p>
+          <p>Marksheet</p>
           <UploadDropzone
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
@@ -641,6 +1123,55 @@ export default function InterveForm() {
               setImg((prev: any) => ({
                 ...prev, // Keep the other fields unchanged
                 YourPhoto: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              toast({
+                description: "Upload Failed",
+                variant: "destructive",
+              });
+            }}
+          />
+      
+          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
+            Upload Your Parent&lsquo;s Documents
+          </h4>
+
+          <p>Parent&lsquo;s Aadhar Card</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                parentAdhar: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              toast({
+                description: "Upload Failed",
+                variant: "destructive",
+              });
+            }}
+          />
+              <p>Parent&lsquo;s Pan Card</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                ParentPancard: res.map((file) => file.appUrl), // Map the uploaded files' URLs
               }));
               console.log("Files: ", res);
               toast({
