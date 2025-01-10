@@ -71,7 +71,7 @@ export default function Vewdata() {
       <div id="pdf-content" className="w-full space-y-6 rounded-md border p-5 shadow-inner">
         <Image src={Logo} width={200} height={200} alt="Logo" className="mx-auto" />
 
-        <h1 className="text-center text-2xl font-bold">Interview Application Form</h1>
+        <h1 className="text-center text-2xl font-bold">Staff Onboarding Form</h1>
 
         {/* Personal Details Section */}
         <SectionTitle title="Personal Details" />
@@ -108,6 +108,19 @@ export default function Vewdata() {
           <Detail label="Training / Certificates" value={data.task15} />
         </div>
 
+         {/* requered Details Section */}
+         <SectionTitle title="requered Details" />
+         <div className="space-y-4">
+          <DetailGroup>
+            <Detail label="Highest Qualification" value={data.task16} />
+            <Detail label="Year of Passing" value={data.task17} />
+          </DetailGroup>
+          <DetailGroup>
+            <Detail label="Institution/University Name" value={data.task18} />
+            <Detail label="Marks (%)" value={data.task19} />
+          </DetailGroup>
+          <Detail label="Training / Certificates" value={data.task20} />
+        </div>
         {/* Uploaded Documents Section */}
         <SectionTitle title="Uploaded Documents" />
         <div className="flex flex-wrap justify-between space-x-4 space-y-4">

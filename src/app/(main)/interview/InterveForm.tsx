@@ -34,7 +34,7 @@ import {
   IntervewValue,
 } from "@/lib/vallidation";
 import { Textarea } from "@/components/ui/textarea";
-import {  UploadDropzone } from "@/lib/util/uploadthing";
+import { UploadDropzone } from "@/lib/util/uploadthing";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -67,6 +67,12 @@ export default function InterveForm() {
       task13: "",
       task14: "",
       task15: "",
+      task16: "",
+      task17: "",
+      task18: "",
+      task19: "",
+      task20: "",
+    
     },
   });
 
@@ -112,6 +118,11 @@ export default function InterveForm() {
         task13: value.task13,
         task14: value.task14,
         task15: value.task15,
+        task16: value.task16,
+        task17: value.task17,
+        task18: value.task18,
+        task19: value.task19,
+        task20: value.task20,
         panCard: img.panCard,
         aadharCard: img.aadharCard,
         DebitCard: img.DebitCard,
@@ -135,6 +146,11 @@ export default function InterveForm() {
         task13: "",
         task14: "",
         task15: "",
+        task16: "",
+        task17: "",
+        task18: "",
+        task19: "",
+        task20: "",
       });
 
       setImg({
@@ -163,9 +179,7 @@ export default function InterveForm() {
     <div className="w-full space-y-6 rounded-md border p-5 shadow-inner">
       <Image src={Logo} width={300} height={200} alt="" className="mx-auto" />
 
-      <h1 className="text-center text-2xl font-bold">
-        Interview Application Form
-      </h1>
+      <h1 className="text-center text-2xl font-bold">Staff Onboarding Form</h1>
 
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(submithandler)}>
@@ -186,7 +200,6 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="task2"
@@ -229,7 +242,6 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="task3"
@@ -276,7 +288,6 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="task6"
@@ -293,7 +304,6 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="task7"
@@ -344,7 +354,6 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="task10"
@@ -363,11 +372,9 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
             Education Detailes
           </h4>
-
           <FormField
             control={form.control}
             name="task11"
@@ -479,9 +486,82 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-
           <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
             Required Documents
+          </h4>
+          <FormField
+            control={form.control}
+            name="task16"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Employee Name</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Employee Name" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task17"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Bank Name</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Bank Name" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task18"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Account Number</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Account Number" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />{" "}
+     
+          <FormField
+            control={form.control}
+            name="task19"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">IFSC Code</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="IFSC Code" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task20"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Bank Branch</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Bank Branch" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
+            Upload Documents
           </h4>
           <p>Pan Card</p>
           <UploadDropzone

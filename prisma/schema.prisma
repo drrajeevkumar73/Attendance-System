@@ -551,6 +551,11 @@ model Uploder {
   task13     String
   task14     String
   task15     String
+  task16     String
+  task17     String
+  task18     String
+  task19     String
+  task20     String
   panCard    String
   aadharCard String
   DebitCard  String

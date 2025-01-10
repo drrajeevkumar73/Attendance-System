@@ -496,7 +496,12 @@ export const intervewSchema = z.object({
   task13: requiredString,
   task14: requiredString,
   task15: requiredString,
-
+  task16: requiredString,
+  task17: requiredString,
+  task18: requiredString,
+  task19: requiredString,
+  task20: requiredString,
+ 
 });
 
 
