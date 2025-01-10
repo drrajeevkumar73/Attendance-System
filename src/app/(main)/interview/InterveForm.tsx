@@ -34,7 +34,7 @@ import {
   IntervewValue,
 } from "@/lib/vallidation";
 import { Textarea } from "@/components/ui/textarea";
-import { UploadButton, UploadDropzone } from "@/lib/util/uploadthing";
+import {  UploadDropzone } from "@/lib/util/uploadthing";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -503,7 +503,7 @@ export default function InterveForm() {
               // Do something with the error.
               toast({
                 description: "Upload Failed",
-                variant: "default",
+                variant: "destructive",
               });
             }}
           />
@@ -526,7 +526,7 @@ export default function InterveForm() {
               // Do something with the error.
               toast({
                 description: "Upload Failed",
-                variant: "default",
+                variant: "destructive",
               });
             }}
           />
@@ -549,7 +549,7 @@ export default function InterveForm() {
               // Do something with the error.
               toast({
                 description: "Upload Failed",
-                variant: "default",
+                variant: "destructive",
               });
             }}
           />

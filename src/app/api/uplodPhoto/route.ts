@@ -73,8 +73,13 @@ export async function POST(req: NextRequest) {
 
 
     return NextResponse.json({
-        success:false,
+        success:true,
         message:" Documents uploaded successfully"
     })
-  } catch (error) {}
+  } catch (error) {
+    return NextResponse.json({
+        success:false,
+        message:" Interval server error"
+    })
+  }
 }
