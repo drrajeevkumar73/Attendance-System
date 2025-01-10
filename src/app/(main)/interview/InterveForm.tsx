@@ -34,7 +34,7 @@ import {
   IntervewValue,
 } from "@/lib/vallidation";
 import { Textarea } from "@/components/ui/textarea";
-import { UploadButton, UploadDropzone } from "@/lib/utils";
+import { UploadButton, UploadDropzone } from "@/lib/util/uploadthing";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
