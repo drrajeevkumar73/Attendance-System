@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     },
   },
   images:{
-    domains: ['mybillbook.in','utfs.io'],
+    domains: ['mybillbook.in','utfs.io','sq75y4yd7b.ufs.sh'],
   },
   serverExternalPackages:["@node-rs/argon2"],
 };

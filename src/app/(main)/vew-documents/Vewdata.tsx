@@ -16,6 +16,7 @@ export default function Vewdata() {
       };
       
   const [data, setData] = useState<any>(null);
+  console.log(data)
 
   // Utility function to capitalize the first letter
   const capitalizeFirstLetter = (text: string) => {
@@ -139,7 +140,7 @@ export default function Vewdata() {
           </h6>
           <h6>
             <span className="font-bold text-muted-foreground">Year of Passing: </span>
-            {data.task12}
+            {data.task12 ? formatDate(data.task12) : "N/A"}
           </h6>
         </div>
         <div className="flex items-center justify-between">
