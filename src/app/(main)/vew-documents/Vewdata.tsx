@@ -54,10 +54,42 @@ export default function Vewdata() {
       const canvas = await html2canvas(element);
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+
+      let yOffset = 0;
+      while (yOffset < imgHeight) {
+        const croppedCanvas = document.createElement("canvas");
+        const croppedContext = croppedCanvas.getContext("2d");
+
+        croppedCanvas.width = imgWidth;
+        croppedCanvas.height = Math.min(imgHeight - yOffset, pdfHeight * (imgWidth / pdfWidth));
+
+        croppedContext?.drawImage(
+          canvas,
+          0,
+          yOffset,
+          imgWidth,
+          croppedCanvas.height,
+          0,
+          0,
+          imgWidth,
+          croppedCanvas.height
+        );
+
+        const croppedImgData = croppedCanvas.toDataURL("image/png");
+        pdf.addImage(croppedImgData, "PNG", 0, 0, pdfWidth, (pdfWidth / imgWidth) * croppedCanvas.height);
+
+        yOffset += croppedCanvas.height;
+
+        if (yOffset < imgHeight) {
+          pdf.addPage();
+        }
+      }
+
       pdf.save("document.pdf");
     }
   };
@@ -108,9 +140,9 @@ export default function Vewdata() {
           <Detail label="Training / Certificates" value={data.task15} />
         </div>
 
-         {/* requered Details Section */}
-         <SectionTitle title="requered Details" />
-         <div className="space-y-4">
+        {/* Required Details Section */}
+        <SectionTitle title="Required Details" />
+        <div className="space-y-4">
           <DetailGroup>
             <Detail label="Employee Name" value={data.task16} />
             <Detail label="Bank Name" value={data.task17} />
@@ -121,8 +153,9 @@ export default function Vewdata() {
           </DetailGroup>
           <Detail label="Bank Branch" value={data.task20} />
         </div>
+
         {/* Uploaded Documents Section */}
-        <SectionTitle title="Uploaded Documents"  />
+        <SectionTitle title="Uploaded Documents" />
         <div className="flex flex-wrap justify-between space-x-4 space-y-4">
           {data.panCard && <Document title="Pan Card" src={data.panCard} />}
           {data.aadharCard && <Document title="Aadhar Card" src={data.aadharCard} />}
