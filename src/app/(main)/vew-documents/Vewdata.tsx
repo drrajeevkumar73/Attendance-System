@@ -102,7 +102,7 @@ export default function Vewdata() {
             <Detail label="Year of Passing" value={data.task12 ? formatDate(data.task12) : "N/A"} />
           </DetailGroup>
           <DetailGroup>
-            <Detail label="Institution/University Name" value={data.task13} />
+            <Detail label="Institution / University Name" value={data.task13} />
             <Detail label="Marks (%)" value={data.task14} />
           </DetailGroup>
           <Detail label="Training / Certificates" value={data.task15} />
@@ -112,14 +112,14 @@ export default function Vewdata() {
          <SectionTitle title="requered Details" />
          <div className="space-y-4">
           <DetailGroup>
-            <Detail label="Highest Qualification" value={data.task16} />
-            <Detail label="Year of Passing" value={data.task17} />
+            <Detail label="Employee Name" value={data.task16} />
+            <Detail label="Bank Name" value={data.task17} />
           </DetailGroup>
           <DetailGroup>
-            <Detail label="Institution/University Name" value={data.task18} />
-            <Detail label="Marks (%)" value={data.task19} />
+            <Detail label="Account Number" value={data.task18} />
+            <Detail label="IFSC Code" value={data.task19} />
           </DetailGroup>
-          <Detail label="Training / Certificates" value={data.task20} />
+          <Detail label="Bank Branch" value={data.task20} />
         </div>
         {/* Uploaded Documents Section */}
         <SectionTitle title="Uploaded Documents" />
