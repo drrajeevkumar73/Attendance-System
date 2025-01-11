@@ -144,11 +144,11 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black">{data.task1}</TableCell>
-              <TableCell className="border text-black">
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task1}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">
                 {data.task2 ? formatDate(data.task2) : "N/A"}
               </TableCell>
-              <TableCell className="border text-black">{data.task3}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task3}</TableCell>
             </TableRow>
           </TableBody>
           <TableHeader>
@@ -164,9 +164,9 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black">{data.task4}</TableCell>
-              <TableCell className="border text-black">{data.task5}</TableCell>
-              <TableCell className="border text-black">{data.task6}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task4}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task5}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task6}</TableCell>
             </TableRow>
           </TableBody>
           <TableHeader>
@@ -184,9 +184,9 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black">{data.task7}</TableCell>
-              <TableCell className="border text-black">{data.task21}</TableCell>
-              <TableCell className="border text-black">{data.task8}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task7}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task21}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task8}</TableCell>
             </TableRow>
           </TableBody>
 
@@ -205,9 +205,9 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black">{data.task22}</TableCell>
-              <TableCell className="border text-black">{data.task9}</TableCell>
-              <TableCell className="border text-black">{data.task10}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task22}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task9}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task10}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -231,11 +231,11 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black">{data.task11}</TableCell>
-              <TableCell className="border text-black">
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task11}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">
                 {data.task12 ? formatDate(data.task12) : "N/A"}
               </TableCell>
-              <TableCell className="border text-black" colSpan={2}>{data.task13}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words" colSpan={2}>{data.task13}</TableCell>
             </TableRow>
           </TableBody>
 
@@ -246,7 +246,7 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black" colSpan={4}>{data.task14}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words" colSpan={4}>{data.task14}</TableCell>
             </TableRow>
           </TableBody>
 
@@ -260,24 +260,24 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="border text-lg">
-              <TableCell className="border text-black ">{data.task23}</TableCell>
-              <TableCell className="border text-black ">{data.task26}</TableCell>
-              <TableCell className="border text-black ">{data.task29}</TableCell>
-              <TableCell className="border text-black ">{data.task32}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task23}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task26}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task29}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task32}</TableCell>
             </TableRow>
           
               <TableRow className="border text-lg">
-              <TableCell className="border text-black">{data.task24}</TableCell>
-              <TableCell className="border text-black">{data.task27}</TableCell>
-              <TableCell className="border text-black ">{data.task30}</TableCell>
-              <TableCell className="border text-black ">{data.task34}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task24}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task27}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task30}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task34}</TableCell>
             </TableRow>
            
               <TableRow className="border text-lg">
-              <TableCell className="border text-black">{data.task25}</TableCell>
-              <TableCell className="border text-black">{data.task28}</TableCell>
-              <TableCell className="border text-black ">{data.task31}</TableCell>
-              <TableCell className="border text-black ">{data.task35}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task25}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task28}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task31}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task35}</TableCell>
             </TableRow>
             
            
@@ -302,27 +302,27 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="border text-lg">
-              <TableCell className="border text-black ">{data.task36}</TableCell>
-              <TableCell className="border text-black ">{data.task39}</TableCell>
-              <TableCell className="border text-black ">{data.task42}</TableCell>
-              <TableCell className="border text-black ">{data.task45}</TableCell>
-              <TableCell className="border text-black ">{data.task48}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task36}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task39}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task42}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task45}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task48}</TableCell>
             </TableRow>
           
               <TableRow className="border text-lg">
-              <TableCell className="border text-black">{data.task37}</TableCell>
-              <TableCell className="border text-black">{data.task40}</TableCell>
-              <TableCell className="border text-black ">{data.task43}</TableCell>
-              <TableCell className="border text-black ">{data.task46}</TableCell>
-              <TableCell className="border text-black ">{data.task49}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task37}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task40}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task43}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task46}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task49}</TableCell>
             </TableRow>
            
               <TableRow className="border text-lg">
-              <TableCell className="border text-black">{data.task38}</TableCell>
-              <TableCell className="border text-black">{data.task41}</TableCell>
-              <TableCell className="border text-black ">{data.task44}</TableCell>
-              <TableCell className="border text-black ">{data.task47}</TableCell>
-              <TableCell className="border text-black ">{data.task50}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task38}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words">{data.task41}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task44}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task47}</TableCell>
+              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task50}</TableCell>
             </TableRow>
             
            
