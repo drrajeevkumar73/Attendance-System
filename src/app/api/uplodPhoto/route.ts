@@ -23,12 +23,13 @@ export async function POST(req: NextRequest) {
       task12,
       task13,
       task14,
-
+      task15,
       task16,
       task17,
       task18,
       task19,
       task20,
+
       task21,
       task22,
       task23,
@@ -41,6 +42,7 @@ export async function POST(req: NextRequest) {
       task30,
       task31,
       task32,
+      task33,
       task34,
       task35,
       task36,
@@ -58,15 +60,59 @@ export async function POST(req: NextRequest) {
       task48,
       task49,
       task50,
+      task51,
+      task52,
+      task53,
+      task54,
+      task55,
+      task56,
+      task57,
+      task58,
+      task59,
+      task60,
+      task61,
+        task62,
+        task63,
+        task64,
+        task65,
+        task66,
+        task67,
+        task68,
+        task69,
+      
+
+      items1,
+      items2,
+      items3,
+      items4,
+      items5,
+      items6,
+      items7,
+      items8,
+      items9,
+      items10,
+      items11,
+      items12,
+      items13,
+      items14,
+      items15,
+
+
+      reco1,
+      reco2,
+      reco3,
+      reco4,
+
       panCard,
       aadharCard,
-      DebitCard,
+      marksheet,
       YourPhoto,
+      bancksheeding,
+      localproff,
       parentAdhar,
-      ParentPancard,
     } = await req.json();
 
-    const userDoc = await prisma.uploder.findFirst({
+    const userDoc = await prisma.uplodthing.findFirst({
       where: {
         userId: user.id,
       },
@@ -74,12 +120,12 @@ export async function POST(req: NextRequest) {
 
     if (userDoc) {
       return NextResponse.json({
-        success: false,
+        success:false,
         message: "You have already uploaded your documents",
       });
     }
 
-    await prisma.uploder.create({
+    await prisma.uplodthing.create({
       data: {
         userId: user.id,
         task1,
@@ -96,12 +142,13 @@ export async function POST(req: NextRequest) {
         task12,
         task13,
         task14,
-
+        task15,
         task16,
         task17,
         task18,
         task19,
         task20,
+  
         task21,
         task22,
         task23,
@@ -114,6 +161,7 @@ export async function POST(req: NextRequest) {
         task30,
         task31,
         task32,
+        task33,
         task34,
         task35,
         task36,
@@ -131,12 +179,55 @@ export async function POST(req: NextRequest) {
         task48,
         task49,
         task50,
-        panCard: panCard[0],
-        aadharCard: aadharCard[0],
-        DebitCard: DebitCard[0],
-        YourPhoto: YourPhoto[0],
-        parentAdhar: parentAdhar[0],
-        ParentPancard: ParentPancard[0],
+        task51,
+        task52,
+        task53,
+        task54,
+        task55,
+        task56,
+        task57,
+        task58,
+        task59,
+        task60,
+        task61,
+        task62,
+        task63,
+        task64,
+        task65,
+        task66,
+        task67,
+        task68,
+        task69,
+      
+      
+        items1,
+        items2,
+        items3,
+        items4,
+        items5,
+        items6,
+        items7,
+        items8,
+        items9,
+        items10,
+        items11,
+        items12,
+        items13,
+        items14,
+        items15,
+  
+        reco1,
+        reco2,
+        reco3,
+        reco4,
+  
+        panCard:panCard[0],
+        aadharCard:aadharCard[0],
+        marksheet:marksheet[0],
+        YourPhoto:YourPhoto[0],
+        bancksheeding:bancksheeding[0],
+        localproff:localproff[0],
+        parentAdhar:parentAdhar[0],
       },
     });
 
@@ -146,7 +237,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     return NextResponse.json({
-      success: false,
+      success:false,
       message: " Interval server error",
     });
   }

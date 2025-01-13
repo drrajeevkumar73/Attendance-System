@@ -41,7 +41,9 @@ model User {
   Designer          Designer[]
   Mixer             Mixer[]
   Accountant        Accountant[]
-  Uploder           Uploder[]
+
+  CallLog    CallLog[]
+  Uplodthing Uplodthing?
 
   @@map("users")
 }
@@ -533,70 +535,130 @@ model Accountant {
   @@map("accountant")
 }
 
-model Uploder {
-  id     String   @id @default(cuid())
-  userId String   @unique
-  task1  String
-  task2  DateTime
-  task3  String
-  task4  String
-  task5  String
-  task6  String
-  task7  String
-  task8  String
-  task9  String
-  task10 String
-  task11 String
-  task12 DateTime
-  task13 String
-  task14 String
+model Uplodthing {
+  id     String @id @default(cuid())
+  userId String @unique
+  task1  String?
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+  task12 String?
+  task13 String?
+  task14 String?
+  task15 String?
+  task16 String?
+  task17 String?
+  task18 String?
+  task19 String?
+  task20 String?
 
-  task16 String
-  task17 String
-  task18 String
-  task19 String
-  task20 String
+  task21 String?
+  task22 String?
+  task23 String?
+  task24 String?
+  task25 String?
+  task26 String?
+  task27 String?
+  task28 String?
+  task29 String?
+  task30 String?
+  task31 String?
+  task32 String?
+  task33 String?
+  task34 String?
+  task35 String?
+  task36 String?
+  task37 String?
+  task38 String?
+  task39 String?
+  task40 String?
+  task41 String?
+  task42 String?
+  task43 String?
+  task44 String?
+  task45 String?
+  task46 String?
+  task47 String?
+  task48 String?
+  task49 String?
+  task50 String?
+  task51 String?
+  task52 String?
+  task53 String?
+  task54 String?
+  task55 String?
+  task56 String?
+  task57 String?
+  task58 String?
+  task59 String?
+  task60 String?
+  task61 String?
+  task62 String?
+  task63 String?
+  task64 String?
+  task65 String?
+  task66 String?
+  task67 String?
+  task68 String?
+  task69 String?
 
-  task21        String?
-  task22        String?
-  task23        String?
-  task24        String?
-  task25        String?
-  task26        String?
-  task27        String?
-  task28        String?
-  task29        String?
-  task30        String?
-  task31        String?
-  task32        String?
-  task34        String?
-  task35        String?
-  task36        String?
-  task37        String?
-  task38        String?
-  task39        String?
-  task40        String?
-  task41        String?
-  task42        String?
-  task43        String?
-  task44        String?
-  task45        String?
-  task46        String?
-  task47        String?
-  task48        String?
-  task49        String?
-  task50        String?
+  items1  Boolean @default(false)
+  items2  Boolean @default(false)
+  items3  Boolean @default(false)
+  items4  Boolean @default(false)
+  items5  Boolean @default(false)
+  items6  Boolean @default(false)
+  items7  Boolean @default(false)
+  items8  Boolean @default(false)
+  items9  Boolean @default(false)
+  items10 Boolean @default(false)
+  items11 Boolean @default(false)
+  items12 Boolean @default(false)
+  items13 Boolean @default(false)
+  items14 Boolean @default(false)
+  items15 Boolean @default(false)
+
+  reco1 String
+  reco2 String
+  reco3 String
+  reco4 String
+
   panCard       String
   aadharCard    String
-  DebitCard     String
+  marksheet     String
   YourPhoto     String
-  parentAdhar   String?
-  ParentPancard String?
+  bancksheeding String
+  localproff    String
+  parentAdhar   String
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("uploder")
+  @@map("uplodthing")
+}
+
+model CallLog {
+  id              String @id @default(cuid())
+  userId          String
+  telecallerId    String
+  patientPhone    String
+  telecallerPhone String
+  callSid         String
+  callStatus      String
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("callLog")
 }

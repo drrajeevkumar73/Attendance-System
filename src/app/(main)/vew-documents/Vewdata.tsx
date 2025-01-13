@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Logo from "@/assets/web_logo_2.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -13,6 +13,8 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import { Check } from "lucide-react";
+import { useReactToPrint } from "react-to-print";
 
 export default function ViewData() {
   const [data, setData] = useState<any>(null);
@@ -38,6 +40,7 @@ export default function ViewData() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get("/api/document-da");
+
         // Transform data to capitalize first letters
         const transformedData = Object.fromEntries(
           Object.entries(data).map(([key, value]) => {
@@ -48,7 +51,7 @@ export default function ViewData() {
           }),
         );
         setData(transformedData);
-      } catch (error) {
+      } catch (error:any) {
         console.error("Error fetching data:", error);
       }
     };
@@ -56,57 +59,11 @@ export default function ViewData() {
   }, []);
 
   // Generate PDF from the displayed content
-  const generatePDF = async () => {
-    const element = document.getElementById("pdf-content");
-    if (element) {
-      const contentWidth = element.scrollWidth;
-      const contentHeight = element.scrollHeight;
-  
-      // Generate canvas with higher scale for better quality
-      const canvas = await html2canvas(element, {
-        scale: 2, // Higher scale for better quality
-        useCORS: true, // To handle cross-origin issues
-      });
-  
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-  
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-  
-      // Calculate scale factor to make the width fit
-      const scaleFactor = pdfWidth / contentWidth;
-      const scaledHeight = contentHeight * scaleFactor;
-  
-      if (scaledHeight <= pdfHeight) {
-        // If content fits on one page
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, scaledHeight);
-      } else {
-        // Content needs to be split across multiple pages
-        let position = 0;
-  
-        while (position < contentHeight) {
-          const canvasChunk = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-            y: position,
-            height: pdfHeight / scaleFactor,
-          });
-  
-          const chunkData = canvasChunk.toDataURL("image/png");
-  
-          pdf.addImage(chunkData, "PNG", 0, 0, pdfWidth, pdfHeight);
-          position += pdfHeight / scaleFactor;
-  
-          if (position < contentHeight) pdf.addPage();
-        }
-      }
-  
-      pdf.save("document.pdf");
-    }
-  };
-  
-  
+  const contentRef = useRef<HTMLDivElement>(null);
+  const reactToPrintFn = useReactToPrint({
+    contentRef,
+    documentTitle: "Intervew",
+  });
 
   if (!data) {
     return <p className="text-center">No Document Found</p>;
@@ -117,283 +74,912 @@ export default function ViewData() {
       <div
         id="pdf-content"
         className="w-full space-y-6 rounded-md border p-5 text-[23px] shadow-inner"
+        ref={contentRef}
       >
-        <Image
-          src={Logo}
-          width={300}
-          height={300}
-          alt="Logo"
-          className="mx-auto"
-        />
+        <div className="relative flex items-center">
+          <Image
+            src={Logo}
+            width={200}
+            height={200}
+            alt="Logo"
+            className="mx-auto"
+          />
 
-        <h1 className="text-center text-[50px] font-bold">
+          {data.YourPhoto && (
+            <div className="absolute right-0 top-0 h-[120px] w-[120px] overflow-hidden rounded-full">
+              <Image
+                src={data.YourPhoto}
+                width={150}
+                height={150}
+                alt="Logo"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          )}
+        </div>
+
+        <h1 className="text-center text-2xl font-extrabold">
           Staff Onboarding Form
         </h1>
 
         {/* Personal Details Section */}
         <SectionTitle title="Personal Details" />
-        <Table className="w-full">
+        <Table className="w-full" style={{ pageBreakAfter: "always" }}>
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold">Name</TableHead>
-              <TableHead className="border font-extrabold">DOB</TableHead>
-              <TableHead className="border font-extrabold">
+              <TableHead className="name border font-extrabold">Name</TableHead>
+              <TableHead className="name border font-extrabold">
+                D.O.B
+              </TableHead>
+              <TableHead className="name border font-extrabold">Age</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task1}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task2}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task3}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold">
                 Place of Birth
               </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task1}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">
-                {data.task2 ? formatDate(data.task2) : "N/A"}
-              </TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task3}</TableCell>
-            </TableRow>
-          </TableBody>
-          <TableHeader>
-            <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold">Gender</TableHead>
-              <TableHead className="border font-extrabold">
+              <TableHead className="name border font-extrabold">
+                Gender
+              </TableHead>
+              <TableHead className="name border font-extrabold">
                 Marital Status
               </TableHead>
-              <TableHead className="border font-extrabold">
-                Father&apos;s / Spouse name
-              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task4}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task5}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task6}</TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task4}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task5}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task6}
+              </TableCell>
             </TableRow>
           </TableBody>
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold">
-                Personal contact no.
+              <TableHead className="name border font-extrabold">
+                Personal contact no 1
               </TableHead>
-              <TableHead className="border font-extrabold">
-                Personal contact no 2.
+              <TableHead className="name border font-extrabold">
+                Personal contact no 2
               </TableHead>
-              <TableHead className="border font-extrabold">
-                Guardian&apos;s contect no.
+              <TableHead className="name border font-extrabold">
+                Email
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task7}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task21}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task8}</TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task7}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task8}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task9}
+              </TableCell>
             </TableRow>
           </TableBody>
 
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold">
-                Guardian&apos;s contect no 2.
+              <TableHead className="name border font-extrabold">
+                Guardian&apos;s / Spouse name
               </TableHead>
-              <TableHead className="border font-extrabold">
+              <TableHead className="name border font-extrabold">
+                Guardian&apos;s contect no
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Local emergency contact no
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task10}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task11}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task12}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold" colSpan={3}>
+              Language known
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell
+                className="xyx whitespace-pre-line break-words border text-black"
+                colSpan={3}
+              >
+            {data.task13}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold" colSpan={3}>
+              Computer knowledge 
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell
+                className="xyx whitespace-pre-line break-words border text-black"
+                colSpan={3}
+              >
+                {data.task14}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold" colSpan={2}>
                 Current address
               </TableHead>
-              <TableHead className="border font-extrabold">
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell
+                className="xyx whitespace-pre-line break-words border text-black"
+                colSpan={3}
+              >
+                {data.task15}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+          
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold" colSpan={3}>
                 Permanent address
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task22}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task9}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task10}</TableCell>
+              <TableCell
+                className="xyx whitespace-pre-line break-words border text-black"
+                colSpan={3}
+              >
+                {data.task16}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
 
         {/* Educational Details Section */}
         <SectionTitle title="Educational Details" />
-        <Table className="w-full">
+        <Table className="w-full" >
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold">
-                Highest Qualification
+              <TableHead className="name border font-extrabold">
+                Qualification
               </TableHead>
-              <TableHead className="border font-extrabold">
-                Year of Passing
+              <TableHead className="name border font-extrabold">
+                Board / Institute
               </TableHead>
-              <TableHead className="border font-extrabold" colSpan={2}>
-                Institution / University Name
+              <TableHead className="name border font-extrabold">
+                School / College
               </TableHead>
-              
+              <TableHead className="name border font-extrabold">
+                Marks(%)
+              </TableHead>
+              <TableHead className="name border font-extrabold">Year</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task11}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">
-                {data.task12 ? formatDate(data.task12) : "N/A"}
+            <TableRow className="">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task17}
               </TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words" colSpan={2}>{data.task13}</TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task21}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task25}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task29}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task33}
+              </TableCell>
+            </TableRow>
+            <TableRow className="">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task18}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task22}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task26}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task30}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task34}
+              </TableCell>
+            </TableRow>
+            <TableRow className="">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task19}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task23}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task27}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task31}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task35}
+              </TableCell>
+            </TableRow>
+            <TableRow className="">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task20}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task24}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task28}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task32}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task36}
+              </TableCell>
             </TableRow>
           </TableBody>
-
-          <TableHeader>
-            <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold" colSpan={4}>Marks (%)</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words" colSpan={4}>{data.task14}</TableCell>
-            </TableRow>
-          </TableBody>
-
-          <TableHeader>
-            <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold"> List School(s) and college(s)</TableHead>
-              <TableHead className="border font-extrabold">  Major Course of Study</TableHead>
-              <TableHead className="border font-extrabold">  Grade / Level Completed</TableHead>
-              <TableHead className="border font-extrabold">  Degree Obtained</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow className="border text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task23}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task26}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task29}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task32}</TableCell>
-            </TableRow>
-          
-              <TableRow className="border text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task24}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task27}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task30}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task34}</TableCell>
-            </TableRow>
-           
-              <TableRow className="border text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task25}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task28}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task31}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task35}</TableCell>
-            </TableRow>
-            
-           
-           
-          </TableBody>
-          
         </Table>
 
- {/* Work Expreence Details Section */}
- <SectionTitle title=" Work Experience" />
- <Table className="w-full">
-        
-
-          <TableHeader>
-            <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold"> Company / Organization</TableHead>
-              <TableHead className="border font-extrabold">  Designation</TableHead>
-              <TableHead className="border font-extrabold">  From</TableHead>
-              <TableHead className="border font-extrabold">  To</TableHead>
-              <TableHead className="border font-extrabold">  Ctc / Monthly</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow className="border text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task36}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task39}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task42}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task45}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task48}</TableCell>
-            </TableRow>
-          
-              <TableRow className="border text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task37}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task40}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task43}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task46}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task49}</TableCell>
-            </TableRow>
-           
-              <TableRow className="border text-lg">
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task38}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words">{data.task41}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task44}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task47}</TableCell>
-              <TableCell className="border text-black whitespace-pre-line break-words ">{data.task50}</TableCell>
-            </TableRow>
-            
-           
-           
-          </TableBody>
-          
-        </Table>
-
-        {/* Required Details Section */}
-        <SectionTitle title="Required Details" />
+        {/* Extra Certificates Details Section */}
+        <SectionTitle title="Extra Certification Details" />
         <Table className="w-full">
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold">
+              <TableHead className="name border font-extrabold">
+                {" "}
+                Course
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                {" "}
+                Institute
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                {" "}
+                Certificates
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                {" "}
+                Year
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task37}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task39}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task41}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task43}
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task38}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task40}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task42}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task44}
+              </TableCell>
+            </TableRow>
+
+          
+          </TableBody>
+        </Table>
+
+        {/*    Work Experience Section */}
+        <SectionTitle title="Work Experience" />
+        <Table className="w-full"  style={{ pageBreakAfter: "always" }}>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold">
+                {" "}
+                Company / Organization
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                {" "}
+                Designation
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                {" "}
+                From
+              </TableHead>
+              <TableHead className="name border font-extrabold"> To</TableHead>
+              <TableHead className="name border font-extrabold">
+                {" "}
+                Ctc / Monthly
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task45}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task49}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task53}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task57}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task61}
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task46}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task50}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task54}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task58}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task62}
+              </TableCell>
+           
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task47}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task51}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task55}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task59}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task63}
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task48}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task52}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task56}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task60}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task64}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        {/* Bank Document */}
+        <SectionTitle title="Bank Details" />
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold">
                 Employee Name
               </TableHead>
-              <TableHead className="border font-extrabold">Bank Name</TableHead>
-              <TableHead className="border font-extrabold">
+              <TableHead className="name border font-extrabold">
+                Bank Name
+              </TableHead>
+              <TableHead className="name border font-extrabold">
                 Account Number
               </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border">{data.task16}</TableCell>
-              <TableCell className="border">{data.task17}</TableCell>
-              <TableCell className="border">{data.task18}</TableCell>
-            </TableRow>
-          </TableBody>
-
-          <TableHeader>
-            <TableRow className="text-xl font-extrabold text-muted-foreground">
-              <TableHead className="border font-extrabold">IFSC Code</TableHead>
-              <TableHead className="border font-extrabold" colSpan={2}>
+              <TableHead className="name border font-extrabold">
+                IFSC Code
+              </TableHead>
+              <TableHead className="name border font-extrabold">
                 Bank Branch
               </TableHead>
             </TableRow>
           </TableHeader>
-
           <TableBody>
             <TableRow className="bg-slate-200 text-lg">
-              <TableCell className="border">{data.task19}</TableCell>
-              <TableCell className="border" colSpan={2}>{data.task20}</TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task65}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task66}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task67}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task68}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.task69}
+              </TableCell>
+            </TableRow>
+            
+          </TableBody>
+        </Table>
+
+        <Table className="w-full" >
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold">
+                Pan Card
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Aadhar Card
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Parent&lsquo;s Aadhar Card
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Passbook Photo
+              </TableHead>
+
+             
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.panCard && <Document title="" src={data.panCard} />}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.aadharCard && <Document title="" src={data.aadharCard} />}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.parentAdhar && (
+                  <Document title="" src={data.parentAdhar} />
+                )}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.bancksheeding && (
+                  <Document title="" src={data.bancksheeding} />
+                )}
+              </TableCell>
+             
+            </TableRow>
+          </TableBody>
+        </Table>
+        <Table className="w-full" style={{ pageBreakAfter: "always" }}>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              
+
+              <TableHead className="name border font-extrabold">
+                Local Proof
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Marksheet
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="h-[80px] text-lg">
+              
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.localproff && <Document title="" src={data.localproff} />}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.marksheet && <Document title="" src={data.marksheet} />}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        {/* General Clinic SOP */}
+        <SectionTitle title="General Clinic SOP" />
+        <Table className="w-full" style={{ pageBreakAfter: "always" }}>
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold">
+                S.No.
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Details
+              </TableHead>
+
+              <TableHead className="name border font-extrabold">
+                Response
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                1
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                1 week Off per week
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items1 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                2
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                2 week can be take along
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items2 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                3
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                NO week for New Joining within first 8 days
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items3 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                4
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                If Without Information Absenteeism found then 2 days Attendence
+                Deduction
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items4 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                5
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                If Emergency Leave taken (Absent) , without document proof will
+                be facing Attendence Deduction
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items5 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                6
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                If anyone is not coming he/she should informby 8am inthemorning
+                ...No Managerwill callto crosscheck anditwillbmarkasAbsent
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items6 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                7
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                15 min buffer time for late coming as per your schedule time , 3
+                LATE = 1 half day
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items7 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                8
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                45min of Break
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items8 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                9
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Personal Phone to be submitted
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items9 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                10
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Proper clean Dress up
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items10 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                11
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Proper Response to be given by allthe Phones Handling team on
+                realtime
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items11 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                12
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Daily 3 hours APP reporting
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items12 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                13
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Daily Closing Reporting
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items13 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                14
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Department or Personal WORK SOP to be followed
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items14 === true ? <Check /> : "na"}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                15
+              </TableCell>
+
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                No misbehaviour with other Staff or Patient
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.items15 === true ? <Check /> : "na"}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
 
-        {/* Uploaded Documents Section */}
-        <SectionTitle title="Uploaded Documents" />
-        <div className="flex flex-wrap justify-between space-x-4 space-y-4">
-          {data.panCard && <Document title="Pan Card" src={data.panCard} />}
-          {data.aadharCard && (
-            <Document title="Aadhar Card" src={data.aadharCard} />
-          )}
-          {data.DebitCard && (
-            <Document title="Your Marksheet" src={data.DebitCard} />
-          )}
-          {data.YourPhoto && (
-            <Document title="Your Photo" src={data.YourPhoto} />
-          )}
-           {data.YourPhoto && (
-            <Document title="Parent's Aadhar Card" src={data.parentAdhar} />
-          )}
-          {data.YourPhoto && (
-            <Document title="Parent's Pan Card" src={data.ParentPancard} />
-          )}
-        </div>
+        <SectionTitle title="TRAINING Regulation " />
+        <Table className="w-full">
+          <TableBody>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                1
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                No leaves are allowed during the training period of 1st 6 Days
+              </TableCell>
+            </TableRow>
+
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                2
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Training timing will be 10am-8pm from Sunday to Thursday with a
+                Certification on FRIDAY and SATURDAY OF
+              </TableCell>
+            </TableRow>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                2
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Training timing will be 10am-8pm from Sunday to Thursday with a
+                Certification on FRIDAY and SATURDAY OF
+              </TableCell>
+            </TableRow>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                3
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Consecutive absenteeism during your training period may result
+                in your removal from the training without pay
+              </TableCell>
+            </TableRow>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                4
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                During the training period, there will be assessment rounds
+                conducted by the trainer or the Manager. Failing on assessment
+                before the OJT (On-the-Job)
+              </TableCell>
+            </TableRow>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                5
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                Upon unsuccessful Assessment - 6 days Training period will be
+                paid only of Rs- 1500/-
+              </TableCell>
+            </TableRow>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell
+                className="xyx whitespace-pre-line break-words border text-black"
+                colSpan={2}
+              >
+                * Upon successful completion of Training and Assessment you will
+                be assigned to your designated team as per the process
+                requirements and that will be the starting day of your discussed
+                salary. OJT will be for 90 days , Salary may vary on your OJT
+                performance *
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <SectionTitle title="Official" />
+
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold">
+                Salary Finalized
+              </TableHead>
+              <TableHead className="name border font-extrabold">DOJ</TableHead>
+              <TableHead className="name border font-extrabold">
+                Location
+              </TableHead>
+              <TableHead className="name border font-extrabold">POST</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-slate-200 text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.reco1}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.reco2}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.reco3}
+              </TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black">
+                {data.reco4}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow className="text-xl font-extrabold text-muted-foreground">
+              <TableHead className="name border font-extrabold">
+                Employees Signature
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Official Signature
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Approved By
+              </TableHead>
+              <TableHead className="name border font-extrabold">
+                Dr. Rajeev Kumar
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="h-[80px] text-lg">
+              <TableCell className="xyx whitespace-pre-line break-words border text-black"></TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black"></TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black"></TableCell>
+              <TableCell className="xyx whitespace-pre-line break-words border text-black"></TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
 
       <button
-        onClick={generatePDF}
+        onClick={() => reactToPrintFn()}
         className="mx-auto mt-10 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
       >
         Print to PDF
@@ -416,7 +1002,7 @@ function Document({ title, src }: { title: string; src: string }) {
   return (
     <div>
       <p className="font-bold text-muted-foreground">{title}</p>
-      <Image src={src} width={500} height={500} alt={title} />
+      <Image src={src} width={300} height={300} alt={title} className=""/>
     </div>
   );
 }

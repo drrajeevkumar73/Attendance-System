@@ -1,4 +1,4 @@
-import { date, z } from "zod";
+import { date, string, z } from "zod";
 
 const requiredString = z.string().trim().min(1, "Required");
 
@@ -472,64 +472,125 @@ export type AccountValue = z.infer<typeof ecaountantSchema>;
 
 export const intervewSchema = z.object({
   task1: requiredString,
-  task2: z
-    .date({
-      required_error: "A date of birth is required.",
-    })
-    .nullable(),
-
+  task2: requiredString,
   task3: requiredString,
   task4: requiredString,
   task5: requiredString,
   task6: requiredString,
   task7: requiredString,
-  task8: requiredString,
+  task8: z.string().trim(),
   task9: requiredString,
   task10: requiredString,
   task11: requiredString,
-  task12: z
-    .date({
-      required_error: "A date of birth is required.",
-    })
-    .nullable(),
+  task12: z.string().trim(),
   task13: requiredString,
   task14: requiredString,
-
+  task15: requiredString,
   task16: requiredString,
   task17: requiredString,
   task18: requiredString,
-  task19: requiredString,
-  task20: requiredString,
-
-  task21: z.string().trim(),
-  task22: z.string().trim(),
-  task23: requiredString,
+  task19:z.string().trim(),
+  task20: z.string().trim(),
+  task21: requiredString,
+  task22: requiredString,
+  task23: z.string().trim(),
   task24: z.string().trim(),
-  task25: z.string().trim(),
+  task25: requiredString,
   task26: requiredString,
   task27: z.string().trim(),
   task28: z.string().trim(),
   task29: requiredString,
-  task30: z.string().trim(),
+  task30: requiredString,
   task31: z.string().trim(),
-  task32: requiredString,
-  task34: z.string().trim(),
+  task32: z.string().trim(),
+  task33:requiredString,
+  task34: requiredString,
   task35: z.string().trim(),
-  task36: requiredString,
-  task37: z.string().trim(),
+  task36: z.string().trim(),
+  task37: requiredString,
   task38: z.string().trim(),
   task39: requiredString,
   task40: z.string().trim(),
-  task41: z.string().trim(),
-  task42: requiredString,
-  task43: z.string().trim(),
+  task41: requiredString,
+  task42: z.string().trim(),
+  task43: requiredString,
   task44: z.string().trim(),
   task45: requiredString,
   task46: z.string().trim(),
   task47: z.string().trim(),
-  task48: requiredString,
-  task49: z.string().trim(),
+  task48: z.string().trim(),
+  task49: requiredString,
   task50: z.string().trim(),
+  task51: z.string().trim(),
+  task52: z.string().trim(),
+  task53: requiredString,
+  task54: z.string().trim(),
+  task55: z.string().trim(),
+  task56: z.string().trim(),
+  task57: requiredString,
+  task58: z.string().trim(),
+  task59: z.string().trim(),
+  task60: z.string().trim(),
+
+  task61: requiredString,
+  task62: z.string().trim(),
+  task63: z.string().trim(),
+  task64: z.string().trim(),
+  task65: requiredString,
+  task66: requiredString,
+  task67: requiredString,
+  task68: requiredString,
+  task69: requiredString,
+  items1: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items2: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items3: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items4: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items5: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items6: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items7: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items8: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items9: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items10: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items11: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items12: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items13: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items14: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+  items15: z.boolean().refine((val) => val === true, {
+    message: "You must check this checkbox to proceed.",
+  }),
+
+  reco1: requiredString,
+  reco2: requiredString,
+  reco3: requiredString,
+  reco4: requiredString,
 });
 
 export type IntervewValue = z.infer<typeof intervewSchema>;

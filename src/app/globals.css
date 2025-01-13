@@ -71,3 +71,29 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+@media print{
+  #pdf-content{
+    zoom: 1 !important;
+   
+  
+  }
+  .xyx{
+    font-size: 16px !important;
+  }
+  .name{
+    font-size: 13px !important;
+  }
+ 
+}
+#pdf-content{
+  font-family: Arial, Helvetica, sans-serif;
+ 
+}
+@page{
+  size: auto ; 
+  margin: 0.6cm;
+ 
+
+}

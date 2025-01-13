@@ -9,7 +9,7 @@ export async function GET() {
         throw Error("unauthorized")
     }
 
-    const res=await prisma.uploder.findFirst({
+    const res=await prisma.uplodthing.findFirst({
         where:{
             userId:user.id
         },

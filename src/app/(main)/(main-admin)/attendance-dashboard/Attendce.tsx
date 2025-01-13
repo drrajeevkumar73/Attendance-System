@@ -33,6 +33,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import * as XLSX from "xlsx"; // Import xlsx library
+
 export default function Attendce() {
   const form = useForm<AValue>({
     resolver: zodResolver(aSchema),
@@ -58,7 +60,6 @@ export default function Attendce() {
         cityname: value.cityname,
         monthname: value.monthname,
       });
-      console.log("Submitted Data:", data); // Form data ko console me dekhlo
       setlate({
         attendanceCountByUser: data.attendanceCountByUser || [],
         attendanceDetails: data.attendanceDetails || [],
@@ -70,19 +71,35 @@ export default function Attendce() {
     }
   };
 
-  const [tab, setTad] = useState(1);
-  const plushHandler = () => {
-    setTad(1);
-  };
-  const minusHandler = () => {
-    setTad(0);
-  };
   function formatMinutesToHoursMinutes(minutes: any) {
     if (!minutes) return "0h 0m"; // Handle null or undefined
     const hours = Math.floor(minutes / 60); // Calculate hours
     const remainingMinutes = minutes % 60; // Calculate remaining minutes
     return `${hours}h ${remainingMinutes}m`; // Return formatted string
   }
+
+  const exportToExcel = () => {
+    const dataForExcel = late.attendanceCountByUser.map((item) => ({
+      Name: item.displayname,
+      Department: item.dipartment,
+      "Present Count": item.presentCount,
+      "Attendance Details": item.attendanceDetails
+        ?.map(
+          (detail:any) =>
+            `Date: ${detail.date}, Status: ${detail.status}, Late Time: ${formatMinutesToHoursMinutes(
+              detail.latetime
+            )}`
+        )
+        .join("\n"),
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(dataForExcel);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Attendance");
+
+    XLSX.writeFile(wb, "attendance_data.xlsx");
+  };
+
   return (
     <>
       <Form {...form}>
@@ -166,16 +183,16 @@ export default function Attendce() {
         </form>
       </Form>
 
-      <Table className="">
+      <Button onClick={exportToExcel} className="mt-4">
+        Export to Excel
+      </Button>
+
+      <Table className="mt-4">
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Name</TableHead>
-            <TableHead className="border-2 border-blue-400">
-              Department
-            </TableHead>
-            <TableHead className="border-2 border-blue-400">
-              Present Count
-            </TableHead>
+            <TableHead className="border-2 border-blue-400">Department</TableHead>
+            <TableHead className="border-2 border-blue-400">Present Count</TableHead>
             <TableHead className="border-2 border-blue-400 ">Status</TableHead>
           </TableRow>
         </TableHeader>
@@ -190,7 +207,7 @@ export default function Attendce() {
           <TableBody>
             {late?.attendanceCountByUser.map((item: any, index) => (
               <TableRow key={index}>
-                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400" >
+                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   {item.displayname}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
@@ -205,9 +222,7 @@ export default function Attendce() {
                       <tr>
                         <th className="border px-2 py-1">Date</th>
                         <th className="border px-2 py-1">Status</th>
-                        <th className="border px-2 py-1">
-                          Late Time
-                        </th>
+                        <th className="border px-2 py-1">Late Time</th>
                       </tr>
                     </thead>
 
@@ -215,17 +230,13 @@ export default function Attendce() {
                       {item.attendanceDetails?.map(
                         (detailer: any, index: any) => (
                           <tr key={index}>
-                            <td className="border px-2 py-1">
-                              {detailer.date}
-                            </td>
-                            <td className="border px-2 py-1">
-                              {detailer.status}
-                            </td>
+                            <td className="border px-2 py-1">{detailer.date}</td>
+                            <td className="border px-2 py-1">{detailer.status}</td>
                             <td className="border px-2 py-1">
                               {formatMinutesToHoursMinutes(detailer.latetime)}
                             </td>
                           </tr>
-                        ),
+                        )
                       )}
                     </tbody>
                   </table>

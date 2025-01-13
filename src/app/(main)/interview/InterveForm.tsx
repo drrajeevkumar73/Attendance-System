@@ -26,6 +26,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import {
   exelSchema,
@@ -39,7 +47,7 @@ import { UploadDropzone } from "@/lib/util/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -49,11 +57,12 @@ import { date } from "zod";
 
 export default function InterveForm() {
   const { toast } = useToast();
+
   const form = useForm<IntervewValue>({
     resolver: zodResolver(intervewSchema),
     defaultValues: {
       task1: "",
-      task2: new Date(),
+      task2: "",
       task3: "",
       task4: "",
       task5: "",
@@ -63,10 +72,10 @@ export default function InterveForm() {
       task9: "",
       task10: "",
       task11: "",
-      task12: new Date(),
+      task12: "",
       task13: "",
       task14: "",
-
+      task15: "",
       task16: "",
       task17: "",
       task18: "",
@@ -78,30 +87,71 @@ export default function InterveForm() {
       task23: "",
       task24: "",
       task25: "",
-       task26:"",
-        task27: "",
-        task28: "",
-        task29:"",
-        task30: "",
-        task31: "",
-        task32:"",
-        task34: "",
-        task35: "",
-        task36:"",
-        task37: "",
-        task38: "",
-        task39:"",
-        task40: "",
-        task41: "",
-        task42:"",
-        task43: "",
-        task44: "",
-        task45:"",
-        task46: "",
-        task47: "",
-        task48:"",
-        task49: "",
-        task50: "",
+      task26: "",
+      task27: "",
+      task28: "",
+      task29: "",
+      task30: "",
+      task31: "",
+      task32: "",
+      task33: "",
+      task34: "",
+      task35: "",
+      task36: "",
+      task37: "",
+      task38: "",
+      task39: "",
+      task40: "",
+      task41: "",
+      task42: "",
+      task43: "",
+      task44: "",
+      task45: "",
+      task46: "",
+      task47: "",
+      task48: "",
+      task49: "",
+      task50: "",
+      task51: "",
+      task52: "",
+      task53: "",
+      task54: "",
+      task55: "",
+      task56: "",
+      task57: "",
+      task58: "",
+      task59: "",
+      task60: "",
+      task61: "",
+        task62: "",
+        task63: "",
+        task64: "",
+        task65: "",
+        task66: "",
+        task67: "",
+        task68: "",
+        task69: "",
+
+      items1: false,
+      items2: false,
+      items3: false,
+      items4: false,
+      items5: false,
+      items6: false,
+      items7: false,
+      items8: false,
+      items9: false,
+      items10: false,
+      items11: false,
+      items12: false,
+      items13: false,
+      items14: false,
+      items15: false,
+
+      reco1: "",
+      reco2: "",
+      reco3: "",
+      reco4: "",
     },
   });
 
@@ -109,10 +159,11 @@ export default function InterveForm() {
   const [img, setImg] = useState({
     panCard: [],
     aadharCard: [],
-    DebitCard: [],
+    marksheet: [],
     YourPhoto: [],
+    bancksheeding: [],
+    localproff: [],
     parentAdhar: [],
-    ParentPancard: [],
   });
 
   const submithandler = async (value: IntervewValue) => {
@@ -120,13 +171,22 @@ export default function InterveForm() {
       if (
         !img.panCard.length ||
         !img.aadharCard.length ||
-        !img.DebitCard.length ||
+        !img.marksheet.length ||
         !img.YourPhoto.length ||
-        !img.parentAdhar.length ||
-        !img.ParentPancard.length 
+        !img.bancksheeding.length ||
+        !img.localproff.length ||
+        !img.parentAdhar.length
       ) {
         toast({
           description: "Please upload all the documents",
+          variant: "destructive",
+        });
+        return; // Exit the function if validation fails
+      }
+
+      if (value.task7 === value.task8) {
+        toast({
+          description: "Please add different number",
           variant: "destructive",
         });
         return; // Exit the function if validation fails
@@ -151,6 +211,7 @@ export default function InterveForm() {
         task13: value.task13,
         task14: value.task14,
 
+        task15: value.task15,
         task16: value.task16,
         task17: value.task17,
         task18: value.task18,
@@ -162,42 +223,85 @@ export default function InterveForm() {
         task23: value.task23,
         task24: value.task24,
         task25: value.task25,
-        task26:value.task26,
+        task26: value.task26,
         task27: value.task27,
         task28: value.task28,
-        task29:value.task29,
+        task29: value.task29,
         task30: value.task30,
         task31: value.task31,
-        task32:value.task32,
+        task32: value.task32,
+        task33: value.task33,
         task34: value.task34,
         task35: value.task35,
-        task36:value.task36,
+        task36: value.task36,
         task37: value.task37,
         task38: value.task38,
-        task39:value.task39,
+        task39: value.task39,
         task40: value.task40,
         task41: value.task41,
-        task42:value.task42,
+        task42: value.task42,
         task43: value.task43,
         task44: value.task44,
-        task45:value.task45,
+        task45: value.task45,
         task46: value.task46,
         task47: value.task47,
-        task48:value.task48,
+        task48: value.task48,
         task49: value.task49,
         task50: value.task50,
+        task51: value.task51,
+        task52: value.task52,
+        task53: value.task53,
+        task54: value.task54,
+        task55: value.task55,
+        task56: value.task56,
+        task57: value.task57,
+        task58: value.task58,
+        task59: value.task59,
+        task60: value.task60,
+        task61: value.task61,
+        task62:  value.task62,
+        task63:  value.task63,
+        task64:  value.task64,
+        task65: value.task65,
+        task66: value.task66,
+        task67:  value.task67,
+        task68:  value.task68,
+        task69:  value.task69,
+
+        items1: value.items1,
+        items2: value.items2,
+        items3: value.items3,
+        items4: value.items4,
+        items5: value.items5,
+        items6: value.items6,
+        items7: value.items7,
+        items8: value.items8,
+        items9: value.items9,
+        items10: value.items10,
+        items11: value.items11,
+        items12: value.items12,
+        items13: value.items13,
+        items14: value.items14,
+        items15: value.items15,
+
+        reco1: value.reco1,
+        reco2: value.reco2,
+        reco3: value.reco3,
+        reco4: value.reco4,
+
         panCard: img.panCard,
         aadharCard: img.aadharCard,
-        DebitCard: img.DebitCard,
+        marksheet: img.marksheet,
         YourPhoto: img.YourPhoto,
-        parentAdhar:img.parentAdhar,
-        ParentPancard:img.ParentPancard
+        bancksheeding: img.bancksheeding,
+        localproff: img.localproff,
+        parentAdhar: img.parentAdhar,
       });
 
       // Reset form and image state
       form.reset({
         task1: "",
-        task2: new Date(),
+        task2: "",
         task3: "",
         task4: "",
         task5: "",
@@ -207,10 +311,10 @@ export default function InterveForm() {
         task9: "",
         task10: "",
         task11: "",
-        task12: new Date(),
+        task12: "",
         task13: "",
         task14: "",
-
+        task15: "",
         task16: "",
         task17: "",
         task18: "",
@@ -222,39 +326,82 @@ export default function InterveForm() {
         task23: "",
         task24: "",
         task25: "",
-        task26:"",
+        task26: "",
         task27: "",
         task28: "",
-        task29:"",
+        task29: "",
         task30: "",
         task31: "",
-        task32:"",
+        task32: "",
+        task33: "",
         task34: "",
         task35: "",
-        task36:"",
+        task36: "",
         task37: "",
         task38: "",
-        task39:"",
+        task39: "",
         task40: "",
         task41: "",
-        task42:"",
+        task42: "",
         task43: "",
         task44: "",
-        task45:"",
+        task45: "",
         task46: "",
         task47: "",
-        task48:"",
+        task48: "",
         task49: "",
         task50: "",
+        task51: "",
+        task52: "",
+        task53: "",
+        task54: "",
+        task55: "",
+        task56: "",
+        task57: "",
+        task58: "",
+        task59: "",
+        task60: "",
+        task61: "",
+        task62: "",
+        task63: "",
+        task64: "",
+        task65: "",
+        task66: "",
+        task67: "",
+        task68: "",
+        task69: "",
+
+
+        items1: false,
+        items2: false,
+        items3: false,
+        items4: false,
+        items5: false,
+        items6: false,
+        items7: false,
+        items8: false,
+        items9: false,
+        items10: false,
+        items11: false,
+        items12: false,
+        items13: false,
+        items14: false,
+        items15: false,
+
+        reco1: "",
+        reco2: "",
+        reco3: "",
+        reco4: "",
       });
 
       setImg({
         panCard: [],
         aadharCard: [],
-        DebitCard: [],
+        marksheet: [],
         YourPhoto: [],
+        bancksheeding: [],
+        localproff: [],
         parentAdhar: [],
-        ParentPancard: [],
       });
 
       toast({
@@ -281,7 +428,7 @@ export default function InterveForm() {
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(submithandler)}>
           <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
-            Personal Detail
+            Personal Details
           </h4>
           <FormField
             control={form.control}
@@ -298,44 +445,14 @@ export default function InterveForm() {
             )}
           />
           <FormField
-          
             control={form.control}
             name="task2"
             render={({ field }) => (
-              <FormItem className="flex flex-col" >
+              <FormItem>
                 <FormLabel className="text-[19px]">D.O.B</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                      
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto w-full opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value ? new Date(field.value) : undefined}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <FormControl>
+                  <Input {...field} placeholder="Dae of birth" />
+                </FormControl>
 
                 <FormMessage />
               </FormItem>
@@ -344,6 +461,20 @@ export default function InterveForm() {
           <FormField
             control={form.control}
             name="task3"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Age</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Age" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task4"
             render={({ field }) => (
               <FormItem>
                 <FormLabel> Place of Birth</FormLabel>
@@ -361,27 +492,24 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task4"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel> Gender</FormLabel>
-                <FormControl>
-                  <Input placeholder="Gender" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="task5"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">Marital Status</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Marital Status" />
-                </FormControl>
+                <FormLabel>Gender</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
 
                 <FormMessage />
               </FormItem>
@@ -392,12 +520,21 @@ export default function InterveForm() {
             name="task6"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">
-                  Father&apos;s / Spouse name
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Father's / Spouse name" />
-                </FormControl>
+                <FormLabel>Marital Status</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Marital Status" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Married">Married</SelectItem>
+                    <SelectItem value="Unmarried">Unmarried</SelectItem>
+                  </SelectContent>
+                </Select>
 
                 <FormMessage />
               </FormItem>
@@ -409,26 +546,10 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
-                  Personal contact no.
+                  Personal contact no 1
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Personal contact no." />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="task21"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[19px]">
-                  Personal contact no 2.
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Personal contact no 2." />
+                  <Input {...field} placeholder=" Personal contact no 1" />
                 </FormControl>
 
                 <FormMessage />
@@ -441,26 +562,10 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">
-                  Guardian&apos;s contect no.
+                  Personal contact no 2
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Guardian's contect no." />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="task22"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[19px]">
-                  Guardian&apos;s contect no 2.
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Guardian's contect no 2." />
+                  <Input {...field} placeholder="Personal contact no 2" />
                 </FormControl>
 
                 <FormMessage />
@@ -470,6 +575,98 @@ export default function InterveForm() {
           <FormField
             control={form.control}
             name="task9"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Email</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Email" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task10"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Guardian&lsquo;s / Spouse name
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder=" Guardian's / Spouse name" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task11"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Guardian&apos;s contect no
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Guardian's contect no" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task12"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Local emergency contact no
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Local emergency contact no" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task13"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Language known</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Language known" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task14"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">
+                  Computer knowledge
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Computer knowledge" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task15"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Current address</FormLabel>
@@ -487,7 +684,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task10"
+            name="task16"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Permanent address</FormLabel>
@@ -504,18 +701,16 @@ export default function InterveForm() {
             )}
           />
           <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
-            Education Detailes
+            Educational Details
           </h4>
           <FormField
             control={form.control}
-            name="task11"
+            name="task17"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">
-                Highest Qualification
-                </FormLabel>
+                <FormLabel className="text-[19px]">Qualification</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Highest qualification" />
+                  <Input {...field} placeholder=" List 1" />
                 </FormControl>
 
                 <FormMessage />
@@ -524,60 +719,11 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task12"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-[19px]">Year of Passing</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto w-full opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value ? new Date(field.value) : undefined}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="task13"
+            name="task18"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">
-                  Institute / University name
-                </FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Institute / University name"
-                    className="resize-y"
-                    {...field}
-                  />
+                  <Input {...field} placeholder=" List 2" />
                 </FormControl>
 
                 <FormMessage />
@@ -586,12 +732,51 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task14"
+            name="task19"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">Marks(%)</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Marks(%)" />
+                  <Input {...field} placeholder=" List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task20"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder=" List 4 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task21"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Board / Institute</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task22"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2" />
                 </FormControl>
 
                 <FormMessage />
@@ -603,11 +788,8 @@ export default function InterveForm() {
             name="task23"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">
-                  List School(s) and college(s)
-                </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 1" />
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
@@ -620,7 +802,7 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
@@ -632,8 +814,9 @@ export default function InterveForm() {
             name="task25"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-[19px]">School / College</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                  <Input {...field} placeholder="List 1" />
                 </FormControl>
 
                 <FormMessage />
@@ -645,11 +828,8 @@ export default function InterveForm() {
             name="task26"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">
-                  Major Course of Study
-                </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 1" />
+                  <Input {...field} placeholder="List 2" />
                 </FormControl>
 
                 <FormMessage />
@@ -662,7 +842,7 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
@@ -675,7 +855,7 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
@@ -687,9 +867,7 @@ export default function InterveForm() {
             name="task29"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">
-                  Grade / Level Completed
-                </FormLabel>
+                <FormLabel className="text-[19px]">Marks(%)</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="List 1" />
                 </FormControl>
@@ -704,7 +882,7 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                  <Input {...field} placeholder="List 2" />
                 </FormControl>
 
                 <FormMessage />
@@ -729,7 +907,20 @@ export default function InterveForm() {
             name="task32"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">Degree Obtained</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task33"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Year </FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="List 1" />
                 </FormControl>
@@ -744,7 +935,7 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                  <Input {...field} placeholder="List 2" />
                 </FormControl>
 
                 <FormMessage />
@@ -764,32 +955,30 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
-          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
-            Work Experience
-          </h4>
           <FormField
             control={form.control}
             name="task36"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">
-                  Company / Organization
-                </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 1" />
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
               </FormItem>
             )}
           />
+          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
+            Extra Certification Details
+          </h4>
           <FormField
             control={form.control}
             name="task37"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-[19px]">Course</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                  <Input {...field} placeholder="List 1" />
                 </FormControl>
 
                 <FormMessage />
@@ -802,7 +991,7 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
@@ -814,7 +1003,7 @@ export default function InterveForm() {
             name="task39"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">Designation</FormLabel>
+                <FormLabel className="text-[19px]">Institute</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="List 1" />
                 </FormControl>
@@ -841,20 +1030,7 @@ export default function InterveForm() {
             name="task41"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
-                  <Input {...field} placeholder="List 3 (OPTINAL)" />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="task42"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[19px]">From</FormLabel>
+                <FormLabel className="text-[19px]">Certificates</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="List 1" />
                 </FormControl>
@@ -865,7 +1041,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task43"
+            name="task42"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -878,11 +1054,12 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task44"
+            name="task43"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-[19px]">Year</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                  <Input {...field} placeholder="List 1" />
                 </FormControl>
 
                 <FormMessage />
@@ -891,10 +1068,28 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
+            name="task44"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
+            Work Experience
+          </h4>
+          <FormField
+            control={form.control}
             name="task45"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">To</FormLabel>
+                <FormLabel className="text-[19px]">
+                  Company / Organization
+                </FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="List 1" />
                 </FormControl>
@@ -934,9 +1129,8 @@ export default function InterveForm() {
             name="task48"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">Ctc / Monthly</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 1" />
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
                 </FormControl>
 
                 <FormMessage />
@@ -948,8 +1142,9 @@ export default function InterveForm() {
             name="task49"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-[19px]">Designation</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                  <Input {...field} placeholder="List 1" />
                 </FormControl>
 
                 <FormMessage />
@@ -962,6 +1157,19 @@ export default function InterveForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task51"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
                   <Input {...field} placeholder="List 3 (OPTINAL)" />
                 </FormControl>
 
@@ -969,12 +1177,184 @@ export default function InterveForm() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="task52"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task53"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">From</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task54"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task55"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task56"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task57"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">To</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task58"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task59"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task60"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task61"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Ctc / Monthly</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List 1" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task62"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 2 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task63"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 3 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="task64"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input {...field} placeholder="List 4 (OPTINAL)" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
-            Required Documents
+            Bank Details
           </h4>
           <FormField
             control={form.control}
-            name="task16"
+            name="task65"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Employee Name</FormLabel>
@@ -988,7 +1368,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task17"
+            name="task66"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Bank Name</FormLabel>
@@ -1002,7 +1382,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task18"
+            name="task67"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Account Number</FormLabel>
@@ -1016,7 +1396,7 @@ export default function InterveForm() {
           />{" "}
           <FormField
             control={form.control}
-            name="task19"
+            name="task68"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">IFSC Code</FormLabel>
@@ -1030,7 +1410,7 @@ export default function InterveForm() {
           />
           <FormField
             control={form.control}
-            name="task20"
+            name="task69"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[19px]">Bank Branch</FormLabel>
@@ -1099,7 +1479,7 @@ export default function InterveForm() {
               // Do something with the response
               setImg((prev: any) => ({
                 ...prev, // Keep the other fields unchanged
-                DebitCard: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+                marksheet: res.map((file) => file.appUrl), // Map the uploaded files' URLs
               }));
               console.log("Files: ", res);
               toast({
@@ -1137,11 +1517,50 @@ export default function InterveForm() {
               });
             }}
           />
-      
-          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
-            Upload Your Parent&lsquo;s Documents
-          </h4>
-
+          <p>Passbook Photo</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                bancksheeding: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              toast({
+                description: "Upload Failed",
+                variant: "destructive",
+              });
+            }}
+          />
+          <p>Local Proof</p>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setImg((prev: any) => ({
+                ...prev, // Keep the other fields unchanged
+                localproff: res.map((file) => file.appUrl), // Map the uploaded files' URLs
+              }));
+              console.log("Files: ", res);
+              toast({
+                description: "Upload Completed",
+                variant: "default",
+              });
+            }}
+            onUploadError={(error: Error) => {
+              toast({
+                description: "Upload Failed",
+                variant: "destructive",
+              });
+            }}
+          />
           <p>Parent&lsquo;s Aadhar Card</p>
           <UploadDropzone
             endpoint="imageUploader"
@@ -1164,27 +1583,359 @@ export default function InterveForm() {
               });
             }}
           />
-              <p>Parent&lsquo;s Pan Card</p>
-          <UploadDropzone
-            endpoint="imageUploader"
-            onClientUploadComplete={(res) => {
-              // Do something with the response
-              setImg((prev: any) => ({
-                ...prev, // Keep the other fields unchanged
-                ParentPancard: res.map((file) => file.appUrl), // Map the uploaded files' URLs
-              }));
-              console.log("Files: ", res);
-              toast({
-                description: "Upload Completed",
-                variant: "default",
-              });
-            }}
-            onUploadError={(error: Error) => {
-              toast({
-                description: "Upload Failed",
-                variant: "destructive",
-              });
-            }}
+          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
+            General Clinic SOP
+          </h4>
+          <FormField
+            control={form.control}
+            name="items1"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>1 week Off per week</FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items2"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>2 week can be take along</FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items3"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    NO week for New Joining within first 8 days
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items4"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    If Without Information Absenteeism found then 2 days
+                    Attendence Deduction
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items5"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    If Emergency Leave taken (Absent), without document proof
+                    will be facing Attendence Deduction
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items6"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    If anyone is not coming he/she should inform by Bam in the
+                    morning. No Manager will call to cross check and it will b
+                    mark as Absent
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items7"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    15 min buffer time for late coming as per your schedule
+                    time, 3 LATE-1 half day
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items8"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>45 min of Break</FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items9"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Personal Phone to be submitted</FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items10"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Proper clean Dress up</FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items11"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    Proper Response to be given by all the Phones Handling team
+                    on real time
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items12"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Daily 3 hours APP reporting</FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items13"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Daily Cosing Reporting</FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items14"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    Department or Personal WORK SOP to be followed
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="items15"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    No misbehaviour with other Staff or Patient
+                  </FormLabel>
+                </div>
+                {/* <FormMessage /> */}
+              </FormItem>
+            )}
+          />
+          <h4 className="w-full border bg-gradient-to-b from-gray-200 to-gray-400 p-2 font-bold text-black">
+            Official
+          </h4>
+          <FormField
+            control={form.control}
+            name="reco1"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Salary Finalized</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Salary Finalized" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="reco2"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">DOJ</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="DOJ" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="reco3"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">Location</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Location" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="reco4"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">POST</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="POST" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <LodingButton loding={ispending} type="submit" className="w-full">
             Submit
