@@ -594,3 +594,13 @@ export const intervewSchema = z.object({
 });
 
 export type IntervewValue = z.infer<typeof intervewSchema>;
+
+
+
+export const alreportSchema = z.object({
+  
+  month:requiredString,
+  year:requiredString ,
+});
+
+export type AllreportValue = z.infer<typeof alreportSchema>;
