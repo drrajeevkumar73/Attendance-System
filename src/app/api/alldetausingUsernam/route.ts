@@ -431,7 +431,6 @@
 
 
 
-
 import prisma from "@/lib/prisma";
 import moment from "moment-timezone";
 import { NextRequest, NextResponse } from "next/server";
@@ -466,8 +465,14 @@ export async function POST(req: NextRequest) {
         .endOf("month")
         .toDate();
     } else {
-      startDate = moment.tz(calender, "YYYY-MM-DD", "Asia/Kolkata").startOf("day").toDate();
-      endDate = moment.tz(calender, "YYYY-MM-DD", "Asia/Kolkata").endOf("day").toDate();
+      startDate = moment
+        .tz(calender, "YYYY-MM-DD", "Asia/Kolkata")
+        .startOf("day")
+        .toDate();
+      endDate = moment
+        .tz(calender, "YYYY-MM-DD", "Asia/Kolkata")
+        .endOf("day")
+        .toDate();
     }
 
     // If `whichdata` is 'work', fetch today's work data based on date range
