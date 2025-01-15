@@ -135,11 +135,9 @@ export default function SearchData() {
       const selectedYear = parseInt(value.year, 10);
 
       // Use moment to create a date in the desired timezone (Asia/Kolkata)
-      const selectedDate = moment.tz(
-        `${selectedYear}-${selectedMonth + 1}-01`,
-        "YYYY-MM-DD",
-        "Asia/Kolkata",
-      );
+      const selectedDate = moment
+        .tz(`${selectedYear}-${selectedMonth + 1}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+        .startOf("day");  // Ensure it's the start of the day in Asia/Kolkata timezone
 
       // Convert the moment date to ISO string (YYYY-MM-DD)
       const isoDate = selectedDate.format("YYYY-MM-DD"); // This ensures the correct date format
@@ -180,7 +178,7 @@ export default function SearchData() {
     } else {
       console.error("Month and Year are required!");
     }
-  };
+};
 
   const [of, setof] = useState(1);
 
