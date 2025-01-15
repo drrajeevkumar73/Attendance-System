@@ -113,6 +113,7 @@ export default function SearchData() {
     setispending(true);
     sets(false);
     setLoading(true); //
+
     if (value.month && value.year) {
       // Map the month name to its corresponding numeric value (0-indexed for JavaScript Date)
       const monthMap: { [key: string]: number } = {
@@ -142,6 +143,9 @@ export default function SearchData() {
       // Convert the moment date to ISO string (YYYY-MM-DD)
       const isoDate = selectedDate.format("YYYY-MM-DD"); // This ensures the correct date format
 
+      // Log the ISO date to debug
+      console.log("ISO Date:", isoDate);
+
       // Use the ISO date string in your API call
 
       if (selectedTask === "work") {
@@ -150,7 +154,7 @@ export default function SearchData() {
           whichdata: selectedTask,
           month: isoDate, // Send as a string (e.g., '2025-01-01' for January 2025)
         });
-        console.log(isoDate)
+        console.log(isoDate);
         setData(response.data); // Debugging
       } else if (selectedTask === "excel") {
         const response = await axios.post("/api/alldetausingUsernam", {
@@ -179,6 +183,7 @@ export default function SearchData() {
       console.error("Month and Year are required!");
     }
 };
+
 
   const [of, setof] = useState(1);
 
