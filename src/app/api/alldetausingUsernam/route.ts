@@ -583,8 +583,8 @@ export async function POST(req: NextRequest) {
             where: {
               userId: decoid,
               createdAt: {
-                gte: rangeStartTime, // Start time (inclusive)
-                lt: rangeEndTime, // End time (exclusive)
+                gte: startDate, // Start time (inclusive)
+                lt: endDate, // End time (exclusive)
               },
             },
             select: {
