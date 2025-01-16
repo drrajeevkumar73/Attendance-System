@@ -523,8 +523,9 @@ export async function POST(req: NextRequest) {
           .endOf("month")  // Set the end time to 11:59:59 PM IST
           .toDate();
     
-        console.log("Start Date (IST):", startDate);  // Log start date
-        console.log("End Date (IST):", endDate);  // Log end date
+        // Log the dates in a human-readable IST format
+        console.log("Start Date (IST):", moment(startDate).format("YYYY-MM-DD HH:mm:ss"));
+        console.log("End Date (IST):", moment(endDate).format("YYYY-MM-DD HH:mm:ss"));
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
