@@ -26,13 +26,13 @@ export async function POST(req: NextRequest) {
         const numericMonth = month.split("-")[1];  // Extract month (e.g., "01" for January)
         const year = month.split("-")[0];  // Extract year (e.g., "2025")
         
-        // Calculate the first day of the selected month
+        // Calculate the first day of the selected month in IST (Asia/Kolkata)
         startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata").startOf('month').toDate();
         
-        // Calculate the last day of the selected month
+        // Calculate the last day of the selected month in IST (Asia/Kolkata)
         endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata").endOf('month').toDate();
         
-        // Ensure that startDate and endDate are only within the selected month range
+        // Log the corrected dates in IST
         console.log("Start Date: ", startDate);
         console.log("End Date: ", endDate);
         
