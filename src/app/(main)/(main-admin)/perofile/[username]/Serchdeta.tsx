@@ -55,7 +55,7 @@ export default function SearchData() {
     dataOf: [],
     dataOn: [],
   });
-  
+  console.log(date)
   const [late, setatendec]: any = useState([]);
   const [s, sets] = useState(true);
   const [ispending, setispending] = useState(false);
@@ -63,15 +63,15 @@ export default function SearchData() {
   const fetchData = useCallback(
     async (task: string, selectedDate: Date | undefined) => {
       if (!task || !selectedDate) return;
-  
-      // Normalize the date to start of the day in IST
-      const dateInIST = moment(selectedDate)
-        .utcOffset("+05:30") // Adjust to IST (UTC+5:30)
-        .startOf("day") // Start of the day in IST
-        .format("YYYY-MM-DD"); // Format as 'YYYY-MM-DD'
-  
- // Debugging to verify the conversion
-  
+
+      // Convert the selected date to IST and format it to 'YYYY-MM-DD'
+      const dateInIST = moment
+        .tz(selectedDate, "Asia/Kolkata")
+        .startOf("day") // Normalize to the start of the day in IST
+        .format("YYYY-MM-DD"); // Format as a string for consistent API usage
+
+      console.log("Date in IST:", dateInIST); // Debugging to verify conversion
+
       sets(true);
       setLoading(true); // Loading start
       try {
@@ -79,7 +79,7 @@ export default function SearchData() {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: dateInIST, // Send the corrected date
+            calender: dateInIST, // Send the converted date
           });
           console.log(dateInIST);
           setData(response.data);
@@ -87,7 +87,7 @@ export default function SearchData() {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: dateInIST, // Send the corrected date
+            calender: dateInIST, // Send the converted date
           });
           settablseex({
             dipartment: response.data.dipartment,
@@ -99,7 +99,7 @@ export default function SearchData() {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: dateInIST, // Send the corrected date
+            calender: dateInIST, // Send the converted date
           });
           setatendec(response.data);
         }
@@ -111,7 +111,6 @@ export default function SearchData() {
     },
     [username],
   );
-  
 
   useEffect(() => {
     fetchData(selectedTask, date); // Initial fetch
