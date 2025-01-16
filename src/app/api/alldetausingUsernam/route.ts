@@ -511,18 +511,20 @@ export async function POST(req: NextRequest) {
     // Define date range based on `calender` or `month`
     if (!calender) {
         const numericMonth = month.split("-")[1]; // Extract month
-    const year = month.split("-")[0]; // Extract year
-
-    // Correct start and end dates in IST
-    startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-      .startOf("month") // Start of the month in IST
-      .toDate();
-    endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-      .endOf("month") // End of the month in IST
-      .toDate();
-
-    console.log("Start Date (IST):", startDate);  // Log start date
-    console.log("End Date (IST):", endDate);  // Log end date
+        const year = month.split("-")[0]; // Extract year
+      
+        // Set start date to 1st January, 12:00 AM IST
+        startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+          .startOf("day") // Start of the day (12:00 AM IST)
+          .toDate();
+        
+        // Set end date to 31st January, 11:59:59 PM IST
+        endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+          .endOf("month") // End of the month (11:59:59 PM IST)
+          .toDate();
+      
+        console.log("Start Date (IST):", startDate);  // Log start date
+        console.log("End Date (IST):", endDate);  // Log end date
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
