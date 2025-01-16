@@ -522,9 +522,9 @@ export async function POST(req: NextRequest) {
         endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
           .endOf("month")  // Set the end time to 11:59:59 PM IST
           .toDate();
-      
-        console.log("Start Date (IST):rah", startDate);  // Log start date
-        console.log("End Date (IST):rahu", endDate);  // Log end date
+    
+        console.log("Start Date (IST):", startDate);  // Log start date
+        console.log("End Date (IST):", endDate);  // Log end date
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
