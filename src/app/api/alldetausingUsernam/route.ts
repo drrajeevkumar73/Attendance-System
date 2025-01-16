@@ -76,16 +76,8 @@ export async function POST(req: NextRequest) {
                         .utc()
                         .toDate();
         
-                    // Adjust the end time explicitly to make it exclusive
-                    if (range.label === "10 AM - 1 PM") {
-                        rangeEndTime.setHours(13, 0, 0, 0); // 1 PM (exclusive)
-                    }
-                    if (range.label === "1 PM - 4 PM") {
-                        rangeEndTime.setHours(16, 0, 0, 0); // 4 PM (exclusive)
-                    }
-                    if (range.label === "4 PM - 7 PM") {
-                        rangeEndTime.setHours(19, 0, 0, 0); // 7 PM (exclusive)
-                    }
+                    // Explicit adjustment for the end time to ensure exclusivity
+                    rangeEndTime.setHours(range.end, 0, 0, 0); // Ensure end hour is strictly exclusive
         
                     // Log the time range for debugging
                     console.log(`Fetching data for: ${range.label} from ${rangeStartTime} to ${rangeEndTime}`);
@@ -116,9 +108,7 @@ export async function POST(req: NextRequest) {
                         dayData.timeRanges[range.label] = data.map((entry) => entry.content);
                     } else {
                         // Ensure empty slots are maintained if no data is found
-                        if (!dayData.timeRanges[range.label]) {
-                            dayData.timeRanges[range.label] = [];
-                        }
+                        dayData.timeRanges[range.label] = [];
                     }
                 });
         
