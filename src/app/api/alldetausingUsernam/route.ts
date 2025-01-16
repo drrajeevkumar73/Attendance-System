@@ -511,21 +511,22 @@ export async function POST(req: NextRequest) {
     // Define date range based on `calender` or `month`
     if (!calender) {
         const numericMonth = month.split("-")[1]; // Extract month
-    const year = month.split("-")[0]; // Extract year
-  
-    // Set start date to 1st January 2025, 12:00 AM IST
-    startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-      .startOf("day")  // Ensures 12:00 AM
-      .toDate(); // Convert to native JavaScript Date object
+        const year = month.split("-")[0]; // Extract year
+      
+        // Set start date to 1st January 2025, 12:00 AM IST
+        startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+          .startOf("day")  // Ensures 12:00 AM
+          .toDate(); // Convert to native JavaScript Date object
+        
+        // Set end date to 31st January 2025, 11:59:59 PM IST
+        endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+          .endOf("month")  // Ensures 11:59:59 PM
+          .toDate(); // Convert to native JavaScript Date object
     
-    // Set end date to 31st January 2025, 11:59:59 PM IST
-    endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-      .endOf("month")  // Ensures 11:59:59 PM
-      .toDate(); // Convert to native JavaScript Date object
-
-    // Log the dates in IST format
-    console.log("Start Date (IST):", moment(startDate).format("YYYY-MM-DD HH:mm:ss"));
-    console.log("End Date (IST):", moment(endDate).format("YYYY-MM-DD HH:mm:ss"));
+        // Log the dates to make sure they are correct in IST
+        console.log("Start Date (IST):", moment(startDate).format("YYYY-MM-DD HH:mm:ss"));
+        console.log("End Date (IST):", moment(endDate).format("YYYY-MM-DD HH:mm:ss"));
+    
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
