@@ -40,63 +40,73 @@ export async function POST(req: NextRequest) {
 
     // If `whichdata` is 'work', fetch today's work data based on date range
     if (whichdata === "work") {
-      const groupedData: { date: string; timeRanges: Record<string, string[]> }[] = [];
-
-      const currentDate = moment(startDate);
-      const lastDate = moment(endDate);
-
-      while (currentDate.isBefore(lastDate)) {
-        const dayData: { date: string; timeRanges: Record<string, string[]> } = {
-          date: currentDate.format("YYYY-MM-DD"),
-          timeRanges: {
-            "10 AM - 1 PM": [],
-            "1 PM - 4 PM": [],
-            "4 PM - 7 PM": [],
-          },
-        };
-
-        for (const range of timeRanges) {
-          const rangeStartTime = currentDate
-            .clone()
-            .hour(range.start)
-            .minute(0)
-            .second(0)
-            .utc()
-            .toDate();
-
-          const rangeEndTime = currentDate
-            .clone()
-            .hour(range.end)
-            .minute(0)
-            .second(0)
-            .utc()
-            .toDate();
-
-          const data = await prisma.todayswork.findMany({
-            where: {
-              userId: decoid,
-              createdAt: {
-                gte: rangeStartTime,
-                lt: rangeEndTime,
+        const groupedData: { date: string; timeRanges: Record<string, string[]> }[] = [];
+      
+        const currentDate = moment(startDate);
+        const lastDate = moment(endDate);
+      
+        while (currentDate.isBefore(lastDate)) {
+          const dayData: { date: string; timeRanges: Record<string, string[]> } = {
+            date: currentDate.format("YYYY-MM-DD"),
+            timeRanges: {
+              "10 AM - 1 PM": [],
+              "1 PM - 4 PM": [],
+              "4 PM - 7 PM": [],
+            },
+          };
+      
+          // Use Promise.all to run all time range queries concurrently
+          const timeRangePromises = timeRanges.map(async (range) => {
+            const rangeStartTime = currentDate
+              .clone()
+              .hour(range.start)
+              .minute(0)
+              .second(0)
+              .utc()
+              .toDate();
+      
+            const rangeEndTime = currentDate
+              .clone()
+              .hour(range.end)
+              .minute(0)
+              .second(0)
+              .utc()
+              .toDate();
+      
+            const data = await prisma.todayswork.findMany({
+              where: {
+                userId: decoid,
+                createdAt: {
+                  gte: rangeStartTime,
+                  lt: rangeEndTime,
+                },
               },
-            },
-            select: {
-              content: true,
-            },
-            orderBy:{
-                createdAt:"desc"
-              }
+              select: {
+                content: true,
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
+              take: 5,
+            });
+      
+            // Set the result for the corresponding time range
+            dayData.timeRanges[range.label] = data.map((entry) => entry.content);
           });
-
-          dayData.timeRanges[range.label] = data.map((entry) => entry.content);
+      
+          // Wait for all the promises to resolve
+          await Promise.all(timeRangePromises);
+      
+          // After all time ranges are processed, add the day data
+          groupedData.push(dayData);
+      
+          // Move to the next day
+          currentDate.add(1, "day");
         }
-
-        groupedData.push(dayData);
-        currentDate.add(1, "day");
+      
+        return NextResponse.json(groupedData);
       }
-
-      return NextResponse.json(groupedData);
-    } 
+      
     // If `whichdata` is 'excel', fetch department-based data (for example, 'MIXER')
     else if (whichdata === "excel") {
       const user = await prisma.user.findFirst({
