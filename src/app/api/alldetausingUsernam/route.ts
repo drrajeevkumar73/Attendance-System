@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
             const dayData: { date: string; timeRanges: Record<string, string[]> } = {
                 date: currentDate.format("YYYY-MM-DD"),
                 timeRanges: {
-                    "10 AM - 1 PM": [],
-                    "1 PM - 4 PM": [],
-                    "4 PM - 7 PM": [],
+                    "10am to 1pm": [],
+                    "1pm to 4pm": [],
+                    "4pm to 7pm": [],
                 },
             };
     
@@ -102,8 +102,14 @@ export async function POST(req: NextRequest) {
                     take: 5,
                 });
     
-                // Map the result to the corresponding time range
-                dayData.timeRanges[range.label] = data.map((entry) => entry.content);
+                // Distribute work content into respective time slots
+                if (range.label === "10am to 1pm") {
+                    dayData.timeRanges["10am to 1pm"].push(...data.map((entry) => entry.content));
+                } else if (range.label === "1pm to 4pm") {
+                    dayData.timeRanges["1pm to 4pm"].push(...data.map((entry) => entry.content));
+                } else if (range.label === "4pm to 7pm") {
+                    dayData.timeRanges["4pm to 7pm"].push(...data.map((entry) => entry.content));
+                }
             });
     
             // Wait for all time range queries to finish
