@@ -513,14 +513,12 @@ export async function POST(req: NextRequest) {
         const numericMonth = month.split("-")[1]; // Extract month
         const year = month.split("-")[0]; // Extract year
       
-        // Set start date to 1st January 2025, 12:00 AM IST
-        startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-          .startOf("day")  // Ensures 12:00 AM
+        // Set start date to 1st January 2025, 12:00 AM IST (Asia/Kolkata)
+        startDate = moment.tz(`${year}-${numericMonth}-01 00:00:00`, "YYYY-MM-DD HH:mm:ss", "Asia/Kolkata")
           .toDate(); // Convert to native JavaScript Date object
         
-        // Set end date to 31st January 2025, 11:59:59 PM IST
-        endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-          .endOf("month")  // Ensures 11:59:59 PM
+        // Set end date to 31st January 2025, 11:59:59 PM IST (Asia/Kolkata)
+        endDate = moment.tz(`${year}-${numericMonth}-31 23:59:59`, "YYYY-MM-DD HH:mm:ss", "Asia/Kolkata")
           .toDate(); // Convert to native JavaScript Date object
     
         // Log the dates to make sure they are correct in IST
