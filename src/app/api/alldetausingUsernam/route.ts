@@ -515,16 +515,16 @@ export async function POST(req: NextRequest) {
       
         // Set start date to 1st January, 12:00 AM IST
         startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-          .startOf("day") // Start of the day (12:00 AM IST)
+          .startOf("day")  // Set the start time to 12:00 AM IST
           .toDate();
         
         // Set end date to 31st January, 11:59:59 PM IST
         endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-          .endOf("month") // End of the month (11:59:59 PM IST)
+          .endOf("month")  // Set the end time to 11:59:59 PM IST
           .toDate();
       
-        console.log("Start Date (IST):", startDate);  // Log start date
-        console.log("End Date (IST):", endDate);  // Log end date
+        console.log("Start Date (IST):rah", startDate);  // Log start date
+        console.log("End Date (IST):rahu", endDate);  // Log end date
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
