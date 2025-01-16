@@ -121,6 +121,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(groupedData);
     }
     
+    
       
     // If `whichdata` is 'excel', fetch department-based data (for example, 'MIXER')
     else if (whichdata === "excel") {
