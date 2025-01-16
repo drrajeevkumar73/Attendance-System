@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
             const dayData: { date: string; timeRanges: Record<string, string[]> } = {
                 date: currentDate.format("YYYY-MM-DD"),
                 timeRanges: {
-                    "10am to 1pm": [],
-                    "1pm to 4pm": [],
-                    "4pm to 7pm": [],
+                    "10 AM - 1 PM": [],
+                    "1 PM - 4 PM": [],
+                    "4 PM - 7 PM": [],
                 },
             };
     
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
                     .utc()
                     .toDate();
     
-                // Explicitly adjust the end time to be exclusive
+                // Adjust the end time explicitly to make it exclusive
                 if (range.label === "10 AM - 1 PM") {
                     rangeEndTime.setHours(13, 0, 0, 0); // 1 PM (exclusive)
                 }
@@ -99,16 +99,17 @@ export async function POST(req: NextRequest) {
                     orderBy: {
                         createdAt: "desc",
                     },
-                    take: 5,
                 });
     
-                // Distribute work content into respective time slots
-                if (range.label === "10am to 1pm") {
-                    dayData.timeRanges["10am to 1pm"].push(...data.map((entry) => entry.content));
-                } else if (range.label === "1pm to 4pm") {
-                    dayData.timeRanges["1pm to 4pm"].push(...data.map((entry) => entry.content));
-                } else if (range.label === "4pm to 7pm") {
-                    dayData.timeRanges["4pm to 7pm"].push(...data.map((entry) => entry.content));
+                // Ensure data is mapped correctly to the correct time range
+                if (data.length > 0) {
+                    // Ensure that we add the fetched data to the correct time range
+                    dayData.timeRanges[range.label] = data.map((entry) => entry.content);
+                } else {
+                    // Ensure empty slots are maintained if no data is found
+                    if (!dayData.timeRanges[range.label]) {
+                        dayData.timeRanges[range.label] = [];
+                    }
                 }
             });
     
@@ -124,6 +125,7 @@ export async function POST(req: NextRequest) {
     
         return NextResponse.json(groupedData);
     }
+    
     
     
     
