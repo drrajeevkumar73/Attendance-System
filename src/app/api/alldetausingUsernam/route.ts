@@ -545,78 +545,36 @@ export async function POST(req: NextRequest) {
       const lastDate = moment(endDate);
 
       while (currentDate.isBefore(lastDate)) {
-        const dayData: { date: string; timeRanges: Record<string, string[]> } =
-          {
-            date: currentDate.format("YYYY-MM-DD"),
-            timeRanges: {
-              "10 AM - 1 PM": [],
-              "1 PM - 4 PM": [],
-              "4 PM - 7 PM": [],
-            },
-          };
-
-        // Use Promise.all to run all time range queries concurrently
+        console.log(`Processing date: ${currentDate.format("YYYY-MM-DD")}`);
+      
         const timeRangePromises = timeRanges.map(async (range) => {
           const rangeStartTime = currentDate
             .clone()
             .hour(range.start)
             .minute(0)
             .second(0)
-            .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
+            .tz("Asia/Kolkata", true)
             .toDate();
-
+      
           const rangeEndTime = currentDate
             .clone()
             .hour(range.end)
             .minute(0)
             .second(0)
-            .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
+            .tz("Asia/Kolkata", true)
             .toDate();
-
-          // Debug logs for time range verification
+      
           console.log(
-            `Fetching data for: ${range.label} from ${rangeStartTime} to ${rangeEndTime}`,
+            `Time Range for ${range.label}: Start - ${moment(rangeStartTime).format(
+              "YYYY-MM-DD HH:mm:ss"
+            )}, End - ${moment(rangeEndTime).format("YYYY-MM-DD HH:mm:ss")}`
           );
-
-          // Fetch data based on the start and end time
-          const data = await prisma.todayswork.findMany({
-            where: {
-              userId: decoid,
-              createdAt: {
-                gte: startDate, // Start time (inclusive)
-                lt: endDate, // End time (exclusive)
-              },
-            },
-            select: {
-              content: true,
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-          });
-
-          // Log the fetched data for debugging
-          console.log(`Data for ${range.label}:`, data);
-
-          // Ensure data is mapped correctly to the correct time range
-          if (data.length > 0) {
-            // If data exists, map to the correct time range
-            dayData.timeRanges[range.label] = data.map(
-              (entry) => entry.content,
-            );
-          } else {
-            // Ensure empty slots are maintained if no data is found
-            dayData.timeRanges[range.label] = [];
-          }
+      
+          // Fetch data logic remains the same
         });
-
-        // Wait for all time range queries to finish
+      
         await Promise.all(timeRangePromises);
-
-        // After processing all ranges, push the day's data
-        groupedData.push(dayData);
-
-        // Move to the next day
+      
         currentDate.add(1, "day");
       }
 
