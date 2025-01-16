@@ -58,10 +58,19 @@ export default function SearchData() {
   const [late, setatendec]: any = useState([]);
   const [s, sets] = useState(true);
   const [ispending, setispending] = useState(false);
-
+  
   const fetchData = useCallback(
     async (task: string, selectedDate: Date | undefined) => {
       if (!task || !selectedDate) return;
+  
+      // Normalize the date to start of the day in IST
+      const dateInIST = moment(selectedDate)
+        .utcOffset("+05:30") // Adjust to IST (UTC+5:30)
+        .startOf("day") // Start of the day in IST
+        .format("YYYY-MM-DD"); // Format as 'YYYY-MM-DD'
+  
+      console.log("Date in IST:", dateInIST); // Debugging to verify the conversion
+  
       sets(true);
       setLoading(true); // Loading start
       try {
@@ -69,15 +78,15 @@ export default function SearchData() {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: selectedDate,
+            calender: dateInIST, // Send the corrected date
           });
-          console.log(selectedDate)
+          console.log(dateInIST);
           setData(response.data);
         } else if (task === "excel") {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: selectedDate,
+            calender: dateInIST, // Send the corrected date
           });
           settablseex({
             dipartment: response.data.dipartment,
@@ -89,7 +98,7 @@ export default function SearchData() {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: selectedDate,
+            calender: dateInIST, // Send the corrected date
           });
           setatendec(response.data);
         }
@@ -101,7 +110,7 @@ export default function SearchData() {
     },
     [username],
   );
-
+  
   useEffect(() => {
     fetchData(selectedTask, date); // Initial fetch
   }, [selectedTask, date, fetchData]);
