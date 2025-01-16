@@ -3,136 +3,131 @@ import moment from "moment-timezone";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  try {
-    const { username, whichdata, calender, month } = await req.json();
-    const decoid = decodeURIComponent(username);
-
-    let startDate: Date, endDate: Date;
-
-    const timeRanges = [
-      { label: "10 AM - 1 PM", start: 10, end: 13 },
-      { label: "1 PM - 4 PM", start: 13, end: 16 },
-      { label: "4 PM - 7 PM", start: 16, end: 19 },
-    ];
-
-    if (!calender && !month) {
-      throw new Error(
-        "Either 'calender' or 'month' is required to fetch data.",
-      );
-    }
-
-    // Define date range based on `calender` or `month`
-    if (!calender) {
-        const numericMonth = month.split("-")[1];  // Extract month (e.g., "01" for January)
-        const year = month.split("-")[0];  // Extract year (e.g., "2025")
-        
-        // Calculate the first day of the selected month in IST (Asia/Kolkata)
-        startDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").startOf('month').toDate();
-        
-        // Calculate the last day of the selected month in IST (Asia/Kolkata)
-        endDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").endOf('month').toDate();
-        
-        // Log the corrected dates in IST
-        console.log("Start Date: ", startDate);
-        console.log("End Date: ", endDate);
-        
-    } else {
-      startDate = new Date(calender);
-      startDate.setHours(0, 0, 0, 0);
-      endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 1);
-    }
-
-
-
-    // If `whichdata` is 'work', fetch today's work data based on date range
-    if (whichdata === "work") {
-      const groupedData: {
-        date: string;
-        timeRanges: Record<string, string[]>;
-      }[] = [];
-
-      const currentDate = moment(startDate);
-      const lastDate = moment(endDate);
-
-      while (currentDate.isBefore(lastDate)) {
-        const dayData: { date: string; timeRanges: Record<string, string[]> } =
-          {
-            date: currentDate.format("YYYY-MM-DD"),
-            timeRanges: {
-              "10 AM - 1 PM": [],
-              "1 PM - 4 PM": [],
-              "4 PM - 7 PM": [],
-            },
-          };
-
-        // Use Promise.all to run all time range queries concurrently
-        const timeRangePromises = timeRanges.map(async (range) => {
-          const rangeStartTime = currentDate
-            .clone()
-            .hour(range.start)
-            .minute(0)
-            .second(0)
-            .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
-            .toDate();
-
-          const rangeEndTime = currentDate
-            .clone()
-            .hour(range.end)
-            .minute(0)
-            .second(0)
-            .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
-            .toDate();
-
-          // Debug logs for time range verification
-          console.log(
-            `Fetching data for: ${range.label} from ${rangeStartTime} to ${rangeEndTime}`,
-          );
-
-          // Fetch data based on the start and end time
-          const data = await prisma.todayswork.findMany({
-            where: {
-              userId: decoid,
-              createdAt: {
-                gte: rangeStartTime, // Start time (inclusive)
-                lt: rangeEndTime, // End time (exclusive)
+    try {
+        const { username, whichdata, calender, month } = await req.json();
+        const decoid = decodeURIComponent(username);
+    
+        let startDate: Date, endDate: Date;
+    
+        const timeRanges = [
+          { label: "10 AM - 1 PM", start: 10, end: 13 },
+          { label: "1 PM - 4 PM", start: 13, end: 16 },
+          { label: "4 PM - 7 PM", start: 16, end: 19 },
+        ];
+    
+        if (!calender && !month) {
+          throw new Error("Either 'calender' or 'month' is required to fetch data.");
+        }
+    
+        // Define date range based on `calender` or `month`
+        if (!calender) {
+          const numericMonth = month.split("-")[1];  // Extract month (e.g., "01" for January)
+          const year = month.split("-")[0];  // Extract year (e.g., "2025")
+          
+          // Calculate the first day of the selected month in IST (Asia/Kolkata)
+          startDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").startOf('month').toDate();
+          
+          // Calculate the last day of the selected month in IST (Asia/Kolkata)
+          endDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").endOf('month').toDate();
+          
+          // Log the corrected dates in IST
+          console.log("Start Date (IST): ", startDate);
+          console.log("End Date (IST): ", endDate);
+    
+        } else {
+          // If a specific calendar date is given, adjust for start and end of day in IST
+          startDate = moment.tz(calender, "Asia/Kolkata").startOf('day').toDate();
+          endDate = moment.tz(calender, "Asia/Kolkata").endOf('day').toDate();
+        }
+    
+        // Log the final calculated startDate and endDate for debugging
+        console.log("Final Start Date (IST): ", startDate);
+        console.log("Final End Date (IST): ", endDate);
+    
+        // If `whichdata` is 'work', fetch today's work data based on date range
+        if (whichdata === "work") {
+          const groupedData: {
+            date: string;
+            timeRanges: Record<string, string[]>;
+          }[] = [];
+    
+          const currentDate = moment(startDate);
+          const lastDate = moment(endDate);
+    
+          while (currentDate.isBefore(lastDate)) {
+            const dayData: { date: string; timeRanges: Record<string, string[]> } = {
+              date: currentDate.format("YYYY-MM-DD"),
+              timeRanges: {
+                "10 AM - 1 PM": [],
+                "1 PM - 4 PM": [],
+                "4 PM - 7 PM": [],
               },
-            },
-            select: {
-              content: true,
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-          });
-
-          // Log the fetched data for debugging
-          console.log(`Data for ${range.label}:`, data);
-
-          // Ensure data is mapped correctly to the correct time range
-          if (data.length > 0) {
-            // If data exists, map to the correct time range
-            dayData.timeRanges[range.label] = data.map(
-              (entry) => entry.content,
-            );
-          } else {
-            // Ensure empty slots are maintained if no data is found
-            dayData.timeRanges[range.label] = [];
+            };
+    
+            // Use Promise.all to run all time range queries concurrently
+            const timeRangePromises = timeRanges.map(async (range) => {
+              const rangeStartTime = currentDate
+                .clone()
+                .hour(range.start)
+                .minute(0)
+                .second(0)
+                .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
+                .toDate();
+    
+              const rangeEndTime = currentDate
+                .clone()
+                .hour(range.end)
+                .minute(0)
+                .second(0)
+                .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
+                .toDate();
+    
+              // Debug logs for time range verification
+              console.log(`Fetching data for: ${range.label} from ${rangeStartTime} to ${rangeEndTime}`);
+    
+              // Fetch data based on the start and end time
+              const data = await prisma.todayswork.findMany({
+                where: {
+                  userId: decoid,
+                  createdAt: {
+                    gte: rangeStartTime, // Start time (inclusive)
+                    lt: rangeEndTime, // End time (exclusive)
+                  },
+                },
+                select: {
+                  content: true,
+                },
+                orderBy: {
+                  createdAt: "desc",
+                },
+              });
+    
+              // Log the fetched data for debugging
+              console.log(`Data for ${range.label}:`, data);
+    
+              // Ensure data is mapped correctly to the correct time range
+              if (data.length > 0) {
+                // If data exists, map to the correct time range
+                dayData.timeRanges[range.label] = data.map((entry) => entry.content);
+              } else {
+                // Ensure empty slots are maintained if no data is found
+                dayData.timeRanges[range.label] = [];
+              }
+            });
+    
+            // Wait for all time range queries to finish
+            await Promise.all(timeRangePromises);
+    
+            // After processing all ranges, push the day's data
+            groupedData.push(dayData);
+    
+            // Move to the next day
+            currentDate.add(1, "day");
           }
-        });
-
-        // Wait for all time range queries to finish
-        await Promise.all(timeRangePromises);
-
-        // After processing all ranges, push the day's data
-        groupedData.push(dayData);
-
-        // Move to the next day
-        currentDate.add(1, "day");
-      }
-
-      return NextResponse.json(groupedData);
-    }
+    
+          return NextResponse.json(groupedData);
+        }
+    
 
     // If `whichdata` is 'excel', fetch department-based data (for example, 'MIXER')
     else if (whichdata === "excel") {
