@@ -73,26 +73,24 @@ export async function POST(req: NextRequest) {
                     .utc()
                     .toDate();
     
-                // Adjust the queries to be exclusive at the end of each range
+                // Explicitly adjust the end time to be exclusive
                 if (range.label === "10 AM - 1 PM") {
-                    // Adjust end time for the 10 AM - 1 PM range
-                    rangeEndTime.setHours(13, 0, 0, 0);
+                    rangeEndTime.setHours(13, 0, 0, 0); // 1 PM (exclusive)
                 }
                 if (range.label === "1 PM - 4 PM") {
-                    // Adjust end time for the 1 PM - 4 PM range
-                    rangeEndTime.setHours(16, 0, 0, 0);
+                    rangeEndTime.setHours(16, 0, 0, 0); // 4 PM (exclusive)
                 }
                 if (range.label === "4 PM - 7 PM") {
-                    // Adjust end time for the 4 PM - 7 PM range
-                    rangeEndTime.setHours(19, 0, 0, 0);
+                    rangeEndTime.setHours(19, 0, 0, 0); // 7 PM (exclusive)
                 }
     
+                // Fetch data based on the start and end time
                 const data = await prisma.todayswork.findMany({
                     where: {
                         userId: decoid,
                         createdAt: {
-                            gte: rangeStartTime,
-                            lt: rangeEndTime, // Ensure exclusive end time
+                            gte: rangeStartTime,  // Start time (inclusive)
+                            lt: rangeEndTime,     // End time (exclusive)
                         },
                     },
                     select: {
@@ -104,14 +102,14 @@ export async function POST(req: NextRequest) {
                     take: 5,
                 });
     
-                // Set the result for the corresponding time range
+                // Map the result to the corresponding time range
                 dayData.timeRanges[range.label] = data.map((entry) => entry.content);
             });
     
-            // Wait for all the promises to resolve
+            // Wait for all time range queries to finish
             await Promise.all(timeRangePromises);
     
-            // After all time ranges are processed, add the day data
+            // After processing all ranges, push the day's data
             groupedData.push(dayData);
     
             // Move to the next day
@@ -120,6 +118,7 @@ export async function POST(req: NextRequest) {
     
         return NextResponse.json(groupedData);
     }
+    
     
     
       
