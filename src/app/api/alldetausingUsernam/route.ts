@@ -536,51 +536,90 @@ export async function POST(req: NextRequest) {
 
     // If `whichdata` is 'work', fetch today's work data based on date range
     if (whichdata === "work") {
-      const groupedData: {
-        date: string;
-        timeRanges: Record<string, string[]>;
-      }[] = [];
-
-      const currentDate = moment(startDate);
-      const lastDate = moment(endDate);
-
-      while (currentDate.isBefore(lastDate)) {
-        console.log(`Processing date: ${currentDate.format("YYYY-MM-DD")}`);
+        const groupedData: {
+          date: string;
+          timeRanges: Record<string, string[]>;
+        }[] = [];
       
-        const timeRangePromises = timeRanges.map(async (range) => {
-          const rangeStartTime = currentDate
-            .clone()
-            .hour(range.start)
-            .minute(0)
-            .second(0)
-            .tz("Asia/Kolkata", true)
-            .toDate();
+        const currentDate = moment.tz(startDate, "Asia/Kolkata"); // Ensure time zone
+        const lastDate = moment.tz(endDate, "Asia/Kolkata"); // Ensure time zone
       
-          const rangeEndTime = currentDate
-            .clone()
-            .hour(range.end)
-            .minute(0)
-            .second(0)
-            .tz("Asia/Kolkata", true)
-            .toDate();
+        while (currentDate.isBefore(lastDate)) {
+          const dayData: { date: string; timeRanges: Record<string, string[]> } = {
+            date: currentDate.format("YYYY-MM-DD"),
+            timeRanges: {
+              "10 AM - 1 PM": [],
+              "1 PM - 4 PM": [],
+              "4 PM - 7 PM": [],
+            },
+          };
       
-          console.log(
-            `Time Range for ${range.label}: Start - ${moment(rangeStartTime).format(
-              "YYYY-MM-DD HH:mm:ss"
-            )}, End - ${moment(rangeEndTime).format("YYYY-MM-DD HH:mm:ss")}`
-          );
+          // Use Promise.all to run all time range queries concurrently
+          const timeRangePromises = timeRanges.map(async (range) => {
+            const rangeStartTime = currentDate
+              .clone()
+              .hour(range.start)
+              .minute(0)
+              .second(0)
+              .millisecond(0)
+              .toDate(); // No need for .tz here as currentDate is already in IST
       
-          // Fetch data logic remains the same
-        });
+            const rangeEndTime = currentDate
+              .clone()
+              .hour(range.end)
+              .minute(0)
+              .second(0)
+              .millisecond(0)
+              .toDate();
       
-        await Promise.all(timeRangePromises);
+            // Debug logs for time range verification
+            console.log(
+              `Querying for time range: ${range.label} (${moment(rangeStartTime).format(
+                "YYYY-MM-DD HH:mm:ss",
+              )} to ${moment(rangeEndTime).format("YYYY-MM-DD HH:mm:ss")})`,
+            );
       
-        currentDate.add(1, "day");
+            try {
+              // Fetch data based on the start and end time
+              const data = await prisma.todayswork.findMany({
+                where: {
+                  userId: decoid,
+                  createdAt: {
+                    gte: rangeStartTime, // Start time (inclusive)
+                    lt: rangeEndTime, // End time (exclusive)
+                  },
+                },
+                select: {
+                  content: true,
+                },
+                orderBy: {
+                  createdAt: "desc",
+                },
+              });
+      
+              // Log the fetched data for debugging
+              console.log(`Data for ${range.label} on ${dayData.date}:`, data);
+      
+              // Map data to the correct time range
+              dayData.timeRanges[range.label] = data.map((entry) => entry.content);
+            } catch (error) {
+              console.error(`Error fetching data for ${range.label}:`, error);
+            }
+          });
+      
+          // Wait for all time range queries to finish
+          await Promise.all(timeRangePromises);
+      
+          // Push the processed day's data
+          groupedData.push(dayData);
+      
+          // Move to the next day
+          currentDate.add(1, "day");
+        }
+      
+        return NextResponse.json(groupedData);
       }
-
-      return NextResponse.json(groupedData);
-    }
-
+      
     // If `whichdata` is 'excel', fetch department-based data (for example, 'MIXER')
     else if (whichdata === "excel") {
       const user = await prisma.user.findFirst({
