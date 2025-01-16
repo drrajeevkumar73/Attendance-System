@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
                         "4 PM - 7 PM": [],
                     },
                 };
-    
+        
                 // Use Promise.all to run all time range queries concurrently
                 const timeRangePromises = timeRanges.map(async (range) => {
                     const rangeStartTime = currentDate
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
                         .second(0)
                         .utc()
                         .toDate();
-    
+        
                     const rangeEndTime = currentDate
                         .clone()
                         .hour(range.end)
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
                         .second(0)
                         .utc()
                         .toDate();
-    
+        
                     // Adjust the end time explicitly to make it exclusive
                     if (range.label === "10 AM - 1 PM") {
                         rangeEndTime.setHours(13, 0, 0, 0); // 1 PM (exclusive)
@@ -86,9 +86,10 @@ export async function POST(req: NextRequest) {
                     if (range.label === "4 PM - 7 PM") {
                         rangeEndTime.setHours(19, 0, 0, 0); // 7 PM (exclusive)
                     }
-    
+        
+                    // Log the time range for debugging
                     console.log(`Fetching data for: ${range.label} from ${rangeStartTime} to ${rangeEndTime}`);
-    
+        
                     // Fetch data based on the start and end time
                     const data = await prisma.todayswork.findMany({
                         where: {
@@ -105,26 +106,35 @@ export async function POST(req: NextRequest) {
                             createdAt: "desc",
                         },
                     });
-    
+        
+                    // Log the fetched data for debugging
+                    console.log(`Data for ${range.label}:`, data);
+        
                     // Ensure data is mapped correctly to the correct time range
                     if (data.length > 0) {
+                        // If data exists, map to the correct time range
                         dayData.timeRanges[range.label] = data.map((entry) => entry.content);
                     } else {
+                        // Ensure empty slots are maintained if no data is found
                         if (!dayData.timeRanges[range.label]) {
                             dayData.timeRanges[range.label] = [];
                         }
                     }
                 });
         
+                // Wait for all time range queries to finish
                 await Promise.all(timeRangePromises);
         
+                // After processing all ranges, push the day's data
                 groupedData.push(dayData);
         
+                // Move to the next day
                 currentDate.add(1, "day");
             }
         
             return NextResponse.json(groupedData);
         }
+        
     
     
     
