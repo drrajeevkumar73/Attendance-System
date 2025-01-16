@@ -55,6 +55,7 @@ export default function SearchData() {
     dataOf: [],
     dataOn: [],
   });
+  
   const [late, setatendec]: any = useState([]);
   const [s, sets] = useState(true);
   const [ispending, setispending] = useState(false);
@@ -62,6 +63,15 @@ export default function SearchData() {
   const fetchData = useCallback(
     async (task: string, selectedDate: Date | undefined) => {
       if (!task || !selectedDate) return;
+  
+      // Normalize the date to start of the day in IST
+      const dateInIST = moment(selectedDate)
+        .utcOffset("+05:30") // Adjust to IST (UTC+5:30)
+        .startOf("day") // Start of the day in IST
+        .format("YYYY-MM-DD"); // Format as 'YYYY-MM-DD'
+  
+ // Debugging to verify the conversion
+  
       sets(true);
       setLoading(true); // Loading start
       try {
@@ -69,14 +79,15 @@ export default function SearchData() {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: selectedDate,
+            calender: dateInIST, // Send the corrected date
           });
+          console.log(dateInIST);
           setData(response.data);
         } else if (task === "excel") {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: selectedDate,
+            calender: dateInIST, // Send the corrected date
           });
           settablseex({
             dipartment: response.data.dipartment,
@@ -88,7 +99,7 @@ export default function SearchData() {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
-            calender: selectedDate,
+            calender: dateInIST, // Send the corrected date
           });
           setatendec(response.data);
         }
@@ -100,6 +111,7 @@ export default function SearchData() {
     },
     [username],
   );
+  
 
   useEffect(() => {
     fetchData(selectedTask, date); // Initial fetch
@@ -113,7 +125,6 @@ export default function SearchData() {
     setispending(true);
     sets(false);
     setLoading(true); //
-
     if (value.month && value.year) {
       // Map the month name to its corresponding numeric value (0-indexed for JavaScript Date)
       const monthMap: { [key: string]: number } = {
@@ -136,16 +147,15 @@ export default function SearchData() {
       const selectedYear = parseInt(value.year, 10);
 
       // Use moment to create a date in the desired timezone (Asia/Kolkata)
-      const selectedDate = moment
-        .tz(`${selectedYear}-${selectedMonth + 1}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-        .startOf("day");  // Ensure it's the start of the day in Asia/Kolkata timezone
+      const selectedDate = moment.tz(
+        `${selectedYear}-${selectedMonth + 1}-01`,
+        "YYYY-MM-DD",
+        "Asia/Kolkata",
+      );
 
       // Convert the moment date to ISO string (YYYY-MM-DD)
       const isoDate = selectedDate.format("YYYY-MM-DD"); // This ensures the correct date format
-
-      // Log the ISO date to debug
-      console.log("ISO Date:", isoDate);
-
+      console.log(isoDate);
       // Use the ISO date string in your API call
 
       if (selectedTask === "work") {
@@ -154,7 +164,6 @@ export default function SearchData() {
           whichdata: selectedTask,
           month: isoDate, // Send as a string (e.g., '2025-01-01' for January 2025)
         });
-        console.log(isoDate);
         setData(response.data); // Debugging
       } else if (selectedTask === "excel") {
         const response = await axios.post("/api/alldetausingUsernam", {
@@ -182,8 +191,7 @@ export default function SearchData() {
     } else {
       console.error("Month and Year are required!");
     }
-};
-
+  };
 
   const [of, setof] = useState(1);
 
