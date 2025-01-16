@@ -362,7 +362,6 @@ else if (whichdata === "attendance") {
                 select: {
                     createdAt: true, // Only createdAt is available
                     status: true,
-                    lateMinutes:true
                 },
             },
         },
@@ -399,34 +398,3 @@ else if (whichdata === "attendance") {
     });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
