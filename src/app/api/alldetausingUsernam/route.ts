@@ -3,129 +3,128 @@ import moment from "moment-timezone";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  try {
-    const { username, whichdata, calender, month } = await req.json();
-    const decoid = decodeURIComponent(username);
-
-    let startDate: Date, endDate: Date;
-
-    const timeRanges = [
-      { label: "10 AM - 1 PM", start: 10, end: 13 },
-      { label: "1 PM - 4 PM", start: 13, end: 16 },
-      { label: "4 PM - 7 PM", start: 16, end: 19 },
-    ];
-
-    if (!calender && !month) {
-      throw new Error("Either 'calender' or 'month' is required to fetch data.");
-    }
-
-    // Define date range based on `calender` or `month`
-    if (!calender) {
-      const numericMonth = month.split("-")[1];
-      const year = month.split("-")[0];
-      startDate = moment
-        .tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-        .startOf("month")
-        .toDate();
-      endDate = moment
-        .tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-        .endOf("month")
-        .toDate();
-    } else {
-      startDate = new Date(calender);
-      startDate.setHours(0, 0, 0, 0);
-      endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 1);
-    }
-
-    // If `whichdata` is 'work', fetch today's work data based on date range
-    if (whichdata === "work") {
-        const groupedData: { date: string; timeRanges: Record<string, string[]> }[] = [];
+    try {
+        const { username, whichdata, calender, month } = await req.json();
+        const decoid = decodeURIComponent(username);
     
-        const currentDate = moment(startDate);
-        const lastDate = moment(endDate);
+        let startDate: Date, endDate: Date;
     
-        while (currentDate.isBefore(lastDate)) {
-            const dayData: { date: string; timeRanges: Record<string, string[]> } = {
-                date: currentDate.format("YYYY-MM-DD"),
-                timeRanges: {
-                    "10 AM - 1 PM": [],
-                    "1 PM - 4 PM": [],
-                    "4 PM - 7 PM": [],
-                },
-            };
+        const timeRanges = [
+          { label: "10 AM - 1 PM", start: 10, end: 13 },
+          { label: "1 PM - 4 PM", start: 13, end: 16 },
+          { label: "4 PM - 7 PM", start: 16, end: 19 },
+        ];
     
-            // Use Promise.all to run all time range queries concurrently
-            const timeRangePromises = timeRanges.map(async (range) => {
-                const rangeStartTime = currentDate
-                    .clone()
-                    .hour(range.start)
-                    .minute(0)
-                    .second(0)
-                    .utc()
-                    .toDate();
-    
-                const rangeEndTime = currentDate
-                    .clone()
-                    .hour(range.end)
-                    .minute(0)
-                    .second(0)
-                    .utc()
-                    .toDate();
-    
-                // Adjust the end time explicitly to make it exclusive
-                if (range.label === "10 AM - 1 PM") {
-                    rangeEndTime.setHours(13, 0, 0, 0); // 1 PM (exclusive)
-                }
-                if (range.label === "1 PM - 4 PM") {
-                    rangeEndTime.setHours(16, 0, 0, 0); // 4 PM (exclusive)
-                }
-                if (range.label === "4 PM - 7 PM") {
-                    rangeEndTime.setHours(19, 0, 0, 0); // 7 PM (exclusive)
-                }
-    
-                // Fetch data based on the start and end time
-                const data = await prisma.todayswork.findMany({
-                    where: {
-                        userId: decoid,
-                        createdAt: {
-                            gte: rangeStartTime,  // Start time (inclusive)
-                            lt: rangeEndTime,     // End time (exclusive)
-                        },
-                    },
-                    select: {
-                        content: true,
-                    },
-                    orderBy: {
-                        createdAt: "desc",
-                    },
-                });
-    
-                // Ensure data is mapped correctly to the correct time range
-                if (data.length > 0) {
-                    // Ensure that we add the fetched data to the correct time range
-                    dayData.timeRanges[range.label] = data.map((entry) => entry.content);
-                } else {
-                    // Ensure empty slots are maintained if no data is found
-                    if (!dayData.timeRanges[range.label]) {
-                        dayData.timeRanges[range.label] = [];
-                    }
-                }
-            });
-    
-            // Wait for all time range queries to finish
-            await Promise.all(timeRangePromises);
-    
-            // After processing all ranges, push the day's data
-            groupedData.push(dayData);
-    
-            // Move to the next day
-            currentDate.add(1, "day");
+        if (!calender && !month) {
+          throw new Error("Either 'calender' or 'month' is required to fetch data.");
         }
     
-        return NextResponse.json(groupedData);
-    }
+        // Define date range based on `calender` or `month`
+        if (!calender) {
+          const numericMonth = month.split("-")[1];
+          const year = month.split("-")[0];
+          startDate = moment
+            .tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+            .startOf("month")
+            .toDate();
+          endDate = moment
+            .tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+            .endOf("month")
+            .toDate();
+        } else {
+          startDate = new Date(calender);
+          startDate.setHours(0, 0, 0, 0);
+          endDate = new Date(startDate);
+          endDate.setDate(startDate.getDate() + 1);
+        }
     
+        console.log("Start Date:", startDate);
+        console.log("End Date:", endDate);
+    
+        // If `whichdata` is 'work', fetch today's work data based on date range
+        if (whichdata === "work") {
+            const groupedData: { date: string; timeRanges: Record<string, string[]> }[] = [];
+        
+            const currentDate = moment(startDate);
+            const lastDate = moment(endDate);
+        
+            while (currentDate.isBefore(lastDate)) {
+                const dayData: { date: string; timeRanges: Record<string, string[]> } = {
+                    date: currentDate.format("YYYY-MM-DD"),
+                    timeRanges: {
+                        "10 AM - 1 PM": [],
+                        "1 PM - 4 PM": [],
+                        "4 PM - 7 PM": [],
+                    },
+                };
+    
+                // Use Promise.all to run all time range queries concurrently
+                const timeRangePromises = timeRanges.map(async (range) => {
+                    const rangeStartTime = currentDate
+                        .clone()
+                        .hour(range.start)
+                        .minute(0)
+                        .second(0)
+                        .utc()
+                        .toDate();
+    
+                    const rangeEndTime = currentDate
+                        .clone()
+                        .hour(range.end)
+                        .minute(0)
+                        .second(0)
+                        .utc()
+                        .toDate();
+    
+                    // Adjust the end time explicitly to make it exclusive
+                    if (range.label === "10 AM - 1 PM") {
+                        rangeEndTime.setHours(13, 0, 0, 0); // 1 PM (exclusive)
+                    }
+                    if (range.label === "1 PM - 4 PM") {
+                        rangeEndTime.setHours(16, 0, 0, 0); // 4 PM (exclusive)
+                    }
+                    if (range.label === "4 PM - 7 PM") {
+                        rangeEndTime.setHours(19, 0, 0, 0); // 7 PM (exclusive)
+                    }
+    
+                    console.log(`Fetching data for: ${range.label} from ${rangeStartTime} to ${rangeEndTime}`);
+    
+                    // Fetch data based on the start and end time
+                    const data = await prisma.todayswork.findMany({
+                        where: {
+                            userId: decoid,
+                            createdAt: {
+                                gte: rangeStartTime,  // Start time (inclusive)
+                                lt: rangeEndTime,     // End time (exclusive)
+                            },
+                        },
+                        select: {
+                            content: true,
+                        },
+                        orderBy: {
+                            createdAt: "desc",
+                        },
+                    });
+    
+                    // Ensure data is mapped correctly to the correct time range
+                    if (data.length > 0) {
+                        dayData.timeRanges[range.label] = data.map((entry) => entry.content);
+                    } else {
+                        if (!dayData.timeRanges[range.label]) {
+                            dayData.timeRanges[range.label] = [];
+                        }
+                    }
+                });
+        
+                await Promise.all(timeRangePromises);
+        
+                groupedData.push(dayData);
+        
+                currentDate.add(1, "day");
+            }
+        
+            return NextResponse.json(groupedData);
+        }
     
     
     
