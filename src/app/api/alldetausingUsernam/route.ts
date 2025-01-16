@@ -510,19 +510,19 @@ export async function POST(req: NextRequest) {
 
     // Define date range based on `calender` or `month`
     if (!calender) {
-        const numericMonth = month.split("-")[1]; // Extract month (e.g., "01" for January)
-        const year = month.split("-")[0]; // Extract year (e.g., "2025")
+        const numericMonth = month.split("-")[1]; // Extract month
+        const year = month.split("-")[0]; // Extract year
       
-        // Calculate the first day of the selected month in IST (Asia/Kolkata)
-        startDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").startOf("month").toDate();
+        // Correct start and end dates in IST
+        startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+          .startOf("month")
+          .toDate();
+        endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
+          .endOf("month")
+          .toDate();
       
-        // Calculate the last day of the selected month in IST (Asia/Kolkata)
-        endDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").endOf("month").toDate();
-      
-        // Log the corrected dates in IST
         console.log("Start Date (IST):", startDate);
         console.log("End Date (IST):", endDate);
-        
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
