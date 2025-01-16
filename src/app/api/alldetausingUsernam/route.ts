@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
                         .hour(range.start)
                         .minute(0)
                         .second(0)
-                        .utc()
+                        .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
                         .toDate();
         
                     const rangeEndTime = currentDate
@@ -73,13 +73,10 @@ export async function POST(req: NextRequest) {
                         .hour(range.end)
                         .minute(0)
                         .second(0)
-                        .utc()
+                        .tz("Asia/Kolkata", true) // Ensure time zone is Asia/Kolkata
                         .toDate();
         
-                    // Explicit adjustment for the end time to ensure exclusivity
-                    rangeEndTime.setHours(range.end, 0, 0, 0); // Ensure end hour is strictly exclusive
-        
-                    // Log the time range for debugging
+                    // Debug logs for time range verification
                     console.log(`Fetching data for: ${range.label} from ${rangeStartTime} to ${rangeEndTime}`);
         
                     // Fetch data based on the start and end time
