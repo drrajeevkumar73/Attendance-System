@@ -23,18 +23,19 @@ export async function POST(req: NextRequest) {
 
     // Define date range based on `calender` or `month`
     if (!calender) {
-      const numericMonth = month.split("-")[1]; // Extract the month from the provided date string
-      const year = month.split("-")[0]; // Extract the year
-
-      // Make sure the start and end dates are set correctly for the given month
-      startDate = moment
-        .tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-        .startOf("month")
-        .toDate();
-      endDate = moment
-        .tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata")
-        .endOf("month")
-        .toDate();
+        const numericMonth = month.split("-")[1];  // Extract month (e.g., "01" for January)
+        const year = month.split("-")[0];  // Extract year (e.g., "2025")
+        
+        // Calculate the first day of the selected month
+        startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata").startOf('month').toDate();
+        
+        // Calculate the last day of the selected month
+        endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata").endOf('month').toDate();
+        
+        // Ensure that startDate and endDate are only within the selected month range
+        console.log("Start Date: ", startDate);
+        console.log("End Date: ", endDate);
+        
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
