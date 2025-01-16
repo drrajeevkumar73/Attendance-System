@@ -27,10 +27,10 @@ export async function POST(req: NextRequest) {
         const year = month.split("-")[0];  // Extract year (e.g., "2025")
         
         // Calculate the first day of the selected month in IST (Asia/Kolkata)
-        startDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata").startOf('month').toDate();
+        startDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").startOf('month').toDate();
         
         // Calculate the last day of the selected month in IST (Asia/Kolkata)
-        endDate = moment.tz(`${year}-${numericMonth}-01`, "YYYY-MM-DD", "Asia/Kolkata").endOf('month').toDate();
+        endDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata").endOf('month').toDate();
         
         // Log the corrected dates in IST
         console.log("Start Date: ", startDate);
@@ -43,8 +43,7 @@ export async function POST(req: NextRequest) {
       endDate.setDate(startDate.getDate() + 1);
     }
 
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
+
 
     // If `whichdata` is 'work', fetch today's work data based on date range
     if (whichdata === "work") {
