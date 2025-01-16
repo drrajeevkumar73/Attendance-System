@@ -146,14 +146,15 @@ export default function SearchData() {
 
       // Use moment to create a date in the desired timezone (Asia/Kolkata)
       const selectedDate = moment.tz(
-        `${selectedYear}-${selectedMonth + 1}-01`,
-        "YYYY-MM-DD",
-        "Asia/Kolkata",
+        `${selectedYear}-${selectedMonth + 1}-01`, // Correctly calculate the first day of the month
+        "YYYY-MM-DD", 
+        "Asia/Kolkata"
       );
-
-      // Convert the moment date to ISO string (YYYY-MM-DD)
-      const isoDate = selectedDate.format("YYYY-MM-DD"); // This ensures the correct date format
-console.log(isoDate)
+      
+      // Format it in ISO format (YYYY-MM-DD)
+      const isoDate = selectedDate.format("YYYY-MM-DD");
+      
+      console.log(isoDate);  // Ensure this logs correctly, like "2025-01-01"
       // Use the ISO date string in your API call
 
       if (selectedTask === "work") {
