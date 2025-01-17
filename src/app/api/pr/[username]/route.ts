@@ -1,11 +1,17 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest, { params }: { params: { username: string } }) {
-  try {
-    // Ensure username is a valid string
-    const username = params.username;
+interface Context {
+  params: {
+    username: string;
+  };
+}
 
+export async function POST(request: NextRequest, context: Context) {
+  try {
+    const { username } = context.params;
+
+    // Validate the username parameter
     if (!username) {
       return NextResponse.json(
         {
@@ -38,7 +44,8 @@ export async function POST(request: NextRequest, { params }: { params: { usernam
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("Error handling POST request:", error);
+    console.error("Error during POST request:", error);
+
     return NextResponse.json(
       {
         success: false,
