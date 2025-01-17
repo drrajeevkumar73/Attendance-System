@@ -603,7 +603,7 @@ export default function SearchData() {
             alt="avatarUrl not found"
             width={48}
             height={48}
-            className="aspect-square h-fit flex-none rounded-full border-2 bg-secondary object-cover"
+            className="h-fit flex-none rounded-full border-2 bg-secondary object-cover"
           />
           <p>{pri.displayname}</p>
           <p>{pri.dipartment} </p>
