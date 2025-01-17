@@ -1,15 +1,17 @@
 import prisma from "@/lib/prisma";
-import { Params } from "next/dist/server/request/params";
+import { PagesRouteHandlerContext } from "next/dist/server/route-modules/pages/module.compiled";
 import { NextRequest, NextResponse } from "next/server";
+
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Params }
+  context: PagesRouteHandlerContext
 ) {
   try {
-    const { username } = params;
+    const { params } = context;
 
     // Ensure username is a valid string
+    const username = params?.username;
     if (!username || Array.isArray(username)) {
       return NextResponse.json(
         {
