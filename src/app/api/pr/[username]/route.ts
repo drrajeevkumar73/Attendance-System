@@ -1,23 +1,14 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-interface Context {
-  params: {
-    username: string;
-  };
-}
-
-export async function POST(request: NextRequest, context: Context) {
+export async function POST(request: NextRequest, { params }: { params: { username: string } }) {
   try {
-    const { username } = context.params;
+    const { username } = params;
 
-    // Validate the username parameter
+    // Validate the username
     if (!username) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid username parameter.",
-        },
+        { success: false, message: "Invalid username parameter." },
         { status: 400 }
       );
     }
@@ -42,15 +33,12 @@ export async function POST(request: NextRequest, context: Context) {
       },
     });
 
-    return NextResponse.json(res);
+    return NextResponse.json(res || { success: false, message: "User not found." });
   } catch (error) {
     console.error("Error during POST request:", error);
 
     return NextResponse.json(
-      {
-        success: false,
-        message: "Internal server error.",
-      },
+      { success: false, message: "Internal server error." },
       { status: 500 }
     );
   }
