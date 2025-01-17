@@ -33,7 +33,7 @@ export async function POST(request: NextRequest, context: any) {
       );
     }
 
-    return NextResponse.json({ success: true, data: user });
+    return NextResponse.json(user);
   } catch (error) {
     console.error("Error handling POST request:", error);
 
