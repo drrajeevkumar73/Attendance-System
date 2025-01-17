@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Image from "next/image";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
+import * as XLSX from "xlsx";
 import {
   Table,
   TableBody,
@@ -38,6 +39,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatRelativeMonthDate, formatRelativeTime } from "@/lib/utils";
 import LodingButton from "@/components/LodingButton";
+import { useToast } from "@/hooks/use-toast";
 export default function SearchData() {
   const form = useForm<AllreportValue>({
     resolver: zodResolver(alreportSchema),
@@ -51,6 +53,7 @@ export default function SearchData() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [data, setData] = useState<any[]>([]); // Backend se data store karne ke liye
   const [loading, setLoading] = useState<boolean>(false); // Loading state
+
   const [tabelex, settablseex]: any = useState({
     dipartment: "",
     data: [],
@@ -220,21 +223,381 @@ export default function SearchData() {
     const { data } = await axios.post(`/api/pr/${username}`);
     console.log(data);
     setpris({
-        dipartment:data.dipartment,
-        displayname:data.displayname,
-        Uplodthing:data.Uplodthing
-    })
+      dipartment: data.dipartment,
+      displayname: data.displayname,
+      Uplodthing: data.Uplodthing,
+    });
   };
-
+  const { toast } = useToast();
   useEffect(() => {
     userna();
   }, [username]);
+
+  const exportToExcel = () => {
+    if (selectedTask == "work") {
+      if (!data || data.length === 0) {
+        toast({
+          description: "No data to export",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Prepare Data for Excel
+      const formattedData = data.map((day) => {
+        const row = {
+          Date: day.date,
+          "10 AM - 1 PM": (day.timeRanges?.["10 AM - 1 PM"] || []).join(", "),
+          "1 PM - 4 PM": (day.timeRanges?.["1 PM - 4 PM"] || []).join(", "),
+          "4 PM - 7 PM": (day.timeRanges?.["4 PM - 7 PM"] || []).join(", "),
+        };
+        return row;
+      });
+
+      // Create Worksheet and Workbook
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Schedule");
+
+      // Download Excel File
+      XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+    } else if (selectedTask == "excel") {
+      if (!tabelex?.data || tabelex?.data.length === 0) {
+        toast({
+          description: "No data to export",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Prepare data for Excel
+      if (tabelex.dipartment === "telecaller") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          Work: v.task1,
+          Incoming: v.task2,
+          Outgoing: v.task3,
+          Total: Number(v.task2) + Number(v.task3),
+          "Whatsapp / Text": v.task4,
+          Appt: v.task5,
+          Fees: v.task6,
+          " New  Patient": v.task7,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "reception") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          PATIENT: v.task1,
+          VISITED: v.task2,
+          NEW: v.task3,
+          OLD: v.task4,
+          "By JR Dr.": v.task5,
+          ENQUIRY: v.task6,
+          CALL: v.task7,
+          WHATSAPP: v.task8,
+          APP: v.task9,
+          MESSAGE: v.task10,
+          CASH: v.task11,
+          ONLINE: v.task12,
+          "GRAND TOTAL": Number(v.task11) + Number(v.task12),
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "medicen") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          "TOTAL BILL": v.task1,
+          "MARG SALE": v.task2,
+          "LOOSE SALE": v.task3,
+          "TOTAL SALE ": Number(v.task2) + Number(v.task3),
+          "SALE QTY": v.task4,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "ranchi_shop") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          "TOTAL BILL": v.task1,
+          MARG: v.task2,
+          LOOSE: v.task3,
+          "TOTAL SALE": Number(v.task2) + Number(v.task3),
+          CASE: v.task4,
+          CARD: v.task5,
+          SCAN: v.task6,
+          RETURN: v.task7,
+          CRDT: v.task8,
+          "DISC AMT": v.task9,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "Doctor") {
+        if (of === 1) {
+          const excelData = tabelex?.dataOf.map((v: any) => ({
+            Date: formatRelativeMonthDate(v.createdAt),
+            Doctor: v.task1,
+            "NEW PATIENT": v.task2,
+            "OLD PATIENT": v.task3,
+            FEES: v.task4,
+            "COUNTER MEDICINE": v.task5,
+            LAB: v.task6,
+            WHATSAPP: v.task7,
+            "FOLLOW UP CALL": v.task8,
+            ARTICLE: v.task9,
+            CONTENT: v.task10,
+            QUESTIONNAIRE: v.task11,
+            "CASE HISTORY": v.task12,
+            CAMP: v.task13,
+            Time: formatRelativeTime(v.createdAt),
+          }));
+
+          // Create worksheet
+          const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+          // Create workbook
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            `${tabelex.deipartment}`,
+          );
+
+          // Write to file
+          XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+        } else {
+          const excelData = tabelex?.dataOn.map((v: any) => ({
+            Date: formatRelativeMonthDate(v.createdAt),
+            Doctor: v.task1,
+            Interakt: v.task2,
+            "INTL - LEADS": v.task3,
+            "INTL - NATIONAL": v.task4,
+            "INTL - INTERNATIONAL": v.task5,
+            "NATIONAL - FEES": v.task6,
+            "INTERNATIONAL - FEES": v.task7,
+            "NATIONAL - MED": v.task8,
+            "INTERNATIONAL - MED": v.task9,
+            MAIL: v.task10,
+            VIDEO: v.task11,
+            "FB - REPLY": v.task12,
+            "FB - Conversion": v.task13,
+            "INT - REPLY": v.task14,
+            "INT - Conversion": v.task15,
+            Time: formatRelativeTime(v.createdAt),
+          }));
+
+          // Create worksheet
+          const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+          // Create workbook
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            `${tabelex.deipartment}`,
+          );
+
+          // Write to file
+          XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+        }
+      } else if (tabelex.dipartment === "hdod") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          "O.G": v.task1,
+          IN: v.task2,
+          "HD. ORDER": v.task3,
+          "HD DISP": v.task4,
+          "HD AMT": v.task5,
+          "PRES - Send": v.task6,
+          "OD. ORDER": v.task7,
+          "OD DISP": v.task8,
+          "OD PENDING": v.task9,
+          "MANUAL SENT": v.task10,
+          " LOOSE Medi": v.task11,
+          "OD AMT": v.task12,
+          FRIGHT: v.task13,
+          TOTAL: Number(v.task12) + Number(v.task13),
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "ecart") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          Amazon: v.task1,
+          "Amazon:- Amount": v.task2,
+          "Amazon:- Listing": v.task3,
+          Flipkart: v.task4,
+          "Flipkart:- Amount": v.task5,
+          "Flipkart:- Listing": v.task6,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "designer") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          " Video Count": v.task1,
+          MADE: v.task2,
+          EXPORT: v.task3,
+          DOWNLOAD: v.task4,
+          EDITING: v.task5,
+          YouTube: v.task6,
+          "  Reel / short": v.task7,
+          Banner: v.task8,
+          "Send to DR, Rajeev's sir (date)": v.task9,
+          "INSTAGRAM POST BY DR. RAJEEV SIR": v.task10,
+          "FACEBOOK POST BY RAJEEV SIR": v.task11,
+          " Post by Vikash Sir": v.task12,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "mixer") {
+        const excelData = tabelex?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          "Medicine Name": v.task1,
+          QTY: v.task2,
+          "Order by": v.task3,
+          "Marg Entry": v.task4,
+          Breakge: v.task5,
+          "Marg Entry by": v.task6,
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      }
+    }
+    else if(selectedTask=="attendance"){
+      if (!late || late.length === 0) {
+        toast({
+          description: "No attendance data to export",
+          variant: "destructive",
+        });
+        return;
+      }
+    
+      // Format the data for Excel
+      const formattedData = late.map((entry:any) => ({
+        "Work Present Count": entry.WorkPresentCount || "0",
+        "Present Count": entry.PresentCount || "0",
+        Status: entry.Status || "0",
+        "Late Time": formatMinutesToHoursMinutes(entry.createdAt) || "0",
+      }));
+    
+      // Create Worksheet and Workbook
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
+    
+      // Download the Excel File
+      XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+    }
+  };
   return (
     <div className="space-y-6">
       {/* Task Selection */}
       <div className="flex justify-between">
         <div className="space-y-3">
-          
           <Image
             src={pri.Uplodthing || avatarPlaceholder}
             alt="avatarUrl not found"
@@ -346,7 +709,20 @@ export default function SearchData() {
           className="rounded-md border"
         />
       </div>
-
+      {tabelex.dipartment === "accountant" ? (
+        ""
+      ) : (
+        <div className="flex w-full justify-center">
+          <button
+            type="button"
+            onClick={exportToExcel}
+            className="rounded bg-blue-500 p-2 text-white"
+          >
+            {" "}
+            Export to Excel
+          </button>
+        </div>
+      )}
       {/* Table Section */}
 
       {selectedTask === "work" ? (

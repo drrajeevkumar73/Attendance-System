@@ -43,7 +43,7 @@ model User {
   Accountant        Accountant[]
 
   CallLog    CallLog[]
-  Uplodthing Uplodthing?
+  Uplodthing Uplodthing[]
 
   @@map("users")
 }
@@ -536,8 +536,8 @@ model Accountant {
 }
 
 model Uplodthing {
-  id     String @id @default(cuid())
-  userId String @unique
+  id     String  @id @default(cuid())
+  userId String  @unique
   task1  String?
   task2  String?
   task3  String?
@@ -647,18 +647,17 @@ model Uplodthing {
 }
 
 model CallLog {
-  id              String @id @default(cuid())
-  userId          String
-  telecallerId    String
-  patientPhone    String
-  telecallerPhone String
-  callSid         String
-  callStatus      String
+  id          String   @id @default(cuid())
+
+  userId String
+  telecallerId String   // Telecaller ki ID (user ID)
+  patientPhone String   // Patient ka phone number
+  callStartTime DateTime
+  callEndTime   DateTime
+  callDuration  Int      // Seconds me duration
+  callResponse  String   // 'Picked', 'Missed', 'Rejected'
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("callLog")
 }
