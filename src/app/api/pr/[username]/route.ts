@@ -1,41 +1,41 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest, { params }: { params: { username: string } }) {
+export async function POST(request: NextRequest, context: any) {
   try {
-    const { username } = params;
+    const { username } = context.params;
 
-    // Validate the username
     if (!username) {
       return NextResponse.json(
-        { success: false, message: "Invalid username parameter." },
+        { success: false, message: "Username parameter is missing." },
         { status: 400 }
       );
     }
 
     const decodedUsername = decodeURIComponent(username);
 
-    const res = await prisma.user.findFirst({
-      where: {
-        id: decodedUsername,
-      },
+    const user = await prisma.user.findFirst({
+      where: { id: decodedUsername },
       select: {
         dipartment: true,
         displayname: true,
         Uplodthing: {
-          where: {
-            userId: decodedUsername,
-          },
-          select: {
-            YourPhoto: true,
-          },
+          where: { userId: decodedUsername },
+          select: { YourPhoto: true },
         },
       },
     });
 
-    return NextResponse.json(res || { success: false, message: "User not found." });
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "User not found." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: user });
   } catch (error) {
-    console.error("Error during POST request:", error);
+    console.error("Error handling POST request:", error);
 
     return NextResponse.json(
       { success: false, message: "Internal server error." },
