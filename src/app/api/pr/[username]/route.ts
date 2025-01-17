@@ -1,18 +1,12 @@
 import prisma from "@/lib/prisma";
-import { PagesRouteHandlerContext } from "next/dist/server/route-modules/pages/module.compiled";
 import { NextRequest, NextResponse } from "next/server";
 
-
-export async function POST(
-  request: NextRequest,
-  context: PagesRouteHandlerContext
-) {
+export async function POST(request: NextRequest, { params }: { params: { username: string } }) {
   try {
-    const { params } = context;
-
     // Ensure username is a valid string
-    const username = params?.username;
-    if (!username || Array.isArray(username)) {
+    const username = params.username;
+
+    if (!username) {
       return NextResponse.json(
         {
           success: false,
@@ -44,6 +38,7 @@ export async function POST(
 
     return NextResponse.json(res);
   } catch (error) {
+    console.error("Error handling POST request:", error);
     return NextResponse.json(
       {
         success: false,
