@@ -32,12 +32,14 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import { formatRelativeMonthDate, formatRelativeTime } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 export default function Vewdata() {
   const form = useForm<CalederValue>({
     resolver: zodResolver(calenderSchema),
   });
   const [loding, setloding] = useState(false);
   const [data, setdata] = useState<any[]>();
+  const [roe, serow] = useState(false);
   const onSubmit = async (value: CalederValue) => {
     try {
       setloding(true);
@@ -49,6 +51,9 @@ export default function Vewdata() {
     } finally {
       setloding(false);
     }
+  };
+  const handlerRow = () => {
+    serow(!roe);
   };
   const { user } = useAppSelector((state) => state.loginlice);
   if (!user) throw new Error("unauthorized");
@@ -101,8 +106,9 @@ export default function Vewdata() {
           />
         </form>
       </Form>
-
-      <Table className="w-[3000px]">
+      <Button onClick={handlerRow}>Row</Button>
+      <div className={`${roe?"":"2xl:w-[1100px] lg:w-[800px] overflow-auto mx-auto"}`}>
+      <Table className={`${roe ? "" : "w-[3000px]"}`}>
         <TableHeader>
         <TableRow className="border border-primary bg-primary">
         <TableHead className="border-2 border-blue-400" >Date</TableHead>
@@ -224,6 +230,7 @@ export default function Vewdata() {
           ))
         )}
       </Table>
+      </div>
     </>
   );
 }

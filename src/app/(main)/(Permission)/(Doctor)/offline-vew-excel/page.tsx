@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-     <div className="flex flex-col items-center gap-7 2xl:w-[1100px] lg:w-[800px] overflow-auto mx-auto">
+     <div className="flex flex-col items-center gap-7  mx-auto">
           <Vewdata />
         </div>
   )

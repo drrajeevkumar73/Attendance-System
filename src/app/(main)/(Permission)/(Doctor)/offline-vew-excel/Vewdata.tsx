@@ -32,12 +32,14 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import { formatRelativeMonthDate, formatRelativeTime } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 export default function Vewdata() {
   const form = useForm<CalederValue>({
     resolver: zodResolver(calenderSchema),
   });
   const [loding, setloding] = useState(false);
   const [data, setdata] = useState<any[]>();
+  const [roe, serow] = useState(false);
   const onSubmit = async (value: CalederValue) => {
     try {
       setloding(true);
@@ -49,6 +51,9 @@ export default function Vewdata() {
     } finally {
       setloding(false);
     }
+  };
+  const handlerRow = () => {
+    serow(!roe);
   };
   const { user } = useAppSelector((state) => state.loginlice);
   if (!user) throw new Error("unauthorized");
@@ -101,45 +106,40 @@ export default function Vewdata() {
           />
         </form>
       </Form>
-
-      <Table className="w-[2300px]">
+      <Button onClick={handlerRow}>Row</Button>
+      <div className={`${roe?"":"2xl:w-[1100px] lg:w-[800px] overflow-auto"}`}>
+      <Table className={`${roe ? "" : "w-[2300px]"}`}>
         <TableHeader>
-        <TableRow className="border border-primary bg-primary">
-        <TableHead className="border-2 border-blue-400">Date</TableHead>
-              <TableHead className="border-2 border-blue-400">Doctor</TableHead>
-              <TableHead className="border-2 border-blue-400">
-                NEW PATIENT
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-                OLD PATIENT
-              </TableHead>
+          <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Date</TableHead>
+            <TableHead className="border-2 border-blue-400">Doctor</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              NEW PATIENT
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              OLD PATIENT
+            </TableHead>
 
-              <TableHead className="border-2 border-blue-400">FEES</TableHead>
-              <TableHead className="border-2 border-blue-400">
-                COUNTER MEDICINE{" "}
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">LAB</TableHead>
-              <TableHead className="border-2 border-blue-400">
-                WHATSAPP
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-                FOLLOW UP CALL
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-                ARTICLE
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-                CONTENT
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-                QUESTIONNAIRE
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">
-                CASE HISTORY
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">CAMP </TableHead>
-              <TableHead className="border-2 border-blue-400">Time</TableHead>
-            </TableRow>
+            <TableHead className="border-2 border-blue-400">FEES</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              COUNTER MEDICINE{" "}
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">LAB</TableHead>
+            <TableHead className="border-2 border-blue-400">WHATSAPP</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              FOLLOW UP CALL
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">ARTICLE</TableHead>
+            <TableHead className="border-2 border-blue-400">CONTENT</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              QUESTIONNAIRE
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              CASE HISTORY
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">CAMP </TableHead>
+            <TableHead className="border-2 border-blue-400">Time</TableHead>
+          </TableRow>
         </TableHeader>
 
         {loding ? (
@@ -216,6 +216,7 @@ export default function Vewdata() {
           ))
         )}
       </Table>
+      </div>
     </>
   );
 }
