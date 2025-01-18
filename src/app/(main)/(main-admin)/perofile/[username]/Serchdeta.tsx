@@ -221,7 +221,7 @@ export default function SearchData() {
   });
   const userna = async () => {
     const { data } = await axios.post(`/api/pr/${username}`);
-    console.log(data);
+
     setpris({
       dipartment: data.dipartment,
       displayname: data.displayname,
@@ -566,8 +566,7 @@ export default function SearchData() {
         // Write to file
         XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
       }
-    }
-    else if(selectedTask=="attendance"){
+    } else if (selectedTask == "attendance") {
       if (!late || late.length === 0) {
         toast({
           description: "No attendance data to export",
@@ -575,20 +574,20 @@ export default function SearchData() {
         });
         return;
       }
-    
+
       // Format the data for Excel
-      const formattedData = late.map((entry:any) => ({
+      const formattedData = late.map((entry: any) => ({
         "Work Present Count": entry.WorkPresentCount || "0",
         "Present Count": entry.PresentCount || "0",
         Status: entry.Status || "0",
         "Late Time": formatMinutesToHoursMinutes(entry.createdAt) || "0",
       }));
-    
+
       // Create Worksheet and Workbook
       const worksheet = XLSX.utils.json_to_sheet(formattedData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
-    
+
       // Download the Excel File
       XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
     }
@@ -599,12 +598,17 @@ export default function SearchData() {
       <div className="flex justify-between">
         <div className="space-y-3">
           <Image
-            src={pri.Uplodthing || avatarPlaceholder}
+            src={
+              typeof pri.Uplodthing === "string" && pri.Uplodthing.trim() !== ""
+                ? pri.Uplodthing
+                : avatarPlaceholder
+            }
             alt="avatarUrl not found"
             width={48}
             height={48}
             className="h-fit flex-none rounded-full border-2 bg-secondary object-cover"
           />
+
           <p>{pri.displayname}</p>
           <p>{pri.dipartment} </p>
         </div>

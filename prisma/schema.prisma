@@ -647,17 +647,19 @@ model Uplodthing {
 }
 
 model CallLog {
-  id          String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  userId String
-  telecallerId String   // Telecaller ki ID (user ID)
-  patientPhone String   // Patient ka phone number
-  callStartTime DateTime
-  callEndTime   DateTime
-  callDuration  Int      // Seconds me duration
-  callResponse  String   // 'Picked', 'Missed', 'Rejected'
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  userId          String // Telecaller ki ID (user ID)
+  telecallerPhone String //telecaler ka phone number
+  patientPhone    String // Patient ka phone number
+  callStartTime   DateTime
+  callEndTime     DateTime
+  callDuration    Int // Seconds me duration
+  callResponse    String // 'Picked', 'Missed', 'Rejected'
+  incommingCall   String //pating ke throw telecaller ke pass kitna call aaya
+  outgolingCall   String //telecaller ke thorw patient ke pass kitna call kiya
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
