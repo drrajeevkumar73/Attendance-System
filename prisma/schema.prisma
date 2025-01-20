@@ -630,6 +630,10 @@ model Uplodthing {
   reco3 String
   reco4 String
 
+  ex1 String
+  ex2 String
+  ex3 String
+
   panCard       String
   aadharCard    String
   marksheet     String

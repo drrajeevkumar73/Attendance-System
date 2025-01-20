@@ -71,15 +71,14 @@ export async function POST(req: NextRequest) {
       task59,
       task60,
       task61,
-        task62,
-        task63,
-        task64,
-        task65,
-        task66,
-        task67,
-        task68,
-        task69,
-      
+      task62,
+      task63,
+      task64,
+      task65,
+      task66,
+      task67,
+      task68,
+      task69,
 
       items1,
       items2,
@@ -97,11 +96,14 @@ export async function POST(req: NextRequest) {
       items14,
       items15,
 
-
       reco1,
       reco2,
       reco3,
       reco4,
+
+      ex1,
+      ex2,
+      ex3,
 
       panCard,
       aadharCard,
@@ -120,7 +122,7 @@ export async function POST(req: NextRequest) {
 
     if (userDoc) {
       return NextResponse.json({
-        success:false,
+        success: false,
         message: "You have already uploaded your documents",
       });
     }
@@ -148,7 +150,7 @@ export async function POST(req: NextRequest) {
         task18,
         task19,
         task20,
-  
+
         task21,
         task22,
         task23,
@@ -198,8 +200,7 @@ export async function POST(req: NextRequest) {
         task67,
         task68,
         task69,
-      
-      
+
         items1,
         items2,
         items3,
@@ -215,19 +216,23 @@ export async function POST(req: NextRequest) {
         items13,
         items14,
         items15,
-  
+
         reco1,
         reco2,
         reco3,
         reco4,
-  
-        panCard:panCard[0],
-        aadharCard:aadharCard[0],
-        marksheet:marksheet[0],
-        YourPhoto:YourPhoto[0],
-        bancksheeding:bancksheeding[0],
-        localproff:localproff[0],
-        parentAdhar:parentAdhar[0],
+
+        ex1,
+        ex2,
+        ex3,
+
+        panCard: panCard[0],
+        aadharCard: aadharCard[0],
+        marksheet: marksheet[0],
+        YourPhoto: YourPhoto[0],
+        bancksheeding: bancksheeding[0],
+        localproff: localproff[0],
+        parentAdhar: parentAdhar[0],
       },
     });
 
@@ -237,7 +242,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     return NextResponse.json({
-      success:false,
+      success: false,
       message: " Interval server error",
     });
   }

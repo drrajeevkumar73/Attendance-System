@@ -51,7 +51,7 @@ export default function ViewData() {
           }),
         );
         setData(transformedData);
-      } catch (error:any) {
+      } catch (error: any) {
         console.error("Error fetching data:", error);
       }
     };
@@ -73,20 +73,36 @@ export default function ViewData() {
     <>
       <div
         id="pdf-content"
-        className="w-full space-y-6 rounded-md border p-5 text-[23px] shadow-inner"
+        className="relative w-full space-y-6 rounded-md border p-5 text-[23px] shadow-inner"
         ref={contentRef}
       >
-        <div className="relative flex items-center">
-          <Image
-            src={Logo}
-            width={200}
-            height={200}
-            alt="Logo"
-            className="mx-auto"
-          />
+        <div className="flex w-full items-center justify-between">
+          <table className="text-lef w-fit border border-gray-400">
+            <thead>
+              <tr className="border-b border-gray-400 bg-gray-200">
+                <th className="border border-gray-400 p-2">EMP Code</th>
+                <th className="border border-gray-400 p-2">DOJ</th>
+                <th className="border border-gray-400 p-2">Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-gray-400 p-2">{data.ex1}</td>
+                <td className="border border-gray-400 p-2">{data.ex2}</td>
+                <td className="border border-gray-400 p-2">{data.ex3}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="flex flex-col items-center justify-center">
+            <Image src={Logo} width={200} height={200} alt="Logo" />
+            <h1 className="text-center text-2xl font-extrabold">
+              Staff Onboarding Form
+            </h1>
+          </div>
 
           {data.YourPhoto && (
-            <div className="absolute right-0 top-0 h-[120px] w-[120px] overflow-hidden rounded-full">
+            <div className="right-0 top-0 h-[120px] w-[120px] overflow-hidden rounded-full">
               <Image
                 src={data.YourPhoto}
                 width={150}
@@ -97,10 +113,6 @@ export default function ViewData() {
             </div>
           )}
         </div>
-
-        <h1 className="text-center text-2xl font-extrabold">
-          Staff Onboarding Form
-        </h1>
 
         {/* Personal Details Section */}
         <SectionTitle title="Personal Details" />
@@ -210,7 +222,7 @@ export default function ViewData() {
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
               <TableHead className="name border font-extrabold" colSpan={3}>
-              Language known
+                Language known
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -220,14 +232,14 @@ export default function ViewData() {
                 className="xyx whitespace-pre-line break-words border text-black"
                 colSpan={3}
               >
-            {data.task13}
+                {data.task13}
               </TableCell>
             </TableRow>
           </TableBody>
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
               <TableHead className="name border font-extrabold" colSpan={3}>
-              Computer knowledge 
+                Computer knowledge
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -258,7 +270,7 @@ export default function ViewData() {
               </TableCell>
             </TableRow>
           </TableBody>
-          
+
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
               <TableHead className="name border font-extrabold" colSpan={3}>
@@ -280,7 +292,7 @@ export default function ViewData() {
 
         {/* Educational Details Section */}
         <SectionTitle title="Educational Details" />
-        <Table className="w-full" >
+        <Table className="w-full">
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
               <TableHead className="name border font-extrabold">
@@ -423,14 +435,12 @@ export default function ViewData() {
                 {data.task44}
               </TableCell>
             </TableRow>
-
-          
           </TableBody>
         </Table>
 
         {/*    Work Experience Section */}
         <SectionTitle title="Work Experience" />
-        <Table className="w-full"  style={{ pageBreakAfter: "always" }}>
+        <Table className="w-full" style={{ pageBreakAfter: "always" }}>
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
               <TableHead className="name border font-extrabold">
@@ -487,7 +497,6 @@ export default function ViewData() {
               <TableCell className="xyx whitespace-pre-line break-words border text-black">
                 {data.task62}
               </TableCell>
-           
             </TableRow>
             <TableRow className="border text-lg">
               <TableCell className="xyx whitespace-pre-line break-words border text-black">
@@ -566,11 +575,10 @@ export default function ViewData() {
                 {data.task69}
               </TableCell>
             </TableRow>
-            
           </TableBody>
         </Table>
 
-        <Table className="w-full" >
+        <Table className="w-full">
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
               <TableHead className="name border font-extrabold">
@@ -585,8 +593,6 @@ export default function ViewData() {
               <TableHead className="name border font-extrabold">
                 Passbook Photo
               </TableHead>
-
-             
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -607,15 +613,12 @@ export default function ViewData() {
                   <Document title="" src={data.bancksheeding} />
                 )}
               </TableCell>
-             
             </TableRow>
           </TableBody>
         </Table>
         <Table className="w-full" style={{ pageBreakAfter: "always" }}>
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
-              
-
               <TableHead className="name border font-extrabold">
                 Local Proof
               </TableHead>
@@ -626,7 +629,6 @@ export default function ViewData() {
           </TableHeader>
           <TableBody>
             <TableRow className="h-[80px] text-lg">
-              
               <TableCell className="xyx whitespace-pre-line break-words border text-black">
                 {data.localproff && <Document title="" src={data.localproff} />}
               </TableCell>
@@ -924,9 +926,11 @@ export default function ViewData() {
           <TableHeader>
             <TableRow className="text-xl font-extrabold text-muted-foreground">
               <TableHead className="name border font-extrabold">
-                Salary Finalized
+                Exit Date
               </TableHead>
-              <TableHead className="name border font-extrabold">DOJ</TableHead>
+              <TableHead className="name border font-extrabold">
+                Exit Reason
+              </TableHead>
               <TableHead className="name border font-extrabold">
                 Location
               </TableHead>
@@ -1002,7 +1006,7 @@ function Document({ title, src }: { title: string; src: string }) {
   return (
     <div>
       <p className="font-bold text-muted-foreground">{title}</p>
-      <Image src={src} width={300} height={300} alt={title} className=""/>
+      <Image src={src} width={300} height={300} alt={title} className="" />
     </div>
   );
 }

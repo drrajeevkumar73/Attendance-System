@@ -152,6 +152,10 @@ export default function InterveForm() {
       reco2: "",
       reco3: "",
       reco4: "",
+
+      ex1:"",
+      ex2:"",
+      ex3:""
     },
   });
 
@@ -289,6 +293,10 @@ export default function InterveForm() {
         reco3: value.reco3,
         reco4: value.reco4,
 
+        ex1:value.ex1,
+        ex2:value.ex2,
+        ex3:value.ex3,
+
         panCard: img.panCard,
         aadharCard: img.aadharCard,
         marksheet: img.marksheet,
@@ -392,6 +400,10 @@ export default function InterveForm() {
         reco2: "",
         reco3: "",
         reco4: "",
+
+        ex1:"",
+        ex2:"",
+        ex3:""
       });
 
       setImg({
@@ -1886,9 +1898,9 @@ export default function InterveForm() {
             name="reco1"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[19px]">Salary Finalized</FormLabel>
+                <FormLabel className="text-[19px]">Exit Date</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Salary Finalized" />
+                  <Input {...field} placeholder="Exit Date" />
                 </FormControl>
 
                 <FormMessage />
@@ -1900,9 +1912,55 @@ export default function InterveForm() {
             name="reco2"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-[19px]">Exit Reason</FormLabel>
+                <FormControl>
+                <Textarea
+                    placeholder="Exit Reason"
+                    className="resize-y"
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+            <FormField
+            control={form.control}
+            name="ex1"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">EMP Code</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Exit Date" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          /> 
+           <FormField
+            control={form.control}
+            name="ex2"
+            render={({ field }) => (
+              <FormItem>
                 <FormLabel className="text-[19px]">DOJ</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="DOJ" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          /> 
+           <FormField
+            control={form.control}
+            name="ex3"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[19px]">salary </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="salary " />
                 </FormControl>
 
                 <FormMessage />

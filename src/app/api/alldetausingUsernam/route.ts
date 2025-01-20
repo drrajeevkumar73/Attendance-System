@@ -414,6 +414,16 @@ export async function POST(req: NextRequest) {
       const flattenedData = processedData.flat();
 
       return NextResponse.json(flattenedData);
+    }else if(whichdata === "onboarding-data"){
+     
+    const res=await prisma.uplodthing.findFirst({
+      where:{
+          userId:decoid
+      },
+      
+  })
+
+  return NextResponse.json(res)
     }
   } catch (error: any) {
     console.error("Error:", error.message || error);
