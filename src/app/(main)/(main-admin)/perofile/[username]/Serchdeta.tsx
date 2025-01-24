@@ -1972,14 +1972,14 @@ export default function SearchData() {
                 <div className="flex w-full items-center justify-between">
                   <table className="text-lef w-fit border border-gray-400">
                     <thead>
-                      <tr className="border-b border-gray-400 bg-gray-200 text-[14px]">
+                      <tr className="border-b border-gray-400 bg-gray-200 text-[12px]">
                         <th className="border border-gray-400 p-2">EMP Code</th>
                         <th className="border border-gray-400 p-2">DOJ</th>
                         <th className="border border-gray-400 p-2">Salary</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="text-[14px]">
+                      <tr className="text-[12px]">
                         <td className="border border-gray-400 p-2 ">
                           {data.ex1}
                         </td>
