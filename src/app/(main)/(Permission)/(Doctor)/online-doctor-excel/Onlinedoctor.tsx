@@ -194,6 +194,9 @@ export default function Onlinedoctor() {
                               <SelectItem value="Dr.Ram Parvesh">
                                 Dr.Ram Parvesh
                               </SelectItem>
+                              <SelectItem value="Jeni Grace G">
+                              Jeni Grace G
+                              </SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
