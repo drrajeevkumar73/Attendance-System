@@ -2001,7 +2001,7 @@ export default function SearchData() {
                   </div>
 
                   {data.YourPhoto && (
-                    <div className="right-0 top-0 h-[120px] w-[120px] overflow-hidden rounded-full">
+                    <div className="right-0 top-0 h-[200px] w-[200px] overflow-hidden rounded-full">
                       <Image
                         src={data.YourPhoto}
                         width={200}
