@@ -1979,7 +1979,7 @@ export default function SearchData() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="text-[12px]">
+                      <tr className="text-[12px] h-[40px]">
                         <td className="border border-gray-400 p-2 ">
                           {data.ex1}
                         </td>
@@ -2870,7 +2870,7 @@ export default function SearchData() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow className="bg-slate-200 text-lg">
+                    <TableRow className=" text-lg h-[80px]">
                       <TableCell className="xyx whitespace-pre-line break-words border text-black">
                         {data.reco1}
                       </TableCell>
