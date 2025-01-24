@@ -57,6 +57,8 @@ export default function SearchData() {
   const [data, setData]: any = useState<any[]>([]); // Backend se data store karne ke liye
   const [loading, setLoading] = useState<boolean>(false); // Loading state
   const [nodata, setnodata] = useState("");
+  const [calltraker, setcalltraker]:any = useState([]);
+  console.log(calltraker);
 
   const [tabelex, settablseex]: any = useState({
     dipartment: "",
@@ -147,6 +149,14 @@ export default function SearchData() {
             }),
           );
           setData(transformedData);
+        } else if (task === "call-track") {
+          const { data } = await axios.post("/api/alldetausingUsernam", {
+            username: username,
+            whichdata: task,
+            calender: dateInIST, // Send the corrected date
+          });
+
+          setcalltraker(data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -664,17 +674,19 @@ export default function SearchData() {
           <p>{pri.dipartment} </p>
         </div>
         <div className="flex cursor-pointer flex-col space-y-3">
-          {["work", "excel", "attendance", "onboarding-data"].map((task) => (
-            <p
-              key={task}
-              onClick={() => contentClickHandler(task)}
-              className={`cursor-pointer ${
-                selectedTask === task ? "font-bold text-blue-600" : ""
-              }`}
-            >
-              {task}
-            </p>
-          ))}
+          {["work", "excel", "attendance", "onboarding-data", "call-track"].map(
+            (task) => (
+              <p
+                key={task}
+                onClick={() => contentClickHandler(task)}
+                className={`cursor-pointer ${
+                  selectedTask === task ? "font-bold text-blue-600" : ""
+                }`}
+              >
+                {task}
+              </p>
+            ),
+          )}
         </div>
 
         <Form {...form}>
@@ -1960,15 +1972,15 @@ export default function SearchData() {
                 <div className="flex w-full items-center justify-between">
                   <table className="text-lef w-fit border border-gray-400">
                     <thead>
-                      <tr className="border-b border-gray-400 bg-gray-200">
+                      <tr className="border-b border-gray-400 bg-gray-200 text-[14px]">
                         <th className="border border-gray-400 p-2">EMP Code</th>
                         <th className="border border-gray-400 p-2">DOJ</th>
                         <th className="border border-gray-400 p-2">Salary</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td className="border border-gray-400 p-2">
+                      <tr className="text-[14px]">
+                        <td className="border border-gray-400 p-2 ">
                           {data.ex1}
                         </td>
                         <td className="border border-gray-400 p-2">
@@ -2911,6 +2923,56 @@ export default function SearchData() {
             </>
           )}
         </>
+      ) : selectedTask === "call-track" ? (
+        <Table>
+  <TableHeader>
+    <TableRow className="bg-primary">
+     
+      <TableHead className="border font-extrabold">Telecaller Phone</TableHead>
+      <TableHead className="border font-extrabold">Patient Phone</TableHead>
+      <TableHead className="border font-extrabold">Status</TableHead>
+      <TableHead className="border font-extrabold ">Start Time</TableHead>
+      <TableHead className="border font-extrabold">End Time</TableHead>
+      <TableHead className="border font-extrabold">Duration</TableHead>
+      <TableHead className="border font-extrabold">Direction</TableHead>
+      <TableHead className="border font-extrabold">Recording URL</TableHead>
+    </TableRow>
+  </TableHeader>
+
+  {loading ? (
+    <TableBody>
+      <TableRow>
+        <TableCell colSpan={9} className="text-center">
+          <Loader className="mx-auto animate-spin" /> {/* Loader */}
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  ) : (
+    <TableBody>
+      {calltraker?.map((v: any, i: any) => {
+        const call = v.Call; // Accessing the Call object inside the array
+        return (
+          <TableRow key={i}>
+            <TableCell>{call.From}</TableCell> {/* Telecaller Phone */}
+            <TableCell>{call.To}</TableCell> {/* Patient Phone */}
+            <TableCell>{call.Status}</TableCell>
+            <TableCell>{call.StartTime}</TableCell>
+            <TableCell>{call.EndTime}</TableCell>
+            <TableCell>{call.Duration || 'N/A'}</TableCell> {/* Duration */}
+            <TableCell>{call.Direction}</TableCell>
+            <TableCell>
+              <a href={call.RecordingUrl} target="_blank" rel="noopener noreferrer">
+                Listen
+              </a>
+            </TableCell>
+          </TableRow>
+        );
+      })}
+    </TableBody>
+  )}
+</Table>
+
+      
       ) : (
         ""
       )}

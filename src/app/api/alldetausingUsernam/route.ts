@@ -1,7 +1,10 @@
 import prisma from "@/lib/prisma";
+import axios from "axios";
 import moment from "moment-timezone";
 import { NextRequest, NextResponse } from "next/server";
-
+const EXOTEL_SID = process.env.EXOTEL_SID!;
+const EXOTEL_API_KEY = process.env.EXOTEL_API_KEY!;
+const EXOTEL_API_TOKEN = process.env.EXOTEL_API_TOKEN!;
 export async function POST(req: NextRequest) {
   try {
     const { username, whichdata, calender, month } = await req.json();
@@ -23,21 +26,29 @@ export async function POST(req: NextRequest) {
 
     // Define date range based on `calender` or `month`
     if (!calender) {
-        const numericMonth = month.split("-")[1]; // Extract the month
-        const year = month.split("-")[0]; // Extract the year
-    
-        // Start Date: 1st day of the month, 12:00 AM IST
-        startDate = moment.tz(`${year}-${numericMonth}-01 00:00:00`, "Asia/Kolkata").toDate();
-    
-        // End Date: Last day of the month, 11:59:59 PM IST
-        endDate = moment.tz(`${year}-${numericMonth}-01`, "Asia/Kolkata")
-            .endOf("month") // Gets the last millisecond of the month
-            .toDate();
-    
-        // Logs for confirmation
-        console.log("Start Date (IST):", moment(startDate).format("YYYY-MM-DD HH:mm:ss"));
-        console.log("End Date (IST):", moment(endDate).format("YYYY-MM-DD HH:mm:ss"));
-    
+      const numericMonth = month.split("-")[1]; // Extract the month
+      const year = month.split("-")[0]; // Extract the year
+
+      // Start Date: 1st day of the month, 12:00 AM IST
+      startDate = moment
+        .tz(`${year}-${numericMonth}-01 00:00:00`, "Asia/Kolkata")
+        .toDate();
+
+      // End Date: Last day of the month, 11:59:59 PM IST
+      endDate = moment
+        .tz(`${year}-${numericMonth}-01`, "Asia/Kolkata")
+        .endOf("month") // Gets the last millisecond of the month
+        .toDate();
+
+      // Logs for confirmation
+      console.log(
+        "Start Date (IST):",
+        moment(startDate).format("YYYY-MM-DD HH:mm:ss"),
+      );
+      console.log(
+        "End Date (IST):",
+        moment(endDate).format("YYYY-MM-DD HH:mm:ss"),
+      );
     } else {
       startDate = new Date(calender);
       startDate.setHours(0, 0, 0, 0);
@@ -45,20 +56,19 @@ export async function POST(req: NextRequest) {
       endDate.setDate(startDate.getDate() + 1);
     }
 
-
-
     // If `whichdata` is 'work', fetch today's work data based on date range
     if (whichdata === "work") {
-        const groupedData: {
-          date: string;
-          timeRanges: Record<string, string[]>;
-        }[] = [];
-      
-        const currentDate = moment.tz(startDate, "Asia/Kolkata"); // Ensure time zone
-        const lastDate = moment.tz(endDate, "Asia/Kolkata"); // Ensure time zone
-      
-        while (currentDate.isBefore(lastDate)) {
-          const dayData: { date: string; timeRanges: Record<string, string[]> } = {
+      const groupedData: {
+        date: string;
+        timeRanges: Record<string, string[]>;
+      }[] = [];
+
+      const currentDate = moment.tz(startDate, "Asia/Kolkata"); // Ensure time zone
+      const lastDate = moment.tz(endDate, "Asia/Kolkata"); // Ensure time zone
+
+      while (currentDate.isBefore(lastDate)) {
+        const dayData: { date: string; timeRanges: Record<string, string[]> } =
+          {
             date: currentDate.format("YYYY-MM-DD"),
             timeRanges: {
               "10 AM - 1 PM": [],
@@ -66,73 +76,77 @@ export async function POST(req: NextRequest) {
               "4 PM - 7 PM": [],
             },
           };
-      
-          // Use Promise.all to run all time range queries concurrently
-          const timeRangePromises = timeRanges.map(async (range) => {
-            const rangeStartTime = currentDate
-              .clone()
-              .hour(range.start)
-              .minute(0)
-              .second(0)
-              .millisecond(0)
-              .toDate(); // No need for .tz here as currentDate is already in IST
-      
-            const rangeEndTime = currentDate
-              .clone()
-              .hour(range.end)
-              .minute(0)
-              .second(0)
-              .millisecond(0)
-              .toDate();
-      
-            // Debug logs for time range verification
-            console.log(
-              `Querying for time range: ${range.label} (${moment(rangeStartTime).format(
-                "YYYY-MM-DD HH:mm:ss",
-              )} to ${moment(rangeEndTime).format("YYYY-MM-DD HH:mm:ss")})`,
+
+        // Use Promise.all to run all time range queries concurrently
+        const timeRangePromises = timeRanges.map(async (range) => {
+          const rangeStartTime = currentDate
+            .clone()
+            .hour(range.start)
+            .minute(0)
+            .second(0)
+            .millisecond(0)
+            .toDate(); // No need for .tz here as currentDate is already in IST
+
+          const rangeEndTime = currentDate
+            .clone()
+            .hour(range.end)
+            .minute(0)
+            .second(0)
+            .millisecond(0)
+            .toDate();
+
+          // Debug logs for time range verification
+          console.log(
+            `Querying for time range: ${range.label} (${moment(
+              rangeStartTime,
+            ).format(
+              "YYYY-MM-DD HH:mm:ss",
+            )} to ${moment(rangeEndTime).format("YYYY-MM-DD HH:mm:ss")})`,
+          );
+
+          try {
+            // Fetch data based on the start and end time
+            const data = await prisma.todayswork.findMany({
+              where: {
+                userId: decoid,
+                createdAt: {
+                  gte: rangeStartTime, // Start time (inclusive)
+                  lt: rangeEndTime, // End time (exclusive)
+                },
+              },
+              select: {
+                content: true,
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
+            });
+
+            // Log the fetched data for debugging
+            console.log(`Data for ${range.label} on ${dayData.date}:`, data);
+
+            // Map data to the correct time range
+            dayData.timeRanges[range.label] = data.map(
+              (entry) => entry.content,
             );
-      
-            try {
-              // Fetch data based on the start and end time
-              const data = await prisma.todayswork.findMany({
-                where: {
-                  userId: decoid,
-                  createdAt: {
-                    gte: rangeStartTime, // Start time (inclusive)
-                    lt: rangeEndTime, // End time (exclusive)
-                  },
-                },
-                select: {
-                  content: true,
-                },
-                orderBy: {
-                  createdAt: "desc",
-                },
-              });
-      
-              // Log the fetched data for debugging
-              console.log(`Data for ${range.label} on ${dayData.date}:`, data);
-      
-              // Map data to the correct time range
-              dayData.timeRanges[range.label] = data.map((entry) => entry.content);
-            } catch (error) {
-              console.error(`Error fetching data for ${range.label}:`, error);
-            }
-          });
-      
-          // Wait for all time range queries to finish
-          await Promise.all(timeRangePromises);
-      
-          // Push the processed day's data
-          groupedData.push(dayData);
-      
-          // Move to the next day
-          currentDate.add(1, "day");
-        }
-      
-        return NextResponse.json(groupedData);
+          } catch (error) {
+            console.error(`Error fetching data for ${range.label}:`, error);
+          }
+        });
+
+        // Wait for all time range queries to finish
+        await Promise.all(timeRangePromises);
+
+        // Push the processed day's data
+        groupedData.push(dayData);
+
+        // Move to the next day
+        currentDate.add(1, "day");
       }
-      
+
+      return NextResponse.json(groupedData);
+    }
+
     // If `whichdata` is 'excel', fetch department-based data (for example, 'MIXER')
     else if (whichdata === "excel") {
       const user = await prisma.user.findFirst({
@@ -414,17 +428,36 @@ export async function POST(req: NextRequest) {
       const flattenedData = processedData.flat();
 
       return NextResponse.json(flattenedData);
-    }else if(whichdata === "onboarding-data"){
-     
-    const res=await prisma.uplodthing.findFirst({
-      where:{
-          userId:decoid
-      },
-      
-  })
-  console.log(res)
+    } else if (whichdata === "onboarding-data") {
+      const res = await prisma.uplodthing.findFirst({
+        where: {
+          userId: decoid,
+        },
+      });
+      console.log(res);
 
-  return NextResponse.json(res)
+      return NextResponse.json(res);
+    } else if (whichdata === "call-track") {
+      const ssidData = await prisma.callLog.findMany({
+        where: {
+          userId: decoid,
+          createdAt: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+      });
+      // Map through the logs and fetch call details from Exotel API
+      const mapData = await Promise.all(
+        ssidData.map(async (v) => {
+          const { data } = await axios.get(
+            `https://${EXOTEL_API_KEY}:${EXOTEL_API_TOKEN}@api.exotel.com/v1/Accounts/${EXOTEL_SID}/Calls/${v.callSid}.json`,
+          );
+          return data;
+        }),
+      );
+
+      return NextResponse.json(mapData);
     }
   } catch (error: any) {
     console.error("Error:", error.message || error);
