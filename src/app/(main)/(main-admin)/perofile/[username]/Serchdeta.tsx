@@ -2004,8 +2004,8 @@ export default function SearchData() {
                     <div className="right-0 top-0 h-[120px] w-[120px] overflow-hidden rounded-full">
                       <Image
                         src={data.YourPhoto}
-                        width={150}
-                        height={150}
+                        width={200}
+                        height={200}
                         alt="Logo"
                         className="h-full w-full object-cover"
                       />
