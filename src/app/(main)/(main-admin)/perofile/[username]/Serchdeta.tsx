@@ -1436,7 +1436,7 @@ export default function SearchData() {
                   <TableHead className="border-2">
                     FACEBOOK POST 
                   </TableHead>
-                  <TableHead className="border-2 toUpperCase">YouTube post</TableHead>
+                  <TableHead className="border-2 toUpperCase">YOUTUBE POST</TableHead>
                   <TableHead className="border-2">Time</TableHead>
                 </TableRow>
               </TableHeader>
