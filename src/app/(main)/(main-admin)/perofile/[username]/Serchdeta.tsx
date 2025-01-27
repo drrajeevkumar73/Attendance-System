@@ -1414,12 +1414,12 @@ export default function SearchData() {
             </Table>
           </div>
         ) : tabelex.dipartment === "designer" ? (
-          <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
+          <div className="mx-auto">
             <Table className="w-[2300px]">
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
                   <TableHead className="border-2">Date</TableHead>
-                  <TableHead className="border-2">Video Count</TableHead>
+                  <TableHead className="border-2">Video COUNT</TableHead>
                   <TableHead className="border-2">MADE</TableHead>
                   <TableHead className="border-2">EXPORT</TableHead>
                   <TableHead className="border-2">DOWNLOAD</TableHead>
@@ -1431,12 +1431,12 @@ export default function SearchData() {
                     Send to DR, Rajeev&lsquo;s sir (date)
                   </TableHead>
                   <TableHead className="border-2">
-                    INSTAGRAM POST BY DR. RAJEEV SIR
+                    INSTAGRAM POST 
                   </TableHead>
                   <TableHead className="border-2">
-                    FACEBOOK POST BY RAJEEV SIR
+                    FACEBOOK POST 
                   </TableHead>
-                  <TableHead className="border-2">Post by Vikash Sir</TableHead>
+                  <TableHead className="border-2 toUpperCase">YouTube post</TableHead>
                   <TableHead className="border-2">Time</TableHead>
                 </TableRow>
               </TableHeader>
