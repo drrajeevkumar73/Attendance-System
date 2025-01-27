@@ -1415,7 +1415,7 @@ export default function SearchData() {
           </div>
         ) : tabelex.dipartment === "designer" ? (
           <div className="mx-auto">
-            <Table className="w-[2300px]">
+            <Table>
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
                   <TableHead className="border-2">Date</TableHead>
