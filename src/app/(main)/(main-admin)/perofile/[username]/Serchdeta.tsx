@@ -1419,8 +1419,8 @@ export default function SearchData() {
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
                   <TableHead className="border-2">Date</TableHead>
-                  <TableHead className="border-2">Video COUNT</TableHead>
-                  <TableHead className="border-2">MADE</TableHead>
+                  <TableHead className="border-2">VIDIO COUNT</TableHead>
+                  <TableHead className="border-2">VIDIO MADE</TableHead>
                   <TableHead className="border-2">EXPORT</TableHead>
                   <TableHead className="border-2">DOWNLOAD</TableHead>
                   <TableHead className="border-2">EDITING</TableHead>
