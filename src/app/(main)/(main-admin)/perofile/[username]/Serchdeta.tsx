@@ -57,7 +57,7 @@ export default function SearchData() {
   const [data, setData]: any = useState<any[]>([]); // Backend se data store karne ke liye
   const [loading, setLoading] = useState<boolean>(false); // Loading state
   const [nodata, setnodata] = useState("");
-  const [calltraker, setcalltraker]:any = useState([]);
+  const [calltraker, setcalltraker]: any = useState([]);
   console.log(calltraker);
 
   const [tabelex, settablseex]: any = useState({
@@ -1430,13 +1430,11 @@ export default function SearchData() {
                   <TableHead className="border-2">
                     Send to DR, Rajeev&lsquo;s sir (date)
                   </TableHead>
-                  <TableHead className="border-2">
-                    INSTAGRAM POST 
+                  <TableHead className="border-2">INSTAGRAM POST</TableHead>
+                  <TableHead className="border-2">FACEBOOK POST</TableHead>
+                  <TableHead className="toUpperCase border-2">
+                    YOUTUBE POST
                   </TableHead>
-                  <TableHead className="border-2">
-                    FACEBOOK POST 
-                  </TableHead>
-                  <TableHead className="border-2 toUpperCase">YOUTUBE POST</TableHead>
                   <TableHead className="border-2">Time</TableHead>
                 </TableRow>
               </TableHeader>
@@ -1979,8 +1977,8 @@ export default function SearchData() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="text-[12px] h-[40px]">
-                        <td className="border border-gray-400 p-2 ">
+                      <tr className="h-[40px] text-[12px]">
+                        <td className="border border-gray-400 p-2">
                           {data.ex1}
                         </td>
                         <td className="border border-gray-400 p-2">
@@ -2870,7 +2868,7 @@ export default function SearchData() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow className=" text-lg h-[80px]">
+                    <TableRow className="h-[80px] text-lg">
                       <TableCell className="xyx whitespace-pre-line break-words border text-black">
                         {data.reco1}
                       </TableCell>
@@ -2925,54 +2923,64 @@ export default function SearchData() {
         </>
       ) : selectedTask === "call-track" ? (
         <Table>
-  <TableHeader>
-    <TableRow className="bg-primary">
-     
-      <TableHead className="border font-extrabold">Telecaller Phone</TableHead>
-      <TableHead className="border font-extrabold">Patient Phone</TableHead>
-      <TableHead className="border font-extrabold">Status</TableHead>
-      <TableHead className="border font-extrabold ">Start Time</TableHead>
-      <TableHead className="border font-extrabold">End Time</TableHead>
-      <TableHead className="border font-extrabold">Duration</TableHead>
-      <TableHead className="border font-extrabold">Direction</TableHead>
-      <TableHead className="border font-extrabold">Recording URL</TableHead>
-    </TableRow>
-  </TableHeader>
+          <TableHeader>
+            <TableRow className="bg-primary">
+              <TableHead className="border font-extrabold">
+                Telecaller Phone
+              </TableHead>
+              <TableHead className="border font-extrabold">
+                Patient Phone
+              </TableHead>
+              <TableHead className="border font-extrabold">Status</TableHead>
+              <TableHead className="border font-extrabold">
+                Start Time
+              </TableHead>
+              <TableHead className="border font-extrabold">End Time</TableHead>
+              <TableHead className="border font-extrabold">Duration</TableHead>
+              <TableHead className="border font-extrabold">Direction</TableHead>
+              <TableHead className="border font-extrabold">
+                Recording URL
+              </TableHead>
+            </TableRow>
+          </TableHeader>
 
-  {loading ? (
-    <TableBody>
-      <TableRow>
-        <TableCell colSpan={9} className="text-center">
-          <Loader className="mx-auto animate-spin" /> {/* Loader */}
-        </TableCell>
-      </TableRow>
-    </TableBody>
-  ) : (
-    <TableBody>
-      {calltraker?.map((v: any, i: any) => {
-        const call = v.Call; // Accessing the Call object inside the array
-        return (
-          <TableRow key={i}>
-            <TableCell>{call.From}</TableCell> {/* Telecaller Phone */}
-            <TableCell>{call.To}</TableCell> {/* Patient Phone */}
-            <TableCell>{call.Status}</TableCell>
-            <TableCell>{call.StartTime}</TableCell>
-            <TableCell>{call.EndTime}</TableCell>
-            <TableCell>{call.Duration || 'N/A'}</TableCell> {/* Duration */}
-            <TableCell>{call.Direction}</TableCell>
-            <TableCell>
-              <a href={call.RecordingUrl} target="_blank" rel="noopener noreferrer">
-                Listen
-              </a>
-            </TableCell>
-          </TableRow>
-        );
-      })}
-    </TableBody>
-  )}
-</Table>
-
-      
+          {loading ? (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  <Loader className="mx-auto animate-spin" /> {/* Loader */}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : (
+            <TableBody>
+              {calltraker?.map((v: any, i: any) => {
+                const call = v.Call; // Accessing the Call object inside the array
+                return (
+                  <TableRow key={i}>
+                    <TableCell>{call.From}</TableCell> {/* Telecaller Phone */}
+                    <TableCell>{call.To}</TableCell> {/* Patient Phone */}
+                    <TableCell>{call.Status}</TableCell>
+                    <TableCell>{call.StartTime}</TableCell>
+                    <TableCell>{call.EndTime}</TableCell>
+                    <TableCell>{call.Duration || "N/A"}</TableCell>{" "}
+                    {/* Duration */}
+                    <TableCell>{call.Direction}</TableCell>
+                    <TableCell>
+                      <a
+                        href={call.RecordingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Listen
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          )}
+        </Table>
       ) : (
         ""
       )}
