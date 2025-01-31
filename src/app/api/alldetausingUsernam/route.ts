@@ -372,6 +372,45 @@ export async function POST(req: NextRequest) {
           dataOn: done,
         });
       }
+      if (user?.dipartment === "DIGITAL") {
+        const data = await prisma.user.findFirst({
+          where: {
+            id: decoid,
+          },
+          select: {
+            Telecaller: {
+              where: {
+                userId: decoid,
+                createdAt: {
+                  gte: startDate,
+                  lt: endDate,
+                },
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
+            Digital: {
+              where: {
+                userId: decoid,
+                createdAt: {
+                  gte: startDate,
+                  lt: endDate,
+                },
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
+          },
+        });
+
+        return NextResponse.json({
+          success: true,
+          data: data,
+          dipartment: "digital",
+        });
+      }
     } else if (whichdata === "attendance") {
       const data = await prisma.user.findMany({
         where: {

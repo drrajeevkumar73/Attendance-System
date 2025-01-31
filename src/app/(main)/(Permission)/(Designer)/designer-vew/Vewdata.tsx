@@ -107,9 +107,9 @@ export default function Vewdata() {
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Date</TableHead>
             <TableHead className="border-2 border-blue-400">
-              Video Count
+            VIDIO COUNT	
             </TableHead>
-            <TableHead className="border-2 border-blue-400">MADE</TableHead>
+            <TableHead className="border-2 border-blue-400">VIDIO MADE	</TableHead>
             <TableHead className="border-2 border-blue-400">EXPORT</TableHead>
             <TableHead className="border-2 border-blue-400">DOWNLOAD</TableHead>
             <TableHead className="border-2 border-blue-400">EDITING</TableHead>
@@ -119,16 +119,16 @@ export default function Vewdata() {
             </TableHead>
             <TableHead className="border-2 border-blue-400">Banner</TableHead>
             <TableHead className="border-2 border-blue-400">
-              Send to DR, Rajeev&lsquo;s sir (date)
+            Send to DR, Rajeev‘s sir (date)
             </TableHead>
             <TableHead className="border-2 border-blue-400">
-              INSTAGRAM POST BY DR. RAJEEV SIR
+            INSTAGRAM POST	
             </TableHead>
             <TableHead className="border-2 border-blue-400">
-              FACEBOOK POST BY RAJEEV SIR
+            FACEBOOK POST	
             </TableHead>
             <TableHead className="border-2 border-blue-400">
-              Post by Vikash Sir
+            YOUTUBE POST	
             </TableHead>
             <TableHead className="border-2 border-blue-400">Time</TableHead>
           </TableRow>

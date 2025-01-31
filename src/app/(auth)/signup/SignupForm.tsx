@@ -157,6 +157,8 @@ export default function SignupForm() {
                       </SelectItem>
                       <SelectItem value="MIS">
                         MIS
+                      </SelectItem>  <SelectItem value="DIGITAL">
+                      DIGITAL
                       </SelectItem>
                     </SelectGroup>
                   </SelectContent>

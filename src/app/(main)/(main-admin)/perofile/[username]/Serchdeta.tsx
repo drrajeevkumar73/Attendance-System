@@ -58,7 +58,18 @@ export default function SearchData() {
   const [loading, setLoading] = useState<boolean>(false); // Loading state
   const [nodata, setnodata] = useState("");
   const [calltraker, setcalltraker]: any = useState([]);
-  console.log(calltraker);
+  const [telecallerData, setTelecallerData]: any = useState({
+    dipartment: "",
+    data: [],
+    dataOf: [],
+    dataOn: [],
+  });
+  const [digitalData, setDigitalData]: any = useState({
+    dipartment: "",
+    data: [],
+    dataOf: [],
+    dataOn: [],
+  });
 
   const [tabelex, settablseex]: any = useState({
     dipartment: "",
@@ -117,6 +128,18 @@ export default function SearchData() {
           settablseex({
             dipartment: response.data.dipartment,
             data: response.data.data,
+            dataOf: response.data.dataOff,
+            dataOn: response.data.dataOn,
+          });
+          setTelecallerData({
+            dipartment: response.data.dipartment,
+            data: response.data.data.Telecaller,
+            dataOf: response.data.dataOff,
+            dataOn: response.data.dataOn,
+          });
+          setDigitalData({
+            dipartment: response.data.dipartment,
+            data: response.data.data.Digital,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
           });
@@ -232,6 +255,18 @@ export default function SearchData() {
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
         });
+        setTelecallerData({
+          dipartment: response.data.dipartment,
+          data: response.data.data.Telecaller,
+          dataOf: response.data.dataOff,
+          dataOn: response.data.dataOn,
+        });
+        setDigitalData({
+          dipartment: response.data.dipartment,
+          data: response.data.data.Digital,
+          dataOf: response.data.dataOff,
+          dataOn: response.data.dataOn,
+        });
       } else if (selectedTask === "attendance") {
         const response = await axios.post("/api/alldetausingUsernam", {
           username: username,
@@ -257,7 +292,13 @@ export default function SearchData() {
   const onileHanlder = () => {
     setof(0);
   };
-
+  const [indexsex, seindexsec] = useState(0);
+  const handlechange = () => {
+    seindexsec(0);
+  };
+  const handlechangeSec = () => {
+    seindexsec(1);
+  };
   function formatMinutesToHoursMinutes(minutes: any) {
     if (!minutes) return "0h 0m"; // Handle null or undefined
     const hours = Math.floor(minutes / 60); // Calculate hours
@@ -325,7 +366,7 @@ export default function SearchData() {
       if (tabelex.dipartment === "telecaller") {
         const excelData = tabelex?.data.map((v: any) => ({
           Date: formatRelativeMonthDate(v.createdAt),
-          Work: v.task1,
+          "Data Dies": v.task1,
           Incoming: v.task2,
           Outgoing: v.task3,
           Total: Number(v.task2) + Number(v.task3),
@@ -563,18 +604,18 @@ export default function SearchData() {
       } else if (tabelex.dipartment === "designer") {
         const excelData = tabelex?.data.map((v: any) => ({
           Date: formatRelativeMonthDate(v.createdAt),
-          " Video Count": v.task1,
-          MADE: v.task2,
+          " VIDEO COUNT ": v.task1,
+          "VIDEO MADE": v.task2,
           EXPORT: v.task3,
           DOWNLOAD: v.task4,
           EDITING: v.task5,
           YouTube: v.task6,
           "  Reel / short": v.task7,
           Banner: v.task8,
-          "Send to DR, Rajeev's sir (date)": v.task9,
-          "INSTAGRAM POST BY DR. RAJEEV SIR": v.task10,
-          "FACEBOOK POST BY RAJEEV SIR": v.task11,
-          " Post by Vikash Sir": v.task12,
+          "Send to DR, Rajeev&lsquo;s sir (date)": v.task9,
+          "INSTAGRAM POST": v.task10,
+          "FACEBOOK POST": v.task11,
+          " YOUTUBE POST": v.task12,
           Time: formatRelativeTime(v.createdAt),
         }));
 
@@ -616,6 +657,69 @@ export default function SearchData() {
 
         // Write to file
         XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+      } else if (tabelex.dipartment === "digital") {
+        if (indexsex === 0) {
+          const excelData = telecallerData?.data.map((v: any) => ({
+            Date: formatRelativeMonthDate(v.createdAt),
+            "Data Dies": v.task1,
+            Incoming: v.task2,
+            Outgoing: v.task3,
+            Total: Number(v.task2) + Number(v.task3),
+            "Whatsapp / Text": v.task4,
+            Appt: v.task5,
+            Fees: v.task6,
+            " New  Patient": v.task7,
+          
+            Time: formatRelativeTime(v.createdAt),
+          }));
+
+          // Create worksheet
+          const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+          // Create workbook
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            `${tabelex.deipartment}`,
+          );
+
+          // Write to file
+          XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+        } else if (indexsex === 1) {
+          const excelData = digitalData?.data.map((v: any) => ({
+            Date: formatRelativeMonthDate(v.createdAt),
+            "Data Dies": v.task1,
+            Incoming: v.task2,
+            Outgoing: v.task3,
+            Total: Number(v.task2) + Number(v.task3),
+            "Whatsapp / Text": v.task4,
+            Appt: v.task5,
+            Fees: v.task6,
+            " New  Patient": v.task7,
+            " FB LEAD": v.task8,
+            " FB LEAD CONVERT	": v.task9,
+            " FB FEE	": v.task10,
+            " JB	": v.task11,
+            " APPELOO": v.task12,
+            " purchase": v.task13,
+            Time: formatRelativeTime(v.createdAt),
+          }));
+
+          // Create worksheet
+          const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+          // Create workbook
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            `${tabelex.deipartment}`,
+          );
+
+          // Write to file
+          XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+        }
       }
     } else if (selectedTask == "attendance") {
       if (!late || late.length === 0) {
@@ -653,6 +757,7 @@ export default function SearchData() {
   if (!data) {
     return <p className="text-center">No Document Found</p>;
   }
+
   return (
     <div className="space-y-6">
       {/* Task Selection */}
@@ -858,7 +963,7 @@ export default function SearchData() {
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
                   <TableHead className="border-2">Date</TableHead>
-                  <TableHead className="border-2">Work</TableHead>
+                  <TableHead className="border-2">Data Dies</TableHead>
                   <TableHead className="border-2">Incoming</TableHead>
                   <TableHead className="border-2">Outgoing</TableHead>
                   <TableHead className="border-2">Total</TableHead>
@@ -1419,8 +1524,8 @@ export default function SearchData() {
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
                   <TableHead className="border-2">Date</TableHead>
-                  <TableHead className="border-2">VIDIO COUNT</TableHead>
-                  <TableHead className="border-2">VIDIO MADE</TableHead>
+                  <TableHead className="border-2">VIDEO COUNT</TableHead>
+                  <TableHead className="border-2">VIDEO MADE</TableHead>
                   <TableHead className="border-2">EXPORT</TableHead>
                   <TableHead className="border-2">DOWNLOAD</TableHead>
                   <TableHead className="border-2">EDITING</TableHead>
@@ -1871,6 +1976,159 @@ export default function SearchData() {
               )}
             </TableBody>
           </Table>
+        ) : tabelex.dipartment === "digital" ? (
+          <>
+            <div className="my-7 flex gap-7">
+              <Button
+                onClick={handlechange}
+                className={`${indexsex == 0 ? "bg-gray-500 hover:bg-gray-500" : ""} `}
+              >
+                Calling
+              </Button>
+              <Button
+                onClick={handlechangeSec}
+                className={`${indexsex == 1 ? "bg-gray-500 hover:bg-gray-500" : ""} `}
+              >
+                Platform
+              </Button>
+            </div>
+            <div className={`${indexsex == 0 ? "block" : "hidden"}`}>
+              {/* digitalData */}
+              <Table>
+                <TableHeader>
+                  <TableRow className="border border-primary bg-primary">
+                    <TableHead className="border-2">Date</TableHead>
+                    <TableHead className="border-2">Data Dies</TableHead>
+                    <TableHead className="border-2">Incoming</TableHead>
+                    <TableHead className="border-2">Outgoing</TableHead>
+                    <TableHead className="border-2">Total</TableHead>
+                    <TableHead className="border-2">Whatsapp / Text</TableHead>
+                    <TableHead className="border-2">Appt</TableHead>
+                    <TableHead className="border-2">Fees</TableHead>
+                    <TableHead className="border-2">New Patient</TableHead>
+                    <TableHead className="border-2">Time</TableHead>
+                  </TableRow>
+                </TableHeader>
+
+                {loading ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={10} className="">
+                        <Loader className="mx-auto animate-spin" />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : telecallerData?.data?.length === 0 ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={3} className="">
+                        No Data Found
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : (
+                  telecallerData?.data?.map((v: any, i: any) => (
+                    <TableBody className="border border-primary" key={i}>
+                      <TableRow>
+                        <TableCell className="border-2">
+                          {formatRelativeMonthDate(v.createdAt)}
+                        </TableCell>
+                        <TableCell className="border-2">{v.task1}</TableCell>
+                        <TableCell className="border-2">{v.task2}</TableCell>
+                        <TableCell className="border-2">{v.task3}</TableCell>
+                        <TableCell className="border-2">
+                          {Number(v.task2) + Number(v.task3)}
+                        </TableCell>
+                        <TableCell className="border-2">{v.task4}</TableCell>
+                        <TableCell className="border-2">{v.task5}</TableCell>
+                        <TableCell className="border-2">{v.task6}</TableCell>
+                        <TableCell className="border-2">{v.task7}</TableCell>
+
+                        <TableCell className="border-2">
+                          {formatRelativeTime(v.createdAt)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ))
+                )}
+              </Table>
+            </div>
+            <div className={`${indexsex == 1 ? "block" : "hidden"}`}>
+              {/* digitalData */}
+              <Table>
+                <TableHeader>
+                  <TableRow className="border border-primary bg-primary">
+                    <TableHead className="border-2">Date</TableHead>
+                    <TableHead className="border-2">Data Dies</TableHead>
+                    <TableHead className="border-2">Incoming</TableHead>
+                    <TableHead className="border-2">Outgoing</TableHead>
+                    <TableHead className="border-2">Total</TableHead>
+                    <TableHead className="border-2">Whatsapp / Text</TableHead>
+                    <TableHead className="border-2">Appt</TableHead>
+                    <TableHead className="border-2">Fees</TableHead>
+                    <TableHead className="border-2">New Patient</TableHead>
+                    <TableHead className="border-2">FB LEAD</TableHead>
+                    <TableHead className="border-2">FB LEAD CONVERT</TableHead>
+                    <TableHead className="border-2">FB FEE</TableHead>
+                    <TableHead className="border-2">JB</TableHead>
+                    <TableHead className="border-2">APPELOO</TableHead>
+                    <TableHead className="border-2 uppercase">
+                      purchase
+                    </TableHead>
+                    <TableHead className="border-2">Time</TableHead>
+                  </TableRow>
+                </TableHeader>
+
+                {loading ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={10} className="">
+                        <Loader className="mx-auto animate-spin" />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : digitalData?.data?.length === 0 ? (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={3} className="">
+                        No Data Found
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ) : (
+                  digitalData?.data?.map((v: any, i: any) => (
+                    <TableBody className="border border-primary" key={i}>
+                      <TableRow>
+                        <TableCell className="border-2">
+                          {formatRelativeMonthDate(v.createdAt)}
+                        </TableCell>
+                        <TableCell className="border-2">{v.task1}</TableCell>
+                        <TableCell className="border-2">{v.task2}</TableCell>
+                        <TableCell className="border-2">{v.task3}</TableCell>
+                        <TableCell className="border-2">
+                          {Number(v.task2) + Number(v.task3)}
+                        </TableCell>
+                        <TableCell className="border-2">{v.task4}</TableCell>
+                        <TableCell className="border-2">{v.task5}</TableCell>
+                        <TableCell className="border-2">{v.task6}</TableCell>
+                        <TableCell className="border-2">{v.task7}</TableCell>
+                        <TableCell className="border-2">{v.task8}</TableCell>
+                        <TableCell className="border-2">{v.task9}</TableCell>
+                        <TableCell className="border-2">{v.task10}</TableCell>
+                        <TableCell className="border-2">{v.task11}</TableCell>
+                        <TableCell className="border-2">{v.task12}</TableCell>
+                        <TableCell className="border-2">{v.task13}</TableCell>
+
+                        <TableCell className="border-2">
+                          {formatRelativeTime(v.createdAt)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ))
+                )}
+              </Table>
+            </div>
+          </>
         ) : (
           ""
         )

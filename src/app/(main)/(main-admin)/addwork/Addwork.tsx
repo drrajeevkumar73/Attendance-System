@@ -307,6 +307,7 @@ export default function Addwork() {
                         </SelectItem>
                         <SelectItem value="SHOP RANCHI">SHOP RANCHI</SelectItem>
                         <SelectItem value="MIS">MIS</SelectItem>
+                        <SelectItem value="DIGITAL">DIGITAL</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -374,6 +375,7 @@ export default function Addwork() {
                         </SelectItem>
                         <SelectItem value="SHOP RANCHI">SHOP RANCHI</SelectItem>
                         <SelectItem value="MIS">MIS</SelectItem>
+                        <SelectItem value="DIGITAL">DIGITAL</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

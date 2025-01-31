@@ -106,7 +106,7 @@ export default function Vewdata() {
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Date</TableHead>
-            <TableHead className="border-2 border-blue-400">Work</TableHead>
+            <TableHead className="border-2 border-blue-400">Data Dies</TableHead>
             <TableHead className="border-2 border-blue-400">Incoming</TableHead>
             <TableHead className="border-2 border-blue-400">Outgoing</TableHead>
             <TableHead className="border-2 border-blue-400">Total</TableHead>

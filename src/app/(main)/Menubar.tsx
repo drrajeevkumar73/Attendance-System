@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { use, useState } from "react";
 import { usePathname } from "next/navigation";
 
 interface MenuBarProps {
@@ -198,61 +198,75 @@ export default function Menubar({ className }: MenuBarProps) {
                 <Link href={"/vew-exel-data"}>Veiw Excel Data</Link>
               </Button>
             </>
-          )
-            : user.dipartment === "DESIGNER" ? (
-              <>
-                <Button
-                  className={`flex items-center justify-start gap-3 ${pathname == "/designer-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                  title="Excel Part "
-                  asChild
-                >
-                  <Link href={"/designer-excel"}>Excel Part</Link>
-                </Button>
-                <Button
-                  className={`flex items-center justify-start gap-3 ${pathname == "/designer-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                  title="Veiw Excel Data"
-                  asChild
-                >
-                  <Link href={"/designer-vew"}>Veiw Excel Data</Link>
-                </Button>
-              </>
-            )
-              : user.dipartment === "MIXER" ? (
-                <>
-                  <Button
-                    className={`flex items-center justify-start gap-3 ${pathname == "/mixer-excel-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                    title="Excel Part "
-                    asChild
-                  >
-                    <Link href={"/mixer-excel-data"}>Excel Part</Link>
-                  </Button>
-                  <Button
-                    className={`flex items-center justify-start gap-3 ${pathname == "/mixer-vew-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                    title="Veiw Excel Data"
-                    asChild
-                  >
-                    <Link href={"/mixer-vew-data"}>Veiw Excel Data</Link>
-                  </Button>
-                </>
-              ):user.dipartment === "ACCOUNTANT" ? (
-                <>
-                  <Button
-                    className={`flex items-center justify-start gap-3 ${pathname == "/account-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                    title="Excel Part "
-                    asChild
-                  >
-                    <Link href={"/account-excel"}>Excel Part</Link>
-                  </Button>
-                  <Button
-                    className={`flex items-center justify-start gap-3 ${pathname == "/account-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                    title="Veiw Excel Data"
-                    asChild
-                  >
-                    <Link href={"/account-vew"}>Veiw Excel Data</Link>
-                  </Button>
-                </>
-              ):
-          (
+          ) : user.dipartment === "DESIGNER" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/designer-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part "
+                asChild
+              >
+                <Link href={"/designer-excel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/designer-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/designer-vew"}>Veiw Excel Data</Link>
+              </Button>
+            </>
+          ) : user.dipartment === "MIXER" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/mixer-excel-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part "
+                asChild
+              >
+                <Link href={"/mixer-excel-data"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/mixer-vew-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/mixer-vew-data"}>Veiw Excel Data</Link>
+              </Button>
+            </>
+          ) : user.dipartment === "ACCOUNTANT" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/account-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part "
+                asChild
+              >
+                <Link href={"/account-excel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/account-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/account-vew"}>Veiw Excel Data</Link>
+              </Button>
+            </>
+          ) : user.dipartment === "DIGITAL" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/digital-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part"
+                asChild
+              >
+                <Link href={"/digital-excel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/digital-vewexceldeta" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/digital-vewexceldeta"}>Veiw Excel Data</Link>
+              </Button>
+            </>
+          ) : (
             ""
           )}
 
@@ -297,7 +311,6 @@ export default function Menubar({ className }: MenuBarProps) {
           >
             <Link href={"/addwork"}>Add Task</Link>
           </Button>
-          
 
           <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/permission" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
@@ -314,7 +327,7 @@ export default function Menubar({ className }: MenuBarProps) {
             <Link href={"/retinghistory"}>Rating History</Link>
           </Button>
 
-          <Button
+          {/* <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/staff-attendance" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
             title="Staff Report"
             asChild
@@ -327,7 +340,7 @@ export default function Menubar({ className }: MenuBarProps) {
             asChild
           >
             <Link href={"/staff-excel-work"}>Staff Excel Work</Link>
-          </Button>
+          </Button> */}
           <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/revenue-tracker" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
             title="Revenue Tracker"

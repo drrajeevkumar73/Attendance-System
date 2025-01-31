@@ -138,7 +138,7 @@ export default function SatffExelAdmin() {
     if (tabelex.dipartment === "telecaller") {
       const excelData = tabelex?.data.map((v: any) => ({
         Date: formatRelativeMonthDate(v.createdAt),
-        Work: v.task1,
+        "Data Dies": v.task1,
         Incoming: v.task2,
         Outgoing: v.task3,
         Total: Number(v.task2) + Number(v.task3),
@@ -376,18 +376,18 @@ export default function SatffExelAdmin() {
     } else if (tabelex.dipartment === "designer") {
       const excelData = tabelex?.data.map((v: any) => ({
         Date: formatRelativeMonthDate(v.createdAt),
-        " Video Count": v.task1,
-        MADE: v.task2,
-        EXPORT: v.task3,
-        DOWNLOAD: v.task4,
-        EDITING: v.task5,
-        YouTube: v.task6,
-        "  Reel / short": v.task7,
-        Banner: v.task8,
-        "Send to DR, Rajeev's sir (date)": v.task9,
-        "INSTAGRAM POST BY DR. RAJEEV SIR": v.task10,
-        "FACEBOOK POST BY RAJEEV SIR": v.task11,
-        " Post by Vikash Sir": v.task12,
+        " VIDEO COUNT ": v.task1,
+          "VIDEO MADE": v.task2,
+          EXPORT: v.task3,
+          DOWNLOAD: v.task4,
+          EDITING: v.task5,
+          YouTube: v.task6,
+          "  Reel / short": v.task7,
+          Banner: v.task8,
+          "Send to DR, Rajeev&lsquo;s sir (date)": v.task9,
+          "INSTAGRAM POST": v.task10,
+          "FACEBOOK POST": v.task11,
+          " YOUTUBE POST": v.task12,
         Time: formatRelativeTime(v.createdAt),
       }));
 
@@ -602,7 +602,7 @@ export default function SatffExelAdmin() {
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
                 <TableHead className="border-2 border-blue-400">Date</TableHead>
-                <TableHead className="border-2 border-blue-400">Work</TableHead>
+                <TableHead className="border-2 border-blue-400">Data Dies</TableHead>
                 <TableHead className="border-2 border-blue-400">
                   Incoming
                 </TableHead>
@@ -1452,44 +1452,35 @@ export default function SatffExelAdmin() {
         <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
           <Table className="w-[2300px]">
             <TableHeader>
-              <TableRow className="border border-primary bg-primary">
-                <TableHead className="border-2 border-blue-400">Date</TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Video Count
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">MADE</TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  EXPORT
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  DOWNLOAD
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  EDITING
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  YouTube
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Reel / short
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Banner
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Send to DR, Rajeev&lsquo;s sir (date)
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  INSTAGRAM POST BY DR. RAJEEV SIR
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  FACEBOOK POST BY RAJEEV SIR
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Post by Vikash Sir
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">Time</TableHead>
-              </TableRow>
+            <TableRow className="border border-primary bg-primary">
+            <TableHead className="border-2 border-blue-400">Date</TableHead>
+            <TableHead className="border-2 border-blue-400">
+            VIDIO COUNT	
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">VIDIO MADE	</TableHead>
+            <TableHead className="border-2 border-blue-400">EXPORT</TableHead>
+            <TableHead className="border-2 border-blue-400">DOWNLOAD</TableHead>
+            <TableHead className="border-2 border-blue-400">EDITING</TableHead>
+            <TableHead className="border-2 border-blue-400">YouTube</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Reel / short
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Banner</TableHead>
+            <TableHead className="border-2 border-blue-400">
+            Send to DR, Rajeev‘s sir (date)
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+            INSTAGRAM POST	
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+            FACEBOOK POST	
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+            YOUTUBE POST	
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">Time</TableHead>
+          </TableRow>
+         
             </TableHeader>
 
             {ispending ? (

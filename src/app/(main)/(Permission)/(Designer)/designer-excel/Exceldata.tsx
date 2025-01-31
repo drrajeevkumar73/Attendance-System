@@ -113,40 +113,40 @@ export default function Exceldata() {
                 <TableRow className="border border-primary bg-primary">
                 <TableHead className="border-2 border-blue-400">Please enter date for the previous day </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Video Count
+                  VIDEO COUNT
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    MADE
+                  VIDEO MADE
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    EXPORT
+                  EXPORT
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    DOWNLOAD
+                  DOWNLOAD
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    EDITING
+                  EDITING
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    YouTube
+                  YouTube
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Reel / short
+                  Reel / short
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Banner
+                  Banner
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Send to DR, Rajeev&lsquo;s sir (date)
+                  Send to DR, Rajeev&lsquo;s sir (date)
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    INSTAGRAM POST BY DR. RAJEEV SIR
+                  INSTAGRAM POST
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    FACEBOOK POST BY RAJEEV SIR
+                  FACEBOOK POST
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Post by Vikash Sir
+                  YOUTUBE POST
                   </TableHead>
                 </TableRow>
               </TableHeader>

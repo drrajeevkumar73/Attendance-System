@@ -154,8 +154,7 @@ export default function RevenuTracker() {
       "SALE :- WHOLESALE": v.task7,
       "SALE :- LOOSE": v.task8,
       "SALE :- LAB": v.task9,
-      "RECEPTION :- FEE": v.task10,
-      "RECEPTION :- NEW": v.task11,
+     
       "TOTAL :- PATIENT": v.task12,
       "NEW :- PATIENT": v.task13,
       Time: formatRelativeTime(v.createdAt),
@@ -224,16 +223,7 @@ export default function RevenuTracker() {
                   
                     </div>
                   </TableHead>
-                  <TableHead colSpan={2} className="border-2 border-blue-400">
-                    <p className="mt-3 text-center">RECEPTION</p>
-                    <p className="mt-2 w-full border border-blue-500"></p>
-                    <div className="flex items-center justify-around py-2">
-                      <p className="">FEE</p>
-                      <p className="">NEW</p>
-                      
-                  
-                    </div>
-                  </TableHead>
+               
 
                   <TableHead colSpan={1} className="border-2 border-blue-400">
                     <p className="mt-3 text-center">TOTAL</p>
@@ -470,44 +460,7 @@ export default function RevenuTracker() {
                       )}
                     />
                   </TableCell>
-                  <TableCell className="border-2 border-blue-400">
-                    <FormField
-                      control={form.control}
-                      name="task10"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                              type="number"
-                            />
-                          </FormControl>
-
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TableCell>
-                  <TableCell className="border-2 border-blue-400">
-                    <FormField
-                      control={form.control}
-                      name="task11"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                              type="number"
-                            />
-                          </FormControl>
-
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TableCell>
+                
                   <TableCell className="border-2 border-blue-400">
                     <FormField
                       control={form.control}
@@ -695,16 +648,7 @@ export default function RevenuTracker() {
 
               </div>
             </TableHead>
-            <TableHead colSpan={2} className="border-2 border-blue-400">
-              <p className="mt-3 text-center">RECEPTION</p>
-              <p className="mt-2 w-full border border-blue-500"></p>
-              <div className="flex items-center  gap-8 justify-around py-2">
-                <p className="">FEE</p>
-                <p className="">NEW</p>
-
-              </div>
-            </TableHead>
-
+          
             <TableHead colSpan={1} className="border-2 border-blue-400">
               <p className="mt-3 text-center">TOTAL</p>
               <p className="mt-2 w-full border border-blue-500"></p>
@@ -767,12 +711,7 @@ export default function RevenuTracker() {
                 <TableCell className="border-2 border-blue-400">
                   {v.task9}
                 </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task10}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task11}
-                </TableCell>
+           
                 <TableCell className="border-2 border-blue-400">
                   {v.task12}
                 </TableCell>

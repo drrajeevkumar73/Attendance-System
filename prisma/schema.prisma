@@ -44,6 +44,7 @@ model User {
 
   Uplodthing Uplodthing[]
   CallLog    CallLog[]
+  Digital    Digital[]
 
   @@map("users")
 }
@@ -663,4 +664,28 @@ model CallLog {
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("callLog")
+}
+
+model Digital {
+  id     String  @id @default(cuid())
+  userId String
+  task1  String
+  task2  String?
+  task3  String?
+  task4  String?
+  task5  String?
+  task6  String?
+  task7  String?
+  task8  String?
+  task9  String?
+  task10 String?
+  task11 String?
+  task12 String?
+  task13 String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("digital")
 }
