@@ -111,10 +111,10 @@ export default function ExcelData() {
       task10: "",
       task11: "",
       task12: "",
-      task13: "",
+
     },
   });
-  const submithandlerTwo=async(value:PlatFormValue)=>{
+  const submithandlerTwo = async (value: PlatFormValue) => {
     try {
       setispending(true);
 
@@ -133,7 +133,7 @@ export default function ExcelData() {
         task10: value.task10,
         task11: value.task11,
         task12: value.task12,
-        task13: value.task13,
+       
       };
 
       const { data } = await axios.post("/api/platform", requestData);
@@ -153,7 +153,7 @@ export default function ExcelData() {
     } finally {
       setispending(false);
     }
-  }
+  };
   return (
     <>
       <div className={`${indexsex == 0 ? "block" : "hidden"}`}>
@@ -169,7 +169,7 @@ export default function ExcelData() {
                     Please enter date for the previous day{" "}
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Data Dies
+                    Data Dial
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
                     Incoming
@@ -233,11 +233,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -252,11 +248,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -272,11 +264,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -291,11 +279,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -310,11 +294,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -329,11 +309,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -362,46 +338,46 @@ export default function ExcelData() {
                   <TableHead className="border-2 border-blue-400">
                     Please enter date for the previous day{" "}
                   </TableHead>
+                 
                   <TableHead className="border-2 border-blue-400">
-                    Data Dies
+                    FB Lead
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Incoming
-                  </TableHead>
-                  <TableHead className="border-2 border-blue-400">
-                    Outgoing
+                    FB Lead Convert
                   </TableHead>
 
                   <TableHead className="border-2 border-blue-400">
-                    Whatsapp / Text
+                    FB Appoinment Booked
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    Appt
+                    FB Fee
                   </TableHead>
 
                   <TableHead className="border-2 border-blue-400">
-                    Fees
+                    JD Lead
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    New Patient
+                    JD Lead Convert
+                  </TableHead>
+
+                  <TableHead className="border-2 border-blue-400">
+                    JD Appoinment Booked
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    FB LEAD
+                    JD Fee
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    FB LEAD CONVERT
+                    Apollo Lead
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    FB FEE
+                    Apollo Lead Convert
+                  </TableHead>
+
+                  <TableHead className="border-2 border-blue-400">
+                    Apollo Appoinment Booked
                   </TableHead>
                   <TableHead className="border-2 border-blue-400">
-                    JB
-                  </TableHead>
-                  <TableHead className="border-2 border-blue-400">
-                  APPELOO
-                  </TableHead>
-                  <TableHead className="border-2 border-blue-400 uppercase">
-                  purchase
+                    Apollo Fee
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -445,11 +421,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -464,11 +436,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -484,11 +452,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -503,11 +467,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -522,11 +482,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -541,11 +497,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -560,11 +512,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -579,11 +527,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -598,11 +542,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -617,11 +557,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -636,11 +572,7 @@ export default function ExcelData() {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
+                            <Input className="border-foreground" {...field} />
                           </FormControl>
 
                           <FormMessage />
@@ -648,25 +580,7 @@ export default function ExcelData() {
                       )}
                     />
                   </TableCell>
-                  <TableCell className="border-2 border-blue-400">
-                    <FormField
-                      control={form2.control}
-                      name="task13"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                            
-                            />
-                          </FormControl>
-
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TableCell>
+                 
                 </TableRow>
               </TableBody>
             </Table>

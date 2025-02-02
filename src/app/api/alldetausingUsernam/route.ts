@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     const decoid = decodeURIComponent(username);
 
     let startDate: Date, endDate: Date;
+   
 
     const timeRanges = [
       { label: "10 AM - 1 PM", start: 10, end: 13 },
@@ -465,6 +466,7 @@ export async function POST(req: NextRequest) {
 
       // Flatten the array to ensure a single-level structure
       const flattenedData = processedData.flat();
+      console.log(JSON.stringify(data))
 
       return NextResponse.json(flattenedData);
     } else if (whichdata === "onboarding-data") {

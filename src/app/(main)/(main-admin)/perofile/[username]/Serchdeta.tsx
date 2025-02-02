@@ -1998,7 +1998,7 @@ export default function SearchData() {
                 <TableHeader>
                   <TableRow className="border border-primary bg-primary">
                     <TableHead className="border-2">Date</TableHead>
-                    <TableHead className="border-2">Data Dies</TableHead>
+                    <TableHead className="border-2">Data Dial</TableHead>
                     <TableHead className="border-2">Incoming</TableHead>
                     <TableHead className="border-2">Outgoing</TableHead>
                     <TableHead className="border-2">Total</TableHead>
@@ -2059,22 +2059,18 @@ export default function SearchData() {
                 <TableHeader>
                   <TableRow className="border border-primary bg-primary">
                     <TableHead className="border-2">Date</TableHead>
-                    <TableHead className="border-2">Data Dies</TableHead>
-                    <TableHead className="border-2">Incoming</TableHead>
-                    <TableHead className="border-2">Outgoing</TableHead>
-                    <TableHead className="border-2">Total</TableHead>
-                    <TableHead className="border-2">Whatsapp / Text</TableHead>
-                    <TableHead className="border-2">Appt</TableHead>
-                    <TableHead className="border-2">Fees</TableHead>
-                    <TableHead className="border-2">New Patient</TableHead>
-                    <TableHead className="border-2">FB LEAD</TableHead>
-                    <TableHead className="border-2">FB LEAD CONVERT</TableHead>
-                    <TableHead className="border-2">FB FEE</TableHead>
-                    <TableHead className="border-2">JB</TableHead>
-                    <TableHead className="border-2">APPELOO</TableHead>
-                    <TableHead className="border-2 uppercase">
-                      purchase
-                    </TableHead>
+                    <TableHead className="border-2">FB Lead</TableHead>
+                    <TableHead className="border-2">FB Lead Convert</TableHead>
+                    <TableHead className="border-2">FB Appointment Booked</TableHead>
+                    <TableHead className="border-2">FB Fee</TableHead>
+                    <TableHead className="border-2">JD Lead</TableHead>
+                    <TableHead className="border-2">JD Lead Convert</TableHead>
+                    <TableHead className="border-2">JD Appointment Booked</TableHead>
+                    <TableHead className="border-2">JD Fee</TableHead>
+                    <TableHead className="border-2">Apollo Lead</TableHead>
+                    <TableHead className="border-2">Apollo Lead Convert</TableHead>
+                    <TableHead className="border-2">Apollo Appointment Booked</TableHead>
+                    <TableHead className="border-2">Apollo Fee</TableHead>
                     <TableHead className="border-2">Time</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -2105,9 +2101,7 @@ export default function SearchData() {
                         <TableCell className="border-2">{v.task1}</TableCell>
                         <TableCell className="border-2">{v.task2}</TableCell>
                         <TableCell className="border-2">{v.task3}</TableCell>
-                        <TableCell className="border-2">
-                          {Number(v.task2) + Number(v.task3)}
-                        </TableCell>
+                        
                         <TableCell className="border-2">{v.task4}</TableCell>
                         <TableCell className="border-2">{v.task5}</TableCell>
                         <TableCell className="border-2">{v.task6}</TableCell>
@@ -2117,7 +2111,7 @@ export default function SearchData() {
                         <TableCell className="border-2">{v.task10}</TableCell>
                         <TableCell className="border-2">{v.task11}</TableCell>
                         <TableCell className="border-2">{v.task12}</TableCell>
-                        <TableCell className="border-2">{v.task13}</TableCell>
+                       
 
                         <TableCell className="border-2">
                           {formatRelativeTime(v.createdAt)}

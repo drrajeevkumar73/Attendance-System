@@ -145,7 +145,7 @@ export default function Vewdata() {
             <TableRow className="border border-primary bg-primary">
               <TableHead className="border-2 border-blue-400">Date</TableHead>
               <TableHead className="border-2 border-blue-400">
-                Data Dies
+                Data Dial
               </TableHead>
               <TableHead className="border-2 border-blue-400">
                 Incoming
@@ -231,37 +231,38 @@ export default function Vewdata() {
           <TableHeader>
             <TableRow className="border border-primary bg-primary">
               <TableHead className="border-2 border-blue-400">Date</TableHead>
+
               <TableHead className="border-2 border-blue-400">
-                Data Dies
+                FB Lead
               </TableHead>
               <TableHead className="border-2 border-blue-400">
-                Incoming
+                FB Lead Convert
               </TableHead>
               <TableHead className="border-2 border-blue-400">
-                Outgoing
+                FB Appointment Booked
               </TableHead>
-              <TableHead className="border-2 border-blue-400">Total</TableHead>
+              <TableHead className="border-2 border-blue-400">FB Fee</TableHead>
               <TableHead className="border-2 border-blue-400">
-                Whatsapp / Text
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">Appt</TableHead>
-              <TableHead className="border-2 border-blue-400">Fees</TableHead>
-              <TableHead className="border-2 border-blue-400">
-                New Patient
+                JD Lead
               </TableHead>
               <TableHead className="border-2 border-blue-400">
-                FB LEAD
+                JD Lead Convert
               </TableHead>
               <TableHead className="border-2 border-blue-400">
-                FB LEAD CONVERT
+                JD Appointment Booked
               </TableHead>
-              <TableHead className="border-2 border-blue-400">FB FEE</TableHead>
-              <TableHead className="border-2 border-blue-400">JB</TableHead>
+              <TableHead className="border-2 border-blue-400">JD Fee</TableHead>
               <TableHead className="border-2 border-blue-400">
-                APPELOO
+                Apollo Lead
               </TableHead>
-              <TableHead className="border-2 border-blue-400 uppercase">
-                purchase
+              <TableHead className="border-2 border-blue-400">
+                Apollo Lead Convert
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                Apollo Appointment Booked
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                Apollo Fee
               </TableHead>
               <TableHead className="border-2 border-blue-400">Time</TableHead>
             </TableRow>
@@ -302,9 +303,7 @@ export default function Vewdata() {
                   <TableCell className="border-2 border-blue-400">
                     {v.task3}
                   </TableCell>
-                  <TableCell className="border-2 border-blue-400">
-                    {Number(v.task2) + Number(v.task3)}
-                  </TableCell>
+                 
                   <TableCell className="border-2 border-blue-400">
                     {v.task4}
                   </TableCell>
@@ -333,9 +332,7 @@ export default function Vewdata() {
                   <TableCell className="border-2 border-blue-400">
                     {v.task12}
                   </TableCell>
-                  <TableCell className="border-2 border-blue-400">
-                    {v.task13}
-                  </TableCell>
+                 
 
                   <TableCell className="border-2 border-blue-400">
                     {formatRelativeTime(v.createdAt)}

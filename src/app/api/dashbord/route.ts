@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
     const filteredAttendance = userdata.Atendace?.filter(
       (att: any) => formatRelativeMonth(att.createdAt) === body.monthname,
     );
+    console.log(filteredAttendance)
 
     const totalAdence = filteredAttendance.filter((v: any) => {
       if (v.status !== "absent") return v.status;

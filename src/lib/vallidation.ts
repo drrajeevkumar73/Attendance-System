@@ -568,8 +568,6 @@ export const platformSchema = z.object({
   task10: z.string().trim(),
   task11: z.string().trim(),
   task12: z.string().trim(),
-  task13: z.string().trim(),
-
 });
 
 export type PlatFormValue = z.infer<typeof platformSchema>;
