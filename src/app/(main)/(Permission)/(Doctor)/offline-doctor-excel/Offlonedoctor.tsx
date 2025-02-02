@@ -177,8 +177,8 @@ export default function Offlonedoctor() {
                           <SelectContent>
                             <SelectGroup>
                               <SelectItem value="Dr.Abha">Dr.Abha</SelectItem>
-                              <SelectItem value="Dr.Ansari">
-                                Dr.Ansari
+                              <SelectItem value="Dr.Sonal">
+                                Dr.Sonal
                               </SelectItem>
                               <SelectItem value="Dr.Pratima">Dr.Pratima</SelectItem>
                               <SelectItem value="Dr.Priti">Dr.Priti</SelectItem>

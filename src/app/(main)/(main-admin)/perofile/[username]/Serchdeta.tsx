@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Check, Loader } from "lucide-react";
+import { Check, Clock10, Loader } from "lucide-react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import moment from "moment-timezone";
@@ -36,7 +36,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AllreportValue, alreportSchema } from "@/lib/vallidation";
+import {
+  AllreportValue,
+  alreportSchema,
+  citySchema,
+  CityValue,
+} from "@/lib/vallidation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatRelativeMonthDate, formatRelativeTime } from "@/lib/utils";
@@ -50,6 +55,9 @@ export default function SearchData() {
       month: "",
       year: "",
     },
+  });
+  const form5 = useForm<CityValue>({
+    resolver: zodResolver(citySchema),
   });
   const { username } = useParams();
   const [selectedTask, setSelectedTask] = useState<string>("work");
@@ -80,6 +88,10 @@ export default function SearchData() {
   const [late, setatendec]: any = useState([]);
   const [s, sets] = useState(true);
   const [ispending, setispending] = useState(false);
+  const [revenuTraker, setRevenueTraker] = useState({
+    dipartment: "",
+    data: [],
+  });
   // Format ISO date to "DD-MMM-YYYY"
   const formatDate = (isoDate: string) => {
     const date = new Date(isoDate);
@@ -124,6 +136,10 @@ export default function SearchData() {
             username: username,
             whichdata: task,
             calender: dateInIST, // Send the corrected date
+          });
+          setRevenueTraker({
+            dipartment: "",
+            data: [],
           });
           settablseex({
             dipartment: response.data.dipartment,
@@ -249,6 +265,10 @@ export default function SearchData() {
           whichdata: selectedTask,
           month: isoDate, // Send as a string (e.g., '2025-01-01' for January 2025)
         });
+        setRevenueTraker({
+          dipartment: "",
+          data: [],
+        });
         settablseex({
           dipartment: response.data.dipartment,
           data: response.data.data,
@@ -261,6 +281,7 @@ export default function SearchData() {
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
         });
+
         setDigitalData({
           dipartment: response.data.dipartment,
           data: response.data.data.Digital,
@@ -374,6 +395,7 @@ export default function SearchData() {
           Appt: v.task5,
           Fees: v.task6,
           " New  Patient": v.task7,
+          Enquiry: v.task8,
           Time: formatRelativeTime(v.createdAt),
         }));
 
@@ -669,7 +691,8 @@ export default function SearchData() {
             Appt: v.task5,
             Fees: v.task6,
             " New  Patient": v.task7,
-          
+            Enquiry: v.task8,
+
             Time: formatRelativeTime(v.createdAt),
           }));
 
@@ -720,6 +743,35 @@ export default function SearchData() {
           // Write to file
           XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
         }
+      } else if (revenuTraker.dipartment === "revenuetracker") {
+        const excelData = revenuTraker?.data.map((v: any) => ({
+          Date: formatRelativeMonthDate(v.createdAt),
+          City: v.task1,
+          "PURCHASE :- AMOUNT": v.task2,
+          "PURCHASE :- QTY": v.task3,
+          "SALE :- AMOUNT": v.task4,
+          "SALE :- QTY": v.task5,
+          "SALE :- RETAIL": v.task6,
+          "SALE :- WHOLESALE": v.task7,
+          "SALE :- LOOSE": v.task8,
+          "SALE :- LAB": v.task9,
+
+          Time: formatRelativeTime(v.createdAt),
+        }));
+
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Create workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `${tabelex.deipartment}`,
+        );
+
+        // Write to file
+        XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
       }
     } else if (selectedTask == "attendance") {
       if (!late || late.length === 0) {
@@ -757,6 +809,18 @@ export default function SearchData() {
   if (!data) {
     return <p className="text-center">No Document Found</p>;
   }
+
+  const onSubmitCity = async (cityname: CityValue) => {
+    try {
+      // const response = await axios.post("/api/alldetausingUsernam", { cityname:cityname.cityname });
+
+      const data = tabelex.data.filter((v: any) => v.task1 == cityname);
+      setRevenueTraker({
+        dipartment: "revenuetracker",
+        data: data,
+      });
+    } catch (error) {}
+  };
 
   return (
     <div className="space-y-6">
@@ -896,6 +960,50 @@ export default function SearchData() {
           </button>
         </div>
       )}
+
+      {tabelex.dipartment === "revenuetracker" ? (
+        <div className="flex w-full justify-center">
+          <div className="flex w-[300px] justify-center">
+            <Form {...form5}>
+              <form
+                onSubmit={form5.handleSubmit(onSubmitCity)}
+                className="w-2/3 space-y-6"
+              >
+                <FormField
+                  control={form5.control}
+                  name="cityname"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={(monthname: any) =>
+                          onSubmitCity(monthname)
+                        }
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a month" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="RANCHI">RANCHI</SelectItem>
+                          <SelectItem value="RANCHI SHOP">
+                            RANCHI SHOP
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
       {/* Table Section */}
 
       {selectedTask === "work" ? (
@@ -963,7 +1071,7 @@ export default function SearchData() {
               <TableHeader>
                 <TableRow className="border border-primary bg-primary">
                   <TableHead className="border-2">Date</TableHead>
-                  <TableHead className="border-2">Data Dies</TableHead>
+                  <TableHead className="border-2">Data Dial</TableHead>
                   <TableHead className="border-2">Incoming</TableHead>
                   <TableHead className="border-2">Outgoing</TableHead>
                   <TableHead className="border-2">Total</TableHead>
@@ -971,6 +1079,7 @@ export default function SearchData() {
                   <TableHead className="border-2">Appt</TableHead>
                   <TableHead className="border-2">Fees</TableHead>
                   <TableHead className="border-2">New Patient</TableHead>
+                  <TableHead className="border-2">Enquiry</TableHead>
                   <TableHead className="border-2">Time</TableHead>
                 </TableRow>
               </TableHeader>
@@ -1008,7 +1117,7 @@ export default function SearchData() {
                       <TableCell className="border-2">{v.task5}</TableCell>
                       <TableCell className="border-2">{v.task6}</TableCell>
                       <TableCell className="border-2">{v.task7}</TableCell>
-
+                      <TableCell className="border-2">{v.task8}</TableCell>
                       <TableCell className="border-2">
                         {formatRelativeTime(v.createdAt)}
                       </TableCell>
@@ -2006,6 +2115,7 @@ export default function SearchData() {
                     <TableHead className="border-2">Appt</TableHead>
                     <TableHead className="border-2">Fees</TableHead>
                     <TableHead className="border-2">New Patient</TableHead>
+                    <TableHead className="border-2">Enquiry</TableHead>
                     <TableHead className="border-2">Time</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -2043,7 +2153,7 @@ export default function SearchData() {
                         <TableCell className="border-2">{v.task5}</TableCell>
                         <TableCell className="border-2">{v.task6}</TableCell>
                         <TableCell className="border-2">{v.task7}</TableCell>
-
+                        <TableCell className="border-2">{v.task8}</TableCell>
                         <TableCell className="border-2">
                           {formatRelativeTime(v.createdAt)}
                         </TableCell>
@@ -2061,15 +2171,23 @@ export default function SearchData() {
                     <TableHead className="border-2">Date</TableHead>
                     <TableHead className="border-2">FB Lead</TableHead>
                     <TableHead className="border-2">FB Lead Convert</TableHead>
-                    <TableHead className="border-2">FB Appointment Booked</TableHead>
+                    <TableHead className="border-2">
+                      FB Appointment Booked
+                    </TableHead>
                     <TableHead className="border-2">FB Fee</TableHead>
                     <TableHead className="border-2">JD Lead</TableHead>
                     <TableHead className="border-2">JD Lead Convert</TableHead>
-                    <TableHead className="border-2">JD Appointment Booked</TableHead>
+                    <TableHead className="border-2">
+                      JD Appointment Booked
+                    </TableHead>
                     <TableHead className="border-2">JD Fee</TableHead>
                     <TableHead className="border-2">Apollo Lead</TableHead>
-                    <TableHead className="border-2">Apollo Lead Convert</TableHead>
-                    <TableHead className="border-2">Apollo Appointment Booked</TableHead>
+                    <TableHead className="border-2">
+                      Apollo Lead Convert
+                    </TableHead>
+                    <TableHead className="border-2">
+                      Apollo Appointment Booked
+                    </TableHead>
                     <TableHead className="border-2">Apollo Fee</TableHead>
                     <TableHead className="border-2">Time</TableHead>
                   </TableRow>
@@ -2101,7 +2219,7 @@ export default function SearchData() {
                         <TableCell className="border-2">{v.task1}</TableCell>
                         <TableCell className="border-2">{v.task2}</TableCell>
                         <TableCell className="border-2">{v.task3}</TableCell>
-                        
+
                         <TableCell className="border-2">{v.task4}</TableCell>
                         <TableCell className="border-2">{v.task5}</TableCell>
                         <TableCell className="border-2">{v.task6}</TableCell>
@@ -2111,7 +2229,6 @@ export default function SearchData() {
                         <TableCell className="border-2">{v.task10}</TableCell>
                         <TableCell className="border-2">{v.task11}</TableCell>
                         <TableCell className="border-2">{v.task12}</TableCell>
-                       
 
                         <TableCell className="border-2">
                           {formatRelativeTime(v.createdAt)}
@@ -2123,6 +2240,116 @@ export default function SearchData() {
               </Table>
             </div>
           </>
+        ) : tabelex.dipartment === "revenuetracker" ? (
+          <div className="mx-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border border-primary bg-primary">
+                  <TableHead className="border-2">Date</TableHead>
+                  <TableHead className="border-2">City</TableHead>
+                  <TableHead colSpan={2} className="border-2">
+                    <p className="mt-3 text-center">PURCHASE</p>
+                    <p className="mt-2 w-full border border-blue-500"></p>
+                    <div className="flex items-center justify-around gap-6 py-2">
+                      <p className="">AMOUNT</p>
+                      <p className="">QTY</p>
+                    </div>
+                  </TableHead>
+
+                  <TableHead colSpan={1} className="border-2">
+                    <p className="mt-3 text-center">SALE</p>
+                    <p className="mt-2 w-full border border-blue-500"></p>
+                    <div className="flex items-center justify-around py-2">
+                      <p className="">AMOUNT</p>
+                    </div>
+                  </TableHead>
+
+                  <TableHead colSpan={1} className="border-2">
+                    <p className="mt-3 text-center">SALE</p>
+                    <p className="mt-2 w-full border border-blue-500"></p>
+                    <div className="flex items-center justify-around py-2">
+                      <p className="">QTY</p>
+                    </div>
+                  </TableHead>
+
+                  <TableHead colSpan={4} className="border-2">
+                    <p className="mt-3 text-center">SALE</p>
+                    <p className="mt-2 w-full border border-blue-500"></p>
+                    <div className="flex items-center justify-around gap-8 py-2">
+                      <p className="">RETAIL</p>
+                      <p className="">WHOLESALE</p>
+                      <p className="">LOOSE</p>
+                      <p className="">LAB</p>
+                    </div>
+                  </TableHead>
+
+                  <TableHead className="border-2 text-right">Time</TableHead>
+                </TableRow>
+              </TableHeader>
+              {loading ? (
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={3}>
+                      <Loader className="mx-auto animate-spin" />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ) : revenuTraker.data.length > 0 ? (
+                // Agar revenuTraker me data hai toh usko dikhao
+                revenuTraker.data.map((v: any, i: any) => (
+                  <TableBody className="border border-primary" key={i}>
+                    <TableRow>
+                      <TableCell className="border-2">
+                        {formatRelativeMonthDate(v.createdAt)}
+                      </TableCell>
+                      <TableCell className="border-2">{v.task1}</TableCell>
+                      <TableCell className="border-2">{v.task2}</TableCell>
+                      <TableCell className="border-2">{v.task3}</TableCell>
+                      <TableCell className="border-2">{v.task4}</TableCell>
+                      <TableCell className="border-2">{v.task5}</TableCell>
+                      <TableCell className="border-2">{v.task6}</TableCell>
+                      <TableCell className="border-2">{v.task7}</TableCell>
+                      <TableCell className="border-2">{v.task8}</TableCell>
+                      <TableCell className="border-2">{v.task9}</TableCell>
+                      <TableCell className="border-2">
+                        {formatRelativeTime(v.createdAt)}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ))
+              ) : tabelex?.data?.length > 0 ? (
+                // Agar revenuTraker empty hai aur tabelex me data hai toh tabelex ka data dikhao
+                tabelex.data.map((v: any, i: any) => (
+                  <TableBody className="border border-primary" key={i}>
+                    <TableRow>
+                      <TableCell className="border-2">
+                        {formatRelativeMonthDate(v.createdAt)}
+                      </TableCell>
+                      <TableCell className="border-2">{v.task1}</TableCell>
+                      <TableCell className="border-2">{v.task2}</TableCell>
+                      <TableCell className="border-2">{v.task3}</TableCell>
+                      <TableCell className="border-2">{v.task4}</TableCell>
+                      <TableCell className="border-2">{v.task5}</TableCell>
+                      <TableCell className="border-2">{v.task6}</TableCell>
+                      <TableCell className="border-2">{v.task7}</TableCell>
+                      <TableCell className="border-2">{v.task8}</TableCell>
+                      <TableCell className="border-2">{v.task9}</TableCell>
+                      <TableCell className="border-2">
+                        {formatRelativeTime(v.createdAt)}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                ))
+              ) : (
+                // Agar dono hi empty hain toh "No Data Found" dikhao
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={3}>No Data Found</TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+            </Table>
+          </div>
         ) : (
           ""
         )

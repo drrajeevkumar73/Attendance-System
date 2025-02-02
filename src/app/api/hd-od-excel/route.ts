@@ -60,19 +60,15 @@ if (
     // Ensure the date is within the current month and not in the future
     const inputDate = moment.tz(currentDate, "YYYY-MM-DD", "Asia/Kolkata");
     const currentMonth = currentTime.format("MM"); // Current month
-    if (
-      inputDate.format("MM") !== currentMonth ||
-      inputDate.isAfter(currentTime, "day")
-    ) {
+    if (inputDate.isAfter(currentTime, "day")) {
       return NextResponse.json(
         {
           success: false,
-          message: "You can only add tasks for dates in the current month and not for future dates.",
+          message: "You cannot add tasks for future dates.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
-
     // Step 4: Check if an entry already exists for the given date
     const startOfDay = inputDate.startOf("day").toDate();
     const endOfDay = inputDate.endOf("day").toDate();

@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
     const decoid = decodeURIComponent(username);
 
     let startDate: Date, endDate: Date;
-   
 
     const timeRanges = [
       { label: "10 AM - 1 PM", start: 10, end: 13 },
@@ -412,62 +411,86 @@ export async function POST(req: NextRequest) {
           dipartment: "digital",
         });
       }
+      if (user?.dipartment === "INVENTORY") {
+        const data = await prisma.revenuetracker.findMany({
+          where: {
+            userId: decoid,
+            createdAt: {
+              gte: startDate,
+              lt: endDate,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+
+        return NextResponse.json({
+          success: true,
+          data: data,
+          dipartment: "revenuetracker",
+        });
+      }
     } else if (whichdata === "attendance") {
+      // Parse IST dates with +05:30 offset to get correct UTC times
+      const parseISTDate = (
+        dateString: string,
+        isEndOfDay: boolean = false,
+      ) => {
+        // Assuming dateString is in 'YYYY-MM-DD' format
+        const timePart = isEndOfDay ? "23:59:59" : "00:00:00";
+        const isoString = `${dateString}T${timePart}+05:30`;
+        return new Date(isoString);
+      };
+
+      // Convert IST start and end dates to UTC
+      const utcStart = parseISTDate("2025-02-01");
+      const utcEnd = parseISTDate("2025-02-28", true);
+
       const data = await prisma.user.findMany({
-        where: {
-          id: decoid,
-        },
+        where: { id: decoid },
         select: {
           Atendace: {
             where: {
-              createdAt: {
-                gte: startDate,
-                lt: endDate,
-              },
+              createdAt: { gte: utcStart, lt: utcEnd },
             },
-            select: {
-              status: true,
-              createdAt: true, // Only createdAt is available
-            },
+            select: { status: true, createdAt: true },
           },
           useentry: {
             where: {
-              createdAt: {
-                gte: startDate,
-                lt: endDate,
-              },
+              createdAt: { gte: utcStart, lt: utcEnd },
             },
-            select: {
-              createdAt: true, // Only createdAt is available
-              status: true,
-              lateMinutes: true,
-            },
+            select: { createdAt: true, status: true, lateMinutes: true },
           },
         },
       });
 
-      // Aggregate and process data
-      const processedData = data.map((user: any) => {
-        // Count present entries in Atendace
+      // Rest of your mapping logic...
+      const filteredData = data.map((user: any) => {
         const workPresentCount = user.Atendace.filter(
           (att: any) => att.status === "present",
         ).length;
 
-        // Map through useentry to generate the desired structure
-        const result = user.useentry.map((entry: any) => ({
-          WorkPresentCount: workPresentCount, // Total present entries in Atendace
-          PresentCount: user.useentry.length, // Total count of useentry records
-          Status: entry.status, // Status from useentry
-          createdAt: entry.lateMinutes, // createdAt from useentry
-        }));
+        if (user.useentry.length === 0) {
+          return [
+            {
+              WorkPresentCount: workPresentCount,
+              PresentCount: 0,
+              Status: "N/A",
+              createdAt: "N/A",
+            },
+          ];
+        }
 
-        return result;
+        return user.useentry.map((entry: any) => ({
+          WorkPresentCount: workPresentCount,
+          PresentCount: user.useentry.length,
+          Status: entry.status,
+          createdAt: entry.lateMinutes,
+        }));
       });
 
-      // Flatten the array to ensure a single-level structure
-      const flattenedData = processedData.flat();
-      console.log(JSON.stringify(data))
-
+      const flattenedData = filteredData.flat();
       return NextResponse.json(flattenedData);
     } else if (whichdata === "onboarding-data") {
       const res = await prisma.uplodthing.findFirst({

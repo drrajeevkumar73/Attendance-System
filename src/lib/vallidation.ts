@@ -121,6 +121,7 @@ export const exelSchema = z.object({
   task5: z.string().trim(),
   task6: z.string().trim(),
   task7: z.string().trim(),
+  task8: z.string().trim(),
 });
 
 export type ExelValue = z.infer<typeof exelSchema>;
@@ -218,8 +219,7 @@ export const revenutrackerSchema = z.object({
   task9: z.string().trim(),
   task10: z.string().trim(),
   task11: z.string().trim(),
-  task12: z.string().trim(),
-  task13: z.string().trim(),
+
 });
 
 export type RevenueTrackerValue = z.infer<typeof revenutrackerSchema>;
@@ -571,3 +571,10 @@ export const platformSchema = z.object({
 });
 
 export type PlatFormValue = z.infer<typeof platformSchema>;
+
+
+export const citySchema = z.object({
+ cityname:z.string().trim(),
+});
+
+export type CityValue = z.infer<typeof citySchema>;

@@ -61,9 +61,7 @@ export default function RevenuTracker() {
       task9: "",
       task10: "",
       task11: "",
-      task12: "",
-      task13:"",
-     
+
     },
   });
   const submithandler = async (value: RevenueTrackerValue) => {
@@ -82,8 +80,7 @@ export default function RevenuTracker() {
         task9: value.task9,
         task10: value.task10,
         task11: value.task11,
-        task12: value.task12,
-        task13: value.task13,
+      
       
       });
       form.reset();
@@ -155,8 +152,6 @@ export default function RevenuTracker() {
       "SALE :- LOOSE": v.task8,
       "SALE :- LAB": v.task9,
      
-      "TOTAL :- PATIENT": v.task12,
-      "NEW :- PATIENT": v.task13,
       Time: formatRelativeTime(v.createdAt),
     }));
 
@@ -225,21 +220,7 @@ export default function RevenuTracker() {
                   </TableHead>
                
 
-                  <TableHead colSpan={1} className="border-2 border-blue-400">
-                    <p className="mt-3 text-center">TOTAL</p>
-                    <p className="mt-2 w-full border border-blue-500"></p>
-                    <div className="flex items-center justify-around py-2">
-                      <p className="">PATIENT</p>
-                    </div>
-                  </TableHead>
-
-                  <TableHead colSpan={1} className="border-2 border-blue-400">
-                    <p className="mt-3 text-center">NEW</p>
-                    <p className="mt-2 w-full border border-blue-500"></p>
-                    <div className="flex items-center justify-around py-2">
-                      <p className="">PATIENT</p>
-                    </div>
-                  </TableHead>
+                  
                 </TableRow>
               </TableHeader>
 
@@ -284,19 +265,7 @@ export default function RevenuTracker() {
                                   <SelectItem value="RANCHI SHOP">
                                     RANCHI SHOP
                                   </SelectItem>
-                                  <SelectItem value="PATNA">PATNA</SelectItem>
-                                  <SelectItem value="KOLKATA">
-                                    KOLKATA
-                                  </SelectItem>
-                                  <SelectItem value="GAUR CITY">
-                                    GAUR CITY
-                                  </SelectItem>
-                                  <SelectItem value="SPECTRUM">
-                                    SPECTRUM
-                                  </SelectItem>
-                                  <SelectItem value="JAGTAULI">
-                                    JAGTAULI
-                                  </SelectItem>
+                                 
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
@@ -461,44 +430,7 @@ export default function RevenuTracker() {
                     />
                   </TableCell>
                 
-                  <TableCell className="border-2 border-blue-400">
-                    <FormField
-                      control={form.control}
-                      name="task12"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                              type="number"
-                            />
-                          </FormControl>
-
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TableCell>
-                  <TableCell className="border-2 border-blue-400">
-                    <FormField
-                      control={form.control}
-                      name="task13"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              className="border-foreground"
-                              {...field}
-                              type="number"
-                            />
-                          </FormControl>
-
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TableCell>
+                  
 
                 </TableRow>
               </TableBody>
@@ -577,11 +509,7 @@ export default function RevenuTracker() {
                         <SelectGroup>
                         <SelectItem value="RANCHI">RANCHI</SelectItem>
                       <SelectItem value="RANCHI SHOP">RANCHI SHOP</SelectItem>
-                      <SelectItem value="PATNA">PATNA</SelectItem>
-                      <SelectItem value="KOLKATA">KOLKATA</SelectItem>
-                        <SelectItem value="GAUR CITY">GAUR CITY</SelectItem>
-                      <SelectItem value="SPECTRUM">SPECTRUM</SelectItem>
-                      <SelectItem value="JAGTAULI">JAGTAULI</SelectItem>
+                     
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -649,21 +577,7 @@ export default function RevenuTracker() {
               </div>
             </TableHead>
           
-            <TableHead colSpan={1} className="border-2 border-blue-400">
-              <p className="mt-3 text-center">TOTAL</p>
-              <p className="mt-2 w-full border border-blue-500"></p>
-              <div className="flex items-center justify-around py-2">
-                <p className="">PATIENT</p>
-              </div>
-            </TableHead>
-
-            <TableHead colSpan={1} className="border-2 border-blue-400">
-              <p className="mt-3 text-center">NEW</p>
-              <p className="mt-2 w-full border border-blue-500"></p>
-              <div className="flex items-center justify-around py-2">
-                <p className="">PATIENT</p>
-              </div>
-            </TableHead>
+          
             <TableHead className="border-2 border-blue-400 text-right">
               Time
             </TableHead>
@@ -712,12 +626,7 @@ export default function RevenuTracker() {
                   {v.task9}
                 </TableCell>
            
-                <TableCell className="border-2 border-blue-400">
-                  {v.task12}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task13}
-                </TableCell>
+               
                
 
                 <TableCell className="w-[200px] border-2 border-blue-400 text-right">

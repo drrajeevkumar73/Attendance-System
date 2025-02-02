@@ -11,6 +11,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCaption,
@@ -25,6 +33,10 @@ import {
   AddtaskValue,
   exelSchema,
   ExelValue,
+  platformSchema,
+  PlatFormValue,
+  RevenueTrackerValue,
+  revenutrackerSchema,
 } from "@/lib/vallidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -34,8 +46,9 @@ import { date } from "zod";
 
 export default function ExcelData() {
   const { toast } = useToast();
-  const form = useForm<ExelValue>({
-    resolver: zodResolver(exelSchema),
+  const [ispending, setispending] = useState(false);
+  const form = useForm<RevenueTrackerValue>({
+    resolver: zodResolver(revenutrackerSchema),
     defaultValues: {
       date: "",
       task1: "",
@@ -46,17 +59,15 @@ export default function ExcelData() {
       task6: "",
       task7: "",
       task8: "",
+      task9: "",
+      task10: "",
+      task11: "",
     },
   });
-
-  const [ispending, setispending] = useState(false);
-
-  const submithandler = async (value: ExelValue) => {
+  const submithandler = async (value: RevenueTrackerValue) => {
     try {
       setispending(true);
-
-      // Prepare the data to send
-      const requestData: any = {
+      const { data } = await axios.post("/api/revenue-tacker", {
         date: value.date,
         task1: value.task1,
         task2: value.task2,
@@ -66,10 +77,10 @@ export default function ExcelData() {
         task6: value.task6,
         task7: value.task7,
         task8: value.task8,
-      };
-
-      const { data } = await axios.post("/api/exel", requestData);
-
+        task9: value.task9,
+        task10: value.task10,
+        task11: value.task11,
+      });
       form.reset();
       toast({
         description: data.message,
@@ -86,38 +97,51 @@ export default function ExcelData() {
       setispending(false);
     }
   };
-
   return (
-    <>
+    <div className="mx-auto overflow-auto rounded-2xl border bg-card p-10 shadow-xl">
       <Form {...form}>
         <form className="space-y-3" onSubmit={form.handleSubmit(submithandler)}>
-          <Table className="w-[1800px]">
+          <Table>
             <TableHeader>
               <TableRow className="border border-primary bg-primary">
                 <TableHead className="border-2 border-blue-400">
-                  Please enter date for the previous day{" "}
+                  Date for previous day
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Data Dial{" "}
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Incoming
-                </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Outgoing
+                <TableHead className="border-2 border-blue-400">City</TableHead>
+                <TableHead colSpan={2} className="border-2 border-blue-400">
+                  <p className="mt-3 text-center">PURCHASE</p>
+                  <p className="mt-2 w-full border border-blue-500"></p>
+                  <div className="flex items-center justify-around py-2">
+                    <p className="">AMOUNT</p>
+                    <p className="">QTY</p>
+                  </div>
                 </TableHead>
 
-                <TableHead className="border-2 border-blue-400">
-                  Whatsapp / Text
+                <TableHead colSpan={1} className="border-2 border-blue-400">
+                  <p className="mt-3 text-center">SALE</p>
+                  <p className="mt-2 w-full border border-blue-500"></p>
+                  <div className="flex items-center justify-around py-2">
+                    <p className="">AMOUNT</p>
+                  </div>
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">Appt</TableHead>
 
-                <TableHead className="border-2 border-blue-400">Fees</TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  New Patient
+                <TableHead colSpan={1} className="border-2 border-blue-400">
+                  <p className="mt-3 text-center">SALE</p>
+                  <p className="mt-2 w-full border border-blue-500"></p>
+                  <div className="flex items-center justify-around py-2">
+                    <p className="">QTY</p>
+                  </div>
                 </TableHead>
-                <TableHead className="border-2 border-blue-400">
-                  Enquiry{" "}
+
+                <TableHead colSpan={4} className="border-2 border-blue-400">
+                  <p className="mt-3 text-center">SALE</p>
+                  <p className="mt-2 w-full border border-blue-500"></p>
+                  <div className="flex items-center justify-around py-2">
+                    <p className="">RETAIL</p>
+                    <p className="">WHOLESALE</p>
+                    <p className="">LOOSE</p>
+                    <p className="">LAB</p>
+                  </div>
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -146,9 +170,23 @@ export default function ExcelData() {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input className="border-foreground" {...field} />
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value="RANCHI">RANCHI</SelectItem>
+                                <SelectItem value="RANCHI SHOP">
+                                  RANCHI SHOP
+                                </SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
                         </FormControl>
-
                         <FormMessage />
                       </FormItem>
                     )}
@@ -269,6 +307,7 @@ export default function ExcelData() {
                     )}
                   />
                 </TableCell>
+
                 <TableCell className="border-2 border-blue-400">
                   <FormField
                     control={form.control}
@@ -288,14 +327,34 @@ export default function ExcelData() {
                     )}
                   />
                 </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  <FormField
+                    control={form.control}
+                    name="task9"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="border-foreground"
+                            {...field}
+                            type="number"
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
+
           <LodingButton loding={ispending} type="submit" className="w-full">
             Submit
           </LodingButton>
         </form>
       </Form>
-    </>
+    </div>
   );
 }

@@ -10,24 +10,19 @@ export async function POST(req: NextRequest) {
     const { user } = await validateRequest();
     if (!user) throw new Error("Unauthorized access");
 
-    const res=await prisma.user.findFirst({
-      where:{
-         id:user.id
-      }
-    })
+    const res = await prisma.user.findFirst({
+      where: {
+        id: user.id,
+      },
+    });
 
-    if(!res?.permisionToggal){
+    if (!res?.permisionToggal) {
       return NextResponse.json({
-        message:"You are not in clinic."
-      })
+        message: "You are not in clinic.",
+      });
     }
 
-
     const { content } = await req.json();
-
-   
-
-
 
     const data = formSchema.parse({ content });
 
@@ -44,13 +39,16 @@ export async function POST(req: NextRequest) {
 
     // Step 4: Check if the current time is within the allowed slots
     const timeSlot = timeSlots.find(
-      (slot) => currentHour >= slot.start && currentHour < slot.end
+      (slot) => currentHour >= slot.start && currentHour < slot.end,
     );
 
     if (!timeSlot) {
       return NextResponse.json(
-        { success: false, message: "Entries allowed only between 10 AM and 7 PM." },
-        { status: 400 }
+        {
+          success: false,
+          message: "Entries allowed only between 10 AM and 7 PM.",
+        },
+        { status: 400 },
       );
     }
 
@@ -84,7 +82,7 @@ export async function POST(req: NextRequest) {
     if (existingEntry) {
       return NextResponse.json(
         { success: false, message: "Entry already exists for this time slot." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -93,7 +91,7 @@ export async function POST(req: NextRequest) {
     if (newlineCount < 1) {
       return NextResponse.json(
         { success: false, message: "Content must contain at least 2 points." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -164,7 +162,7 @@ export async function POST(req: NextRequest) {
     console.error("Error occurred:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

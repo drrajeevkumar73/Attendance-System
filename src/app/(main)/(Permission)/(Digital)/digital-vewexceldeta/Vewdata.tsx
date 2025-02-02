@@ -162,6 +162,9 @@ export default function Vewdata() {
               <TableHead className="border-2 border-blue-400">
                 New Patient
               </TableHead>
+              <TableHead className="border-2 border-blue-400">
+              Enquiry
+              </TableHead>
               <TableHead className="border-2 border-blue-400">Time</TableHead>
             </TableRow>
           </TableHeader>
@@ -216,7 +219,9 @@ export default function Vewdata() {
                   <TableCell className="border-2 border-blue-400">
                     {v.task7}
                   </TableCell>
-
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task8}
+                  </TableCell>
                   <TableCell className="border-2 border-blue-400">
                     {formatRelativeTime(v.createdAt)}
                   </TableCell>

@@ -266,6 +266,23 @@ export default function Menubar({ className }: MenuBarProps) {
                 <Link href={"/digital-vewexceldeta"}>Veiw Excel Data</Link>
               </Button>
             </>
+          ) :user.dipartment === "INVENTORY" ? (
+            <>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/inventry-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Excel Part"
+                asChild
+              >
+                <Link href={"/inventry-excel"}>Excel Part</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/inventry-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Veiw Excel Data"
+                asChild
+              >
+                <Link href={"/inventry-vew"}>Veiw Excel Data</Link>
+              </Button>
+            </>
           ) : (
             ""
           )}
@@ -327,27 +344,8 @@ export default function Menubar({ className }: MenuBarProps) {
             <Link href={"/retinghistory"}>Rating History</Link>
           </Button>
 
-          {/* <Button
-            className={`flex items-center justify-start gap-3 ${pathname == "/staff-attendance" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-            title="Staff Report"
-            asChild
-          >
-            <Link href={"/staff-attendance"}>Staff Report</Link>
-          </Button>
-          <Button
-            className={`flex items-center justify-start gap-3 ${pathname == "/staff-excel-work" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-            title="Staff Excel Work"
-            asChild
-          >
-            <Link href={"/staff-excel-work"}>Staff Excel Work</Link>
-          </Button> */}
-          <Button
-            className={`flex items-center justify-start gap-3 ${pathname == "/revenue-tracker" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-            title="Revenue Tracker"
-            asChild
-          >
-            <Link href={"/revenue-tracker"}>Revenue Tracker</Link>
-          </Button>
+      
+         
           <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/attendance-dashboard" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
             title="Attendance"
