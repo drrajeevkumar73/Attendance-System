@@ -60,7 +60,7 @@ export default function SearchData() {
     resolver: zodResolver(citySchema),
   });
   const { username } = useParams();
-  const [selectedTask, setSelectedTask] = useState<string>("work");
+  const [selectedTask, setSelectedTask] = useState<string>("excel");
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [data, setData]: any = useState<any[]>([]); // Backend se data store karne ke liye
   const [loading, setLoading] = useState<boolean>(false); // Loading state

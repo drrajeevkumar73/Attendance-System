@@ -17,8 +17,13 @@ export default function SerchField({ className }: classNameProps) {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleSubmit = async (e: any) => {
+  
+     
+    
     const q = e.value.trim();
+  
     if (!q) return;
+ 
     const { data } = await axios.get(
       `/api/autoserch?key=${encodeURIComponent(q)}`
     );
@@ -40,7 +45,7 @@ export default function SerchField({ className }: classNameProps) {
   }, []);
 
   return (
-    <form className={className}>
+    <form className={className} >
       <div
         className="relative mx-auto w-full"
         onChange={(event: any) => handleSubmit(event.target)}
