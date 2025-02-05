@@ -146,6 +146,7 @@ export default function Vewdata() {
                       <SelectGroup>
                         <SelectItem value="RANCHI">RANCHI</SelectItem>
                         <SelectItem value="RANCHI SHOP">RANCHI SHOP</SelectItem>
+                        <SelectItem value="PATNA">PATNA</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

@@ -990,6 +990,9 @@ export default function SearchData() {
                           <SelectItem value="RANCHI SHOP">
                             RANCHI SHOP
                           </SelectItem>
+                          <SelectItem value="PATNA">
+                          PATNA
+                          </SelectItem>
                         </SelectContent>
                       </Select>
 
