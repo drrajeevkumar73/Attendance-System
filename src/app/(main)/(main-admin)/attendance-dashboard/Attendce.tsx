@@ -34,6 +34,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx"; // Import xlsx library
+import { formatRelativeTime } from "@/lib/utils";
 
 export default function Attendce() {
   const form = useForm<AValue>({
@@ -86,7 +87,7 @@ export default function Attendce() {
       "Attendance Details": item.attendanceDetails
         ?.map(
           (detail:any) =>
-            `Date: ${detail.date}, Status: ${detail.status}, Late Time: ${formatMinutesToHoursMinutes(
+            `Date: ${detail.date}, Status: ${detail.status}, Late Time: ${formatRelativeTime(
               detail.latetime
             )}`
         )
@@ -233,7 +234,7 @@ export default function Attendce() {
                             <td className="border px-2 py-1">{detailer.date}</td>
                             <td className="border px-2 py-1">{detailer.status}</td>
                             <td className="border px-2 py-1">
-                              {formatMinutesToHoursMinutes(detailer.latetime)}
+                              {formatRelativeTime(detailer.latetime)}
                             </td>
                           </tr>
                         )
