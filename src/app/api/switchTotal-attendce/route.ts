@@ -80,7 +80,8 @@ export async function POST(request: NextRequest) {
 
       const statusSummary = userAttendanceDetails.map((entry) => ({  
         status: entry.status,  
-        latetime: entry.lateMinutes,  
+        latetime: entry.lateMinutes, 
+        createdAt:entry.createdAt,
         date: moment(entry.createdAt).format("DD-MM-YYYY"), // Ensure createdAt is correctly formatted  
       }));  
 

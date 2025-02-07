@@ -87,8 +87,8 @@ export default function Attendce() {
       "Attendance Details": item.attendanceDetails
         ?.map(
           (detail:any) =>
-            `Date: ${detail.date}, Status: ${detail.status}, Late Time: ${formatRelativeTime(
-              detail.latetime
+            `Date: ${detail.date}, Status: ${detail.status}, In Time: ${formatRelativeTime(
+              detail.createdAt
             )}`
         )
         .join("\n"),
@@ -223,7 +223,8 @@ export default function Attendce() {
                       <tr>
                         <th className="border px-2 py-1">Date</th>
                         <th className="border px-2 py-1">Status</th>
-                        <th className="border px-2 py-1">Late Time</th>
+                        <th className="border px-2 py-1">In Time</th>
+                        <th className="border px-2 py-1">Out Time</th>
                       </tr>
                     </thead>
 
@@ -234,7 +235,7 @@ export default function Attendce() {
                             <td className="border px-2 py-1">{detailer.date}</td>
                             <td className="border px-2 py-1">{detailer.status}</td>
                             <td className="border px-2 py-1">
-                              {formatRelativeTime(detailer.latetime)}
+                              {formatRelativeTime(detailer.createdAt)}
                             </td>
                           </tr>
                         )
