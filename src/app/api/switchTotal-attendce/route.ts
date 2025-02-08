@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
         userId: true,  
         status: true,  
         lateMinutes: true, // Include latetime  
+        outime:true,
         createdAt: true,    // Ensure createdAt is included here  
       },  
     });  
@@ -82,6 +83,7 @@ export async function POST(request: NextRequest) {
         status: entry.status,  
         latetime: entry.lateMinutes, 
         createdAt:entry.createdAt,
+        outime:entry.outime,
         date: moment(entry.createdAt).format("DD-MM-YYYY"), // Ensure createdAt is correctly formatted  
       }));  
 

@@ -30,7 +30,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { calenderSchema, CalederValue } from "@/lib/vallidation";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TableHead,
   TableHeader,
@@ -52,10 +52,11 @@ export default function Calender({ className }: classNameProps) {
   const form = useForm<CalederValue>({
     resolver: zodResolver(calenderSchema),
   });
-
+  const [lodings, setlosding] = useState(false);
   const [data, setdata] = useState<[]>();
   const [totalpresent, setPresent] = useState<number>();
   const [loding, setloding] = useState(false);
+
 
   const onSubmit = async (monthname: CalederValue) => {
     try {
@@ -64,6 +65,7 @@ export default function Calender({ className }: classNameProps) {
 
       setdata(data.data.data);
       setPresent(data.data.totalPresent);
+      
     } catch (error) {
     } finally {
       setloding(false);
@@ -134,56 +136,80 @@ const isFakeLocation = (userLat: number, userLng: number, clinicLat: number, cli
 };
 
 // Main function to check location
+
+useEffect(() => {
+  const savedStatus = localStorage.getItem("switchStatus");
+  if (savedStatus === "true") {
+    setlosding(true);
+  }
+}, []);
+
 const checkHandler = async () => {
+
   try {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(
+    //     async (position) => {
+    //       const userLat = position.coords.latitude;
+    //       const userLng = position.coords.longitude;
 
-          console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
+    //       console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
 
-          const isNearClinic = clinicLocations.some((clinic) => {
-            const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
-            return distance <= 0.5 && !isFakeLocation(userLat, userLng, clinic.lat, clinic.lng);
-          });
+    //       const isNearClinic = clinicLocations.some((clinic) => {
+    //         const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
+    //         return distance <= 0.5 && !isFakeLocation(userLat, userLng, clinic.lat, clinic.lng);
+    //       });
 
-          if (isNearClinic) {
-            console.log("User is within 500 meters of a clinic and location is valid.");
-            const { data } = await axios.post("/api/switch",{
-              statusBar:true
-            });
-            toast({
-              title: data.message || "Request successful!",
-              variant: "default",
-            });
-          } else {
+    //       if (isNearClinic) {
+    //         console.log("User is within 500 meters of a clinic and location is valid.");
+    //         const { data } = await axios.post("/api/switch",{
+    //           statusBar:true
+    //         });
+    //         if(data.seccess){
+    //           setlosding(true)
+    //         }
+    //         toast({
+    //           title: data.message || "Request successful!",
+    //           variant: "default",
+    //         });
+    //       } else {
             
-            console.log("User is NOT within 500 meters or location is fake.");
-            toast({
-              description: "Your location is either fake or not near any clinic.",
-              variant: "destructive",
-            });
-          }
-        },
-        async (error) => {
-          console.error("Error getting location:", error);
+    //         console.log("User is NOT within 500 meters or location is fake.");
+    //         toast({
+    //           description: "Your location is either fake or not near any clinic.",
+    //           variant: "destructive",
+    //         });
+    //       }
+    //     },
+    //     async (error) => {
+    //       console.error("Error getting location:", error);
        
-          toast({
-            description: "Unable to retrieve your location.",
-            variant: "destructive",
-          });
-        }
-      );
-    } else {
+    //       toast({
+    //         description: "Unable to retrieve your location.",
+    //         variant: "destructive",
+    //       });
+    //     }
+    //   );
+    // } else {
   
-      console.log("Geolocation is not supported by this browser.");
-      toast({
-        description: "Your browser does not support location services.",
-        variant: "destructive",
-      });
+    //   console.log("Geolocation is not supported by this browser.");
+    //   toast({
+    //     description: "Your browser does not support location services.",
+    //     variant: "destructive",
+    //   });
+    // }
+
+    const { data } = await axios.post("/api/switch",{
+      statusBar:true
+    });
+    if(data.success ){
+      setlosding(true)
+      localStorage.setItem("switchStatus", "true"); 
     }
+    toast({
+      title: data.message || "Request successful!",
+      variant: "default",
+    });
   } catch (error) {
     await axios.post("/api/not-tas",{
       statusBar:false
@@ -255,7 +281,7 @@ const checkHandler = async () => {
       </Form>
       
         <div className="flex items-center space-x-2">
-          <Switch id="airplane-mode" onClick={checkHandler} />
+          <Switch id="airplane-mode" onClick={checkHandler}   checked={lodings} />
           <Label htmlFor="airplane-mode"></Label>
         </div>
    

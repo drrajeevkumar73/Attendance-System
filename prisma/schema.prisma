@@ -154,6 +154,7 @@ model useentry {
   status      String // "present" or "absent"
   lateMinutes Int?
   statusR     String
+  outime      DateTime?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

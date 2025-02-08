@@ -72,6 +72,7 @@ export default function Attendce() {
     }
   };
 
+  // console.log(late.attendanceCountByUser)
   function formatMinutesToHoursMinutes(minutes: any) {
     if (!minutes) return "0h 0m"; // Handle null or undefined
     const hours = Math.floor(minutes / 60); // Calculate hours
@@ -84,12 +85,17 @@ export default function Attendce() {
       Name: item.displayname,
       Department: item.dipartment,
       "Present Count": item.presentCount,
+      "Total Late": item.attendanceDetails?.filter(
+        (v: any) => v.status === "Late",
+      ).length,
       "Attendance Details": item.attendanceDetails
         ?.map(
-          (detail:any) =>
+          (detail: any) =>
             `Date: ${detail.date}, Status: ${detail.status}, In Time: ${formatRelativeTime(
-              detail.createdAt
-            )}`
+              detail.createdAt,
+            )}, Out Time :${
+              detail.outime == null ? "N/A" : formatRelativeTime(detail.outime)
+            } , Late Duration:   ${formatMinutesToHoursMinutes(detail.latetime)}`,
         )
         .join("\n"),
     }));
@@ -192,9 +198,18 @@ export default function Attendce() {
         <TableHeader>
           <TableRow className="border border-primary bg-primary">
             <TableHead className="border-2 border-blue-400">Name</TableHead>
-            <TableHead className="border-2 border-blue-400">Department</TableHead>
-            <TableHead className="border-2 border-blue-400">Present Count</TableHead>
-            <TableHead className="border-2 border-blue-400 ">Status</TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Department
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              Present Count
+            </TableHead>
+            <TableHead className="border-2 border-blue-400">
+              {" "}
+              Total Late
+            </TableHead>
+
+            <TableHead className="border-2 border-blue-400">Status</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -218,13 +233,32 @@ export default function Attendce() {
                   {item.presentCount}
                 </TableCell>
                 <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
+                  {
+                    item.attendanceDetails?.filter(
+                      (v: any) => v.status === "Late",
+                    ).length
+                  }
+                </TableCell>
+
+                <TableCell className="whitespace-pre-line break-words border-2 border-blue-400">
                   <table className="w-full border-collapse text-left">
                     <thead>
                       <tr>
-                        <th className="border px-2 py-1">Date</th>
-                        <th className="border px-2 py-1">Status</th>
-                        <th className="border px-2 py-1">In Time</th>
-                        <th className="border px-2 py-1">Out Time</th>
+                        <th className="border bg-yellow-100 px-2 py-1 text-black">
+                          Date
+                        </th>
+                        <th className="border bg-yellow-100 px-2 py-1 text-black">
+                          Status
+                        </th>
+                        <th className="border bg-yellow-100 px-2 py-1 text-black">
+                          In Time
+                        </th>
+                        <th className="border bg-yellow-100 px-2 py-1 text-black">
+                          Out Time
+                        </th>
+                        <th className="border bg-yellow-100 px-2 py-1 text-black">
+                          Late Duration
+                        </th>
                       </tr>
                     </thead>
 
@@ -232,13 +266,28 @@ export default function Attendce() {
                       {item.attendanceDetails?.map(
                         (detailer: any, index: any) => (
                           <tr key={index}>
-                            <td className="border px-2 py-1">{detailer.date}</td>
-                            <td className="border px-2 py-1">{detailer.status}</td>
+                            <td className="border px-2 py-1">
+                              {detailer.date}
+                            </td>
+                            <td className="border px-2 py-1">
+                              {detailer.status}
+                            </td>
                             <td className="border px-2 py-1">
                               {formatRelativeTime(detailer.createdAt)}
                             </td>
+                            <td className="border px-2 py-1">
+                              {detailer.outime == null
+                                ? "N/A"
+                                : formatRelativeTime(detailer.outime)}
+
+                              {/* { detailer.outime} */}
+                            </td>
+
+                            <td className="border px-2 py-1">
+                              {formatMinutesToHoursMinutes(detailer.latetime)}
+                            </td>
                           </tr>
-                        )
+                        ),
                       )}
                     </tbody>
                   </table>
