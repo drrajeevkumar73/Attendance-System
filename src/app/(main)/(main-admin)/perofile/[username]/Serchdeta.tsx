@@ -60,7 +60,7 @@ export default function SearchData() {
     resolver: zodResolver(citySchema),
   });
   const { username } = useParams();
-  const [selectedTask, setSelectedTask] = useState<string>("excel");
+  const [selectedTask, setSelectedTask] = useState<string>("Excel");
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [data, setData]: any = useState<any[]>([]); // Backend se data store karne ke liye
   const [loading, setLoading] = useState<boolean>(false); // Loading state
@@ -123,7 +123,7 @@ export default function SearchData() {
       sets(true);
       setLoading(true); // Loading start
       try {
-        if (task === "work") {
+        if (task === "Work") {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
@@ -131,7 +131,7 @@ export default function SearchData() {
           });
           console.log(dateInIST);
           setData(response.data);
-        } else if (task === "excel") {
+        } else if (task === "Excel") {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
@@ -159,14 +159,14 @@ export default function SearchData() {
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
           });
-        } else if (task === "attendance") {
+        } else if (task === "Attendance") {
           const response = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
             calender: dateInIST, // Send the corrected date
           });
           setatendec(response.data);
-        } else if (task === "onboarding-data") {
+        } else if (task === "Onboarding-Data") {
           const { data } = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
@@ -188,7 +188,7 @@ export default function SearchData() {
             }),
           );
           setData(transformedData);
-        } else if (task === "call-track") {
+        } else if (task === "Call-Track") {
           const { data } = await axios.post("/api/alldetausingUsernam", {
             username: username,
             whichdata: task,
@@ -252,14 +252,14 @@ export default function SearchData() {
       console.log(isoDate); // Ensure this logs correctly, like "2025-01-01"
       // Use the ISO date string in your API call
 
-      if (selectedTask === "work") {
+      if (selectedTask === "Work") {
         const response = await axios.post("/api/alldetausingUsernam", {
           username: username,
           whichdata: selectedTask,
           month: isoDate, // Send as a string (e.g., '2025-01-01' for January 2025)
         });
         setData(response.data); // Debugging
-      } else if (selectedTask === "excel") {
+      } else if (selectedTask === "Excel") {
         const response = await axios.post("/api/alldetausingUsernam", {
           username: username,
           whichdata: selectedTask,
@@ -288,7 +288,7 @@ export default function SearchData() {
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
         });
-      } else if (selectedTask === "attendance") {
+      } else if (selectedTask === "Attendance") {
         const response = await axios.post("/api/alldetausingUsernam", {
           username: username,
           whichdata: selectedTask,
@@ -347,7 +347,7 @@ export default function SearchData() {
   }, [username]);
 
   const exportToExcel = () => {
-    if (selectedTask == "work") {
+    if (selectedTask == "Work") {
       if (!data || data.length === 0) {
         toast({
           description: "No data to export",
@@ -374,7 +374,7 @@ export default function SearchData() {
 
       // Download Excel File
       XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
-    } else if (selectedTask == "excel") {
+    } else if (selectedTask == "Excel") {
       if (!tabelex?.data || tabelex?.data.length === 0) {
         toast({
           description: "No data to export",
@@ -773,7 +773,7 @@ export default function SearchData() {
         // Write to file
         XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
       }
-    } else if (selectedTask == "attendance") {
+    } else if (selectedTask == "Attendance") {
       if (!late || late.length === 0) {
         toast({
           description: "No attendance data to export",
@@ -843,7 +843,7 @@ export default function SearchData() {
           <p>{pri.dipartment} </p>
         </div>
         <div className="flex cursor-pointer flex-col space-y-3">
-          {["work", "excel", "attendance", "onboarding-data", "call-track"].map(
+          {["Work", "Excel", "Attendance", "Onboarding-Data", "Call-Track"].map(
             (task) => (
               <p
                 key={task}
@@ -1009,7 +1009,7 @@ export default function SearchData() {
       )}
       {/* Table Section */}
 
-      {selectedTask === "work" ? (
+      {selectedTask === "Work" ? (
         <Table>
           <TableHeader>
             <TableRow className="bg-primary">
@@ -1067,7 +1067,7 @@ export default function SearchData() {
             </TableBody>
           )}
         </Table>
-      ) : selectedTask === "excel" ? (
+      ) : selectedTask === "Excel" ? (
         tabelex.dipartment === "telecaller" ? (
           <>
             <Table>
@@ -2356,7 +2356,7 @@ export default function SearchData() {
         ) : (
           ""
         )
-      ) : selectedTask === "attendance" ? (
+      ) : selectedTask === "Attendance" ? (
         s ? (
           <Table className="mt-4">
             <TableHeader>
@@ -2438,7 +2438,7 @@ export default function SearchData() {
             )}
           </Table>
         )
-      ) : selectedTask === "onboarding-data" ? (
+      ) : selectedTask === "Onboarding-Data" ? (
         <>
           {nodata === "null" ? (
             <h1 className="w-full text-center">No Document Found</h1>
@@ -3403,7 +3403,7 @@ export default function SearchData() {
             </>
           )}
         </>
-      ) : selectedTask === "call-track" ? (
+      ) : selectedTask === "Call-Track" ? (
         <Table>
           <TableHeader>
             <TableRow className="bg-primary">

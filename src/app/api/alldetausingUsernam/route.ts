@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     }
 
     // If `whichdata` is 'work', fetch today's work data based on date range
-    if (whichdata === "work") {
+    if (whichdata === "Work") {
       const groupedData: {
         date: string;
         timeRanges: Record<string, string[]>;
@@ -148,7 +148,7 @@ export async function POST(req: NextRequest) {
     }
 
     // If `whichdata` is 'excel', fetch department-based data (for example, 'MIXER')
-    else if (whichdata === "excel") {
+    else if (whichdata === "Excel") {
       const user = await prisma.user.findFirst({
         where: {
           id: decoid,
@@ -431,7 +431,7 @@ export async function POST(req: NextRequest) {
           dipartment: "revenuetracker",
         });
       }
-    } else if (whichdata === "attendance") {
+    } else if (whichdata === "Attendance") {
       // Parse IST dates with +05:30 offset to get correct UTC times
       const parseISTDate = (
         dateString: string,
@@ -492,7 +492,7 @@ export async function POST(req: NextRequest) {
 
       const flattenedData = filteredData.flat();
       return NextResponse.json(flattenedData);
-    } else if (whichdata === "onboarding-data") {
+    } else if (whichdata === "Onboarding-Data") {
       const res = await prisma.uplodthing.findFirst({
         where: {
           userId: decoid,
@@ -501,7 +501,7 @@ export async function POST(req: NextRequest) {
       console.log(res);
 
       return NextResponse.json(res);
-    } else if (whichdata === "call-track") {
+    } else if (whichdata === "Call-Track") {
       const ssidData = await prisma.callLog.findMany({
         where: {
           userId: decoid,
