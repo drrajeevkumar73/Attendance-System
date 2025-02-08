@@ -140,7 +140,6 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
-    const { statusBar } = await req.json();
     const { user } = await validateRequest();
 
     if (!user) throw new Error("Unauthorized");
@@ -184,6 +183,15 @@ export async function POST(req: NextRequest) {
       if (existingEntry) {
         // Agar outime pehle se set hai toh already out message dega
         if (existingEntry.outime) {
+
+          await prisma.user.update({
+            where:{
+              id:user.id
+            },
+            data:{
+              permisionToggal:false
+            }
+          })
           return NextResponse.json({
             success: false,
             message: "You have already out from office.",
@@ -195,9 +203,16 @@ export async function POST(req: NextRequest) {
           where: { id: existingEntry.id },
           data: { outime: new Date() },
         });
-
+        await prisma.user.update({
+          where:{
+            id:user.id
+          },
+          data:{
+            permisionToggal:false
+          }
+        })
         return NextResponse.json({
-          success: true,
+          success: false,
           message: "Out time captured successfully.",
           outime: updatedEntry.outime,
         });
@@ -205,10 +220,19 @@ export async function POST(req: NextRequest) {
     } else {
       // 9:00 AM - 5:00 PM ke andar entry allow hai
       if (existingEntry) {
+        await prisma.user.update({
+          where:{
+            id:user.id
+          },
+          data:{
+            permisionToggal:true
+          }
+        })
         return NextResponse.json({
-          success: false,
+          success: true,
           message: "You've already entered for today.",
         });
+        
       }
     }
 
@@ -217,6 +241,14 @@ export async function POST(req: NextRequest) {
       currentTimeInMinutes < startOfEntry ||
       currentTimeInMinutes > endOfEntry
     ) {
+      await prisma.user.update({
+        where:{
+          id:user.id
+        },
+        data:{
+          permisionToggal:false
+        }
+      })
       return NextResponse.json({
         success: false,
         message: "Entry is allowed only between 9:00 AM to 5:00 PM.",
@@ -250,6 +282,14 @@ export async function POST(req: NextRequest) {
         outime: null, // Outime null rahega jab tak 5:00 PM ke baad request na aaye
       },
     });
+    await prisma.user.update({
+      where:{
+        id:user.id
+      },
+      data:{
+        permisionToggal:true
+      }
+    })
 
     // Convert late minutes to hours and minutes for response
     const lateHours = Math.floor(lateMinutes / 60);
