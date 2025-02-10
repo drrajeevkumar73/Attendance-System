@@ -202,7 +202,7 @@ export async function POST(req: NextRequest) {
           data: { permisionToggal: false },
         });
         return NextResponse.json({
-          success: true,
+          success: false,
           message: "Out time captured successfully.",
           outime: updatedEntry.outime,
         });
