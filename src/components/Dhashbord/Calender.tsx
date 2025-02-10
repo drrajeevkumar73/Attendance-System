@@ -28,7 +28,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { calenderSchema, CalederValue } from "@/lib/vallidation";
+import { calenderSchema, CalederValue, loginSchema } from "@/lib/vallidation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
@@ -52,11 +52,11 @@ export default function Calender({ className }: classNameProps) {
   const form = useForm<CalederValue>({
     resolver: zodResolver(calenderSchema),
   });
-  const [lodings, setlosding]:any = useState();
+  const [lodings, setlosding]: any = useState<any>();
   const [data, setdata] = useState<[]>();
   const [totalpresent, setPresent] = useState<number>();
   const [loding, setloding] = useState(false);
-
+  console.log(lodings);
 
   const onSubmit = async (monthname: CalederValue) => {
     try {
@@ -65,153 +65,167 @@ export default function Calender({ className }: classNameProps) {
 
       setdata(data.data.data);
       setPresent(data.data.totalPresent);
-      
     } catch (error) {
     } finally {
       setloding(false);
     }
   };
 
-
-
   // Define clinic locations
-const clinicLocations = [
-  {
-    city: "Kolkata",
-    lat: 22.5669053,
-    lng: 88.3688203,
-  },
-  {
-    city: "Ranchi",
-    lat: 23.352205,
-    lng: 85.324268,
-  },
-  {
-    city: "Patna",
-    lat: 25.620046477441246,
-    lng: 85.05265837517814,
-  },
-  {
-    city: "Noida (Spectrum City)",
-    lat: 28.572742875697358,
-    lng: 77.37681757528678,
-  },
-  {
-    city: "Greater Noida (Gaur City)",
-    lat: 28.618369675672465,
-    lng: 77.42171397528851,
-  },
-];
+  const clinicLocations = [
+    {
+      city: "Kolkata",
+      lat: 22.5669053,
+      lng: 88.3688203,
+    },
+    {
+      city: "Ranchi",
+      lat: 23.352205,
+      lng: 85.324268,
+    },
+    {
+      city: "Patna",
+      lat: 25.620046477441246,
+      lng: 85.05265837517814,
+    },
+    {
+      city: "Noida (Spectrum City)",
+      lat: 28.572742875697358,
+      lng: 77.37681757528678,
+    },
+    {
+      city: "Greater Noida (Gaur City)",
+      lat: 28.618369675672465,
+      lng: 77.42171397528851,
+    },
+  ];
 
-// Haversine formula to calculate distance
-const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-  const R = 6371; // Earth's radius in kilometers
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  // Haversine formula to calculate distance
+  const haversineDistance = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number,
+  ) => {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
 
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // Distance in kilometers
-};
-
-// Check for fake location
-const isFakeLocation = (userLat: number, userLng: number, clinicLat: number, clinicLng: number) => {
-  // Reverse Geocoding Mock API (You need to replace with real API)
-  const validateLocation = async (lat: number, lng: number) => {
-    const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`);
-    const address = response.data.results[0]?.formatted_address || "";
-    // Check if address contains any valid city name
-    return clinicLocations.some((clinic) => address.includes(clinic.city));
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in kilometers
   };
 
-  // Check distance and validate address
-  const distance = haversineDistance(userLat, userLng, clinicLat, clinicLng);
-  return distance > 50 || !validateLocation(userLat, userLng); // Fake if distance > 50km or invalid address
-};
+  // Check for fake location
+  const isFakeLocation = (
+    userLat: number,
+    userLng: number,
+    clinicLat: number,
+    clinicLng: number,
+  ) => {
+    // Reverse Geocoding Mock API (You need to replace with real API)
+    const validateLocation = async (lat: number, lng: number) => {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`,
+      );
+      const address = response.data.results[0]?.formatted_address || "";
+      // Check if address contains any valid city name
+      return clinicLocations.some((clinic) => address.includes(clinic.city));
+    };
 
-// Main function to check location
+    // Check distance and validate address
+    const distance = haversineDistance(userLat, userLng, clinicLat, clinicLng);
+    return distance > 50 || !validateLocation(userLat, userLng); // Fake if distance > 50km or invalid address
+  };
 
-useEffect(() => {
-  const savedStatus = localStorage.getItem("switchStatus");
-  
-    setlosding(savedStatus);
-  
-}, []);
+  // Main function to check location
 
-const checkHandler = async () => {
- 
-  try {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
+  useEffect(() => {
+    const savedStatus:any = localStorage.getItem("switchStatus");
 
-          console.log(`User Location: Latitude=${userLat}, Longitude=${userLng}`);
+    setlosding( JSON.parse(savedStatus))
+  }, []);
 
-          const isNearClinic = clinicLocations.some((clinic) => {
-            const distance = haversineDistance(userLat, userLng, clinic.lat, clinic.lng);
-            return distance <= 0.5 && !isFakeLocation(userLat, userLng, clinic.lat, clinic.lng);
-          });
+  const checkHandler = async () => {
+    try {
+    
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
 
-          if (isNearClinic) {
-            const { data } = await axios.post("/api/switch");
-            setlosding(data.success); // data.success agar true hai toh true set karo
-            localStorage.setItem("switchStatus", JSON.stringify(data.success)); 
-            
-            toast({
-              title: data.message || "Request successful!",
-              variant: "default",
+            console.log(
+              `User Location: Latitude=${userLat}, Longitude=${userLng}`,
+            );
+
+            const isNearClinic = clinicLocations.some((clinic) => {
+              const distance = haversineDistance(
+                userLat,
+                userLng,
+                clinic.lat,
+                clinic.lng,
+              );
+              return (
+                distance <= 0.5 &&
+                !isFakeLocation(userLat, userLng, clinic.lat, clinic.lng)
+              );
             });
-          } else {
-            
-            console.log("User is NOT within 500 meters or location is fake.");
+
+            if (isNearClinic) {
+              const { data } = await axios.post("/api/switch");
+              setlosding(data.success); // data.success agar true hai toh true set karo
+              localStorage.setItem(
+                "switchStatus",
+                JSON.stringify(data.success),
+              );
+
+              toast({
+                title: data.message || "Request successful!",
+                variant: "default",
+              });
+            } else {
+              console.log("User is NOT within 500 meters or location is fake.");
+              toast({
+                description:
+                  "Your location is either fake or not near any clinic.",
+                variant: "destructive",
+              });
+            }
+          },
+          async (error) => {
+            console.error("Error getting location:", error);
+
             toast({
-              description: "Your location is either fake or not near any clinic.",
+              description: "Unable to retrieve your location.",
               variant: "destructive",
             });
-          }
-        },
-        async (error) => {
-          console.error("Error getting location:", error);
-       
-          toast({
-            description: "Unable to retrieve your location.",
-            variant: "destructive",
-          });
-        }
-      );
-    } else {
-  
-      console.log("Geolocation is not supported by this browser.");
+          },
+        );
+      } else {
+        console.log("Geolocation is not supported by this browser.");
+        toast({
+          description: "Your browser does not support location services.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      await axios.post("/api/not-tas", {
+        statusBar: false,
+      });
+      console.error("Error in checkHandler:", error);
       toast({
-        description: "Your browser does not support location services.",
+        description: "An error occurred while processing your request.",
         variant: "destructive",
       });
     }
-  } catch (error) {
-    await axios.post("/api/not-tas",{
-      statusBar:false
-    });
-    console.error("Error in checkHandler:", error);
-    toast({
-      description: "An error occurred while processing your request.",
-      variant: "destructive",
-    });
-  }
-};
-
-
-
-
-
-
+  };
 
   const { user } = useAppSelector((state) => state.loginlice);
   if (!user) throw new Error("unauthorized");
@@ -264,13 +278,11 @@ const checkHandler = async () => {
           />
         </form>
       </Form>
-      
-        <div className="flex items-center space-x-2">
-          <Switch id="airplane-mode" onClick={checkHandler}   checked={lodings} />
-          <Label htmlFor="airplane-mode"></Label>
-        </div>
-   
-  
+
+      <div className="flex items-center space-x-2">
+        <Switch id="airplane-mode" onClick={checkHandler} checked={lodings} />
+        <Label htmlFor="airplane-mode"></Label>
+      </div>
 
       <Card>
         <CardHeader>
