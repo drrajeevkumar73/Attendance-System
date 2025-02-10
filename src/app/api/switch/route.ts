@@ -131,7 +131,6 @@
 //     );
 //   }
 // }
-
 import { validateRequest } from "@/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
@@ -178,77 +177,50 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // 5:00 PM ke baad request aaye
-    if (currentTimeInMinutes > endOfEntry) {
-      if (existingEntry) {
-        // Agar outime pehle se set hai toh already out message dega
+    // Check if entry already exists for the day
+    if (existingEntry) {
+      if (currentTimeInMinutes > endOfEntry) {
+        // If outime is already set, show "already out" message
         if (existingEntry.outime) {
-
           await prisma.user.update({
-            where:{
-              id:user.id
-            },
-            data:{
-              permisionToggal:false
-            }
-          })
+            where: { id: user.id },
+            data: { permisionToggal: false },
+          });
           return NextResponse.json({
             success: false,
             message: "You have already out from office.",
           });
         }
 
-        // Nahi toh abhi ka time outime me save karega
+        // If outime is not set, update the outime
         const updatedEntry = await prisma.useentry.update({
           where: { id: existingEntry.id },
           data: { outime: new Date() },
         });
         await prisma.user.update({
-          where:{
-            id:user.id
-          },
-          data:{
-            permisionToggal:false
-          }
-        })
+          where: { id: user.id },
+          data: { permisionToggal: false },
+        });
         return NextResponse.json({
-          success: false,
+          success: true,
           message: "Out time captured successfully.",
           outime: updatedEntry.outime,
         });
       }
-    } else {
-      // 9:00 AM - 5:00 PM ke andar entry allow hai
-      if (existingEntry) {
-        await prisma.user.update({
-          where:{
-            id:user.id
-          },
-          data:{
-            permisionToggal:true
-          }
-        })
-        return NextResponse.json({
-          success: true,
-          message: "You've already entered for today.",
-        });
-        
-      }
+
+      // If within entry time, show "already entered" message
+      return NextResponse.json({
+        success: true,
+        message: "You've already entered for today.",
+      });
     }
 
-    // Agar 9:00 AM - 5:00 PM ke andar request hai
-    if (
-      currentTimeInMinutes < startOfEntry ||
-      currentTimeInMinutes > endOfEntry
-    ) {
+    // Prevent entry outside of 9:00 AM to 5:00 PM
+    if (currentTimeInMinutes < startOfEntry || currentTimeInMinutes > endOfEntry) {
       await prisma.user.update({
-        where:{
-          id:user.id
-        },
-        data:{
-          permisionToggal:false
-        }
-      })
+        where: { id: user.id },
+        data: { permisionToggal: false },
+      });
       return NextResponse.json({
         success: false,
         message: "Entry is allowed only between 9:00 AM to 5:00 PM.",
@@ -262,34 +234,28 @@ export async function POST(req: NextRequest) {
     let status = "";
     let lateMinutes = 0;
 
-    if (
-      currentTimeInMinutes >= onTimeStart &&
-      currentTimeInMinutes <= onTimeEnd
-    ) {
+    if (currentTimeInMinutes >= onTimeStart && currentTimeInMinutes <= onTimeEnd) {
       status = "On-Time";
     } else if (currentTimeInMinutes > onTimeEnd) {
       status = "Late";
       lateMinutes = currentTimeInMinutes - onTimeEnd;
     }
 
-    // Store entry in the database
+    // Store entry in the database only if it doesn't exist already
     await prisma.useentry.create({
       data: {
         userId: user.id,
         status,
         lateMinutes,
         statusR: "present",
-        outime: null, // Outime null rahega jab tak 5:00 PM ke baad request na aaye
+        outime: null, // Outime will remain null until after 5:00 PM
       },
     });
+
     await prisma.user.update({
-      where:{
-        id:user.id
-      },
-      data:{
-        permisionToggal:true
-      }
-    })
+      where: { id: user.id },
+      data: { permisionToggal: true },
+    });
 
     // Convert late minutes to hours and minutes for response
     const lateHours = Math.floor(lateMinutes / 60);
@@ -311,7 +277,7 @@ export async function POST(req: NextRequest) {
     console.error("Error occurred:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
