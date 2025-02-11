@@ -172,14 +172,14 @@ export const doctorOfflineSchema = z.object({
   task2: z.string().trim(),
   task3: z.string().trim(),
   task4: z.string().trim(),
-  task5: z.string().trim(),
-  task6: z.string().trim(),
   task7: z.string().trim(),
   task8: z.string().trim(),
   task9: z.string().trim(),
   task10: z.string().trim(),
   task11: z.string().trim(),
+
   task12: z.string().trim(),
+
   task13: z.string().trim(),
 });
 
@@ -197,11 +197,6 @@ export const doctorOnlineSchema = z.object({
   task8: z.string().trim(),
   task9: z.string().trim(),
   task10: z.string().trim(),
-  task11: z.string().trim(),
-  task12: z.string().trim(),
-  task13: z.string().trim(),
-  task14: z.string().trim(),
-  task15: z.string().trim(),
 });
 
 export type DoctorOnlineValue = z.infer<typeof doctorOnlineSchema>;
@@ -219,7 +214,6 @@ export const revenutrackerSchema = z.object({
   task9: z.string().trim(),
   task10: z.string().trim(),
   task11: z.string().trim(),
-
 });
 
 export type RevenueTrackerValue = z.infer<typeof revenutrackerSchema>;
@@ -409,7 +403,6 @@ export const ecaountantSchema = z.object({
   task123: z.string().trim(),
   task124: z.string().trim(),
   task125: z.string().trim(),
- 
 });
 
 export type AccountValue = z.infer<typeof ecaountantSchema>;
@@ -433,7 +426,7 @@ export const intervewSchema = z.object({
   task16: requiredString,
   task17: requiredString,
   task18: requiredString,
-  task19:z.string().trim(),
+  task19: z.string().trim(),
   task20: z.string().trim(),
   task21: requiredString,
   task22: requiredString,
@@ -447,7 +440,7 @@ export const intervewSchema = z.object({
   task30: requiredString,
   task31: z.string().trim(),
   task32: z.string().trim(),
-  task33:requiredString,
+  task33: requiredString,
   task34: requiredString,
   task35: z.string().trim(),
   task36: z.string().trim(),
@@ -536,27 +529,23 @@ export const intervewSchema = z.object({
   reco3: requiredString,
   reco4: requiredString,
 
-  ex1:requiredString,
-  ex2:requiredString,
-  ex3:requiredString
+  ex1: requiredString,
+  ex2: requiredString,
+  ex3: requiredString,
 });
 
 export type IntervewValue = z.infer<typeof intervewSchema>;
 
-
-
 export const alreportSchema = z.object({
-  
-  month:requiredString,
-  year:requiredString ,
+  month: requiredString,
+  year: requiredString,
 });
 
 export type AllreportValue = z.infer<typeof alreportSchema>;
 
-
 export const platformSchema = z.object({
   date: z.string().trim(),
-  task1:requiredString,
+  task1: requiredString,
   task2: z.string().trim(),
   task3: z.string().trim(),
   task4: z.string().trim(),
@@ -572,9 +561,26 @@ export const platformSchema = z.object({
 
 export type PlatFormValue = z.infer<typeof platformSchema>;
 
-
 export const citySchema = z.object({
- cityname:z.string().trim(),
+  cityname: z.string().trim(),
 });
 
 export type CityValue = z.infer<typeof citySchema>;
+
+
+export const drplatformSchema = z.object({
+  date: z.string().trim(),
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+  task5: z.string().trim(),
+  task6: z.string().trim(),
+  task7: z.string().trim(),
+  task8: z.string().trim(),
+  task9: z.string().trim(),
+  task10: z.string().trim(),
+  task11: z.string().trim(),
+});
+
+export type DrPlatFormValue = z.infer<typeof drplatformSchema>;

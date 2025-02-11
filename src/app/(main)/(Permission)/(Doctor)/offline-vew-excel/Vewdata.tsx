@@ -120,12 +120,13 @@ export default function Vewdata() {
               OLD PATIENT
             </TableHead>
 
-            <TableHead className="border-2 border-blue-400">FEES</TableHead>
+            <TableHead className="border-2 border-blue-400">TOTAL PATIENT</TableHead>
             <TableHead className="border-2 border-blue-400">
-              COUNTER MEDICINE{" "}
+              FEES
             </TableHead>
-            <TableHead className="border-2 border-blue-400">LAB</TableHead>
-            <TableHead className="border-2 border-blue-400">WHATSAPP</TableHead>
+            <TableHead className="border-2 border-blue-400">
+            WHATSAPP
+            </TableHead>
             <TableHead className="border-2 border-blue-400">
               FOLLOW UP CALL
             </TableHead>
@@ -178,14 +179,12 @@ export default function Vewdata() {
                   {v.task3}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
+                  {Number(v.task2)+Number(v.task3)}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
                   {v.task4}
                 </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task5}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task6}
-                </TableCell>
+               
                 <TableCell className="border-2 border-blue-400">
                   {v.task7}
                 </TableCell>

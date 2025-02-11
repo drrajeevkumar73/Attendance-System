@@ -12,36 +12,49 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 2: Parse request payload
-    const { date, task1, task2, task3, task4, task5, task6 , task7,
+    const {
+      date,
+      task1,
+      task2,
+      task3,
+      totalpatent,
+      task4,
+      task7,
       task8,
       task9,
       task10,
       task11,
+
       task12,
+
       task13,
-      } = await req.json();
+    } = await req.json();
 
     // Set timezone to Asia/Kolkata
     const currentTime = moment().tz("Asia/Kolkata");
 
     // Define restricted time range (8:00 PM to 10:00 AM)
-   // Define restricted time range (8:00 PM to 10:00 AM)
-const restrictedStart = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(20, "hours"); // 8:00 PM
-const restrictedEnd = moment(currentTime).tz("Asia/Kolkata").startOf("day").add(10, "hours").add(1, "day"); // 10:00 AM next day
+    // Define restricted time range (8:00 PM to 10:00 AM)
+    const restrictedStart = moment(currentTime)
+      .tz("Asia/Kolkata")
+      .startOf("day")
+      .add(20, "hours"); // 8:00 PM
+    const restrictedEnd = moment(currentTime)
+      .tz("Asia/Kolkata")
+      .startOf("day")
+      .add(10, "hours")
+      .add(1, "day"); // 10:00 AM next day
 
-// Check if current time is within the restricted range
-if (
-  currentTime.isBetween(restrictedStart, restrictedEnd, "minute", "[)")
-) {
-  return NextResponse.json(
-    {
-      success: false,
-      message: "You cannot add data between 8:00 PM and 10:00 AM.",
-    },
-    { status: 403 }
-  );
-}
-
+    // Check if current time is within the restricted range
+    if (currentTime.isBetween(restrictedStart, restrictedEnd, "minute", "[)")) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "You cannot add data between 8:00 PM and 10:00 AM.",
+        },
+        { status: 403 },
+      );
+    }
 
     // Step 3: Set default `date` to today if not provided
     let currentDate = date || currentTime.format("YYYY-MM-DD");
@@ -53,7 +66,7 @@ if (
           success: false,
           message: "Invalid date format. Use YYYY-MM-DD.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -89,7 +102,7 @@ if (
           success: false,
           message: "You have already submitted tasks for this date.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -109,17 +122,18 @@ if (
         task1,
         task2,
         task3,
+        totalpatent,
         task4,
-        task5,
-        task6,
         task7,
         task8,
         task9,
         task10,
         task11,
+
         task12,
+
         task13,
-        
+
         createdAt,
       },
     });
@@ -128,12 +142,11 @@ if (
       success: true,
       message: "Tasks added successfully.",
     });
-
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

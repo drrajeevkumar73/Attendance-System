@@ -114,38 +114,36 @@ export default function Vewdata() {
         <TableHead className="border-2 border-blue-400" >Date</TableHead>
               <TableHead className="border-2 border-blue-400" >Doctor</TableHead>
               <TableHead className="border-2 border-blue-400">
-              Interakt
+              NEW PATIENT
               </TableHead>
               <TableHead className="border-2 border-blue-400" >
-              INTL - LEADS
+          OLD PATIENT
               </TableHead>
 
-              <TableHead className="border-2 border-blue-400" >INTL - NATIONAL</TableHead>
+              <TableHead className="border-2 border-blue-400" >TOTAL PATIENT</TableHead>
               <TableHead className="border-2 border-blue-400" >
-              INTL - INTERNATIONAL
+              NATIONAL FEES
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >NATIONAL - FEES</TableHead>
+              <TableHead className="border-2 border-blue-400" >INTERNATIONAL FEES</TableHead>
               <TableHead className="border-2 border-blue-400" >
-              INTERNATIONAL - FEES
-              </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              NATIONAL - MED
+             TOTAL FEES
               </TableHead>
               <TableHead className="border-2 border-blue-400" >
-              INTERNATIONAL - MED
-              </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              MAIL
+             MAIL
               </TableHead>
               <TableHead className="border-2 border-blue-400" >
               VIDEO
               </TableHead>
               <TableHead className="border-2 border-blue-400" >
-              FB - REPLY
+              BLOG
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >FB - Conversion </TableHead>
-              <TableHead className="border-2 border-blue-400" >INT - REPLY</TableHead>
-              <TableHead className="border-2 border-blue-400" >INT - Conversion</TableHead>
+              <TableHead className="border-2 border-blue-400" >
+              CASE HISTORY
+              </TableHead>
+              <TableHead className="border-2 border-blue-400" >
+              ONLINE CONSULTATION{" "}
+              </TableHead>
+             
               <TableHead className="border-2 border-blue-400" >Time</TableHead>
             </TableRow>
         </TableHeader>
@@ -186,10 +184,16 @@ export default function Vewdata() {
                   {v.task3}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
+                  {Number(v.task2)+Number(v.task3)}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
                   {v.task4}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   {v.task5}
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  {Number(v.task4)+Number(v.task5)}
                 </TableCell>
                 <TableCell className="border-2 border-blue-400">
                   {v.task6}
@@ -206,21 +210,7 @@ export default function Vewdata() {
                 <TableCell className="border-2 border-blue-400">
                   {v.task10}
                 </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task11}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task12}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task13}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task14}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task15}
-                </TableCell>
+               
 
                 <TableCell className="border-2 border-blue-400">
                   {formatRelativeTime(v.createdAt)}

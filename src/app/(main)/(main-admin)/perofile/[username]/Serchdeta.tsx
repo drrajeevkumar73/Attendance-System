@@ -504,11 +504,10 @@ export default function SearchData() {
             Doctor: v.task1,
             "NEW PATIENT": v.task2,
             "OLD PATIENT": v.task3,
-            FEES: v.task4,
-            "COUNTER MEDICINE": v.task5,
-            LAB: v.task6,
+            "TOTAL PATIENT": Number(v.task2)+Number(v.task3),
+            "FEES":v.task4,
             WHATSAPP: v.task7,
-            "FOLLOW UP CALL": v.task8,
+            " FOLLOW UP CALL": v.task8,
             ARTICLE: v.task9,
             CONTENT: v.task10,
             QUESTIONNAIRE: v.task11,
@@ -534,20 +533,18 @@ export default function SearchData() {
           const excelData = tabelex?.dataOn.map((v: any) => ({
             Date: formatRelativeMonthDate(v.createdAt),
             Doctor: v.task1,
-            Interakt: v.task2,
-            "INTL - LEADS": v.task3,
-            "INTL - NATIONAL": v.task4,
-            "INTL - INTERNATIONAL": v.task5,
-            "NATIONAL - FEES": v.task6,
-            "INTERNATIONAL - FEES": v.task7,
-            "NATIONAL - MED": v.task8,
-            "INTERNATIONAL - MED": v.task9,
-            MAIL: v.task10,
-            VIDEO: v.task11,
-            "FB - REPLY": v.task12,
-            "FB - Conversion": v.task13,
-            "INT - REPLY": v.task14,
-            "INT - Conversion": v.task15,
+            "NEW PATIENT": v.task2,
+            "  OLD PATIENT": v.task3,
+            "TOTAL PATIENT": Number(v.task2)+Number(v.task3),
+            " NATIONAL FEES": v.task4,
+            "INTERNATIONAL FEES": v.task5,
+            " TOTAL FEES": Number(v.task4)+Number(v.task5),
+            "MAIL": v.task6,
+            "VIDEO": v.task7,
+            "BLOG": v.task8,
+            " CASE HISTORY": v.task9,
+            "ONLINE CONSULTATION": v.task10,
+            
             Time: formatRelativeTime(v.createdAt),
           }));
 
@@ -990,9 +987,7 @@ export default function SearchData() {
                           <SelectItem value="RANCHI SHOP">
                             RANCHI SHOP
                           </SelectItem>
-                          <SelectItem value="PATNA">
-                          PATNA
-                          </SelectItem>
+                          <SelectItem value="PATNA">PATNA</SelectItem>
                         </SelectContent>
                       </Select>
 
@@ -1348,11 +1343,8 @@ export default function SearchData() {
                       <TableHead className="border-2">NEW PATIENT</TableHead>
                       <TableHead className="border-2">OLD PATIENT</TableHead>
 
+                      <TableHead className="border-2">TOTAL PATIENT</TableHead>
                       <TableHead className="border-2">FEES</TableHead>
-                      <TableHead className="border-2">
-                        COUNTER MEDICINE{" "}
-                      </TableHead>
-                      <TableHead className="border-2">LAB</TableHead>
                       <TableHead className="border-2">WHATSAPP</TableHead>
                       <TableHead className="border-2">FOLLOW UP CALL</TableHead>
                       <TableHead className="border-2">ARTICLE</TableHead>
@@ -1390,9 +1382,11 @@ export default function SearchData() {
                           <TableCell className="border-2">{v.task1}</TableCell>
                           <TableCell className="border-2">{v.task2}</TableCell>
                           <TableCell className="border-2">{v.task3}</TableCell>
+                          <TableCell className="border-2">
+                            {Number(v.task2) + Number(v.task3)}
+                          </TableCell>
                           <TableCell className="border-2">{v.task4}</TableCell>
-                          <TableCell className="border-2">{v.task5}</TableCell>
-                          <TableCell className="border-2">{v.task6}</TableCell>
+
                           <TableCell className="border-2">{v.task7}</TableCell>
                           <TableCell className="border-2">{v.task8}</TableCell>
                           <TableCell className="border-2">{v.task9}</TableCell>
@@ -1416,35 +1410,23 @@ export default function SearchData() {
                     <TableRow className="border border-primary bg-primary">
                       <TableHead className="border-2">Date</TableHead>
                       <TableHead className="border-2">Doctor</TableHead>
-                      <TableHead className="border-2">Interakt</TableHead>
-                      <TableHead className="border-2">INTL - LEADS</TableHead>
+                      <TableHead className="border-2">NEW PATIENT</TableHead>
+                      <TableHead className="border-2">OLD PATIENT</TableHead>
 
+                      <TableHead className="border-2">TOTAL PATIENT</TableHead>
+                      <TableHead className="border-2">NATIONAL  FEES</TableHead>
                       <TableHead className="border-2">
-                        INTL - NATIONAL
+                        INTERNATIONAL  FEES
                       </TableHead>
-                      <TableHead className="border-2">
-                        INTL - INTERNATIONAL
-                      </TableHead>
-                      <TableHead className="border-2">
-                        NATIONAL - FEES
-                      </TableHead>
-                      <TableHead className="border-2">
-                        INTERNATIONAL - FEES
-                      </TableHead>
-                      <TableHead className="border-2">NATIONAL - MED</TableHead>
-                      <TableHead className="border-2">
-                        INTERNATIONAL - MED
-                      </TableHead>
+                      <TableHead className="border-2">TOTAL FEES</TableHead>
                       <TableHead className="border-2">MAIL</TableHead>
                       <TableHead className="border-2">VIDEO</TableHead>
-                      <TableHead className="border-2">FB - REPLY</TableHead>
+                      <TableHead className="border-2">BLOG</TableHead>
+                      <TableHead className="border-2">CASE HISTORY</TableHead>
                       <TableHead className="border-2">
-                        FB - Conversion{" "}
+                        ONLINE CONSULTATION{" "}
                       </TableHead>
-                      <TableHead className="border-2">INT - REPLY</TableHead>
-                      <TableHead className="border-2">
-                        INT - Conversion
-                      </TableHead>
+
                       <TableHead className="border-2">Time</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -1475,18 +1457,19 @@ export default function SearchData() {
                           <TableCell className="border-2">{v.task1}</TableCell>
                           <TableCell className="border-2">{v.task2}</TableCell>
                           <TableCell className="border-2">{v.task3}</TableCell>
+                          <TableCell className="border-2">
+                            {Number(v.task2) + Number(v.task3)}
+                          </TableCell>
                           <TableCell className="border-2">{v.task4}</TableCell>
                           <TableCell className="border-2">{v.task5}</TableCell>
+                          <TableCell className="border-2">
+                            {Number(v.task4) + Number(v.task5)}
+                          </TableCell>
                           <TableCell className="border-2">{v.task6}</TableCell>
                           <TableCell className="border-2">{v.task7}</TableCell>
                           <TableCell className="border-2">{v.task8}</TableCell>
                           <TableCell className="border-2">{v.task9}</TableCell>
                           <TableCell className="border-2">{v.task10}</TableCell>
-                          <TableCell className="border-2">{v.task11}</TableCell>
-                          <TableCell className="border-2">{v.task12}</TableCell>
-                          <TableCell className="border-2">{v.task13}</TableCell>
-                          <TableCell className="border-2">{v.task14}</TableCell>
-                          <TableCell className="border-2">{v.task15}</TableCell>
 
                           <TableCell className="border-2">
                             {formatRelativeTime(v.createdAt)}

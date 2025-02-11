@@ -163,6 +163,20 @@ export default function Menubar({ className }: MenuBarProps) {
               >
                 <Link href={"/online-vew-excel"}>Online Doctor Veiw</Link>
               </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/platforms-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Online Doctor Excel Part"
+                asChild
+              >
+                <Link href={"/platforms-excel"}>Platforms</Link>
+              </Button>
+              <Button
+                className={`flex items-center justify-start gap-3 ${pathname == "/plateform-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+                title="Online Doctor Veiw Data"
+                asChild
+              >
+                <Link href={"/plateform-vew"}>Veiw Platforms</Link>
+              </Button>
             </>
           ) : user.dipartment === "HD / OD" ? (
             <>

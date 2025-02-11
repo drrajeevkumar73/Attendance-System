@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       task8,
       task9,
       task10,
-      
+      task11,
       } = await req.json();
 
     // Set timezone to Asia/Kolkata
@@ -71,7 +71,7 @@ if (
     // Step 4: Check if an entry already exists for the given date
     const startOfDay = inputDate.startOf("day").toDate();
     const endOfDay = inputDate.endOf("day").toDate();
-    const existingEntry = await prisma.onlinedoctorshop.findFirst({
+    const existingEntry = await prisma.platformdoctorshop.findFirst({
       where: {
         userId: user.id,
         createdAt: {
@@ -101,7 +101,7 @@ if (
       .toDate();
 
     // Step 6: Insert data into the database
-    await prisma.onlinedoctorshop.create({
+    await prisma.platformdoctorshop.create({
       data: {
         userId: user.id,
         task1,
@@ -114,7 +114,7 @@ if (
         task8,
         task9,
         task10,
-        
+        task11,
         
         createdAt,
       },

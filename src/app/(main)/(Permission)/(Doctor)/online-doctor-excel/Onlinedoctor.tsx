@@ -33,6 +33,7 @@ import {
   doctorOfflineSchema,
   doctorOnlineSchema,
   DoctorOnlineValue,
+  DrPlatFormValue,
   MediceneValue,
   medicenSchema,
   receptiomSchema,
@@ -46,10 +47,10 @@ import { date } from "zod";
 
 export default function Onlinedoctor() {
   const { toast } = useToast();
-  const form = useForm<DoctorOnlineValue>({
+  const form = useForm<DrPlatFormValue>({
     resolver: zodResolver(doctorOnlineSchema),
     defaultValues: {
-      date:"",
+      date: "",
       task1: "",
       task2: "",
       task3: "",
@@ -60,11 +61,6 @@ export default function Onlinedoctor() {
       task8: "",
       task9: "",
       task10: "",
-      task11: "",
-      task12: "",
-      task13: "",
-      task14: "",
-      task15:""
     },
   });
   const [ispending, setispending] = useState(false);
@@ -72,7 +68,7 @@ export default function Onlinedoctor() {
     try {
       setispending(true);
       const { data } = await axios.post("/api/online-doctor-excel", {
-        date:value.date,
+        date: value.date,
         task1: value.task1,
         task2: value.task2,
         task3: value.task3,
@@ -83,19 +79,15 @@ export default function Onlinedoctor() {
         task8: value.task8,
         task9: value.task9,
         task10: value.task10,
-        task11: value.task11,
-        task12: value.task12,
-        task13: value.task13,
-        task14: value.task14,
-        task15:value.task15
       });
       form.reset();
       toast({
         description: data.message,
         variant: "default",
       });
-    } catch (error:any) {
-      const errorMessage = error?.response?.data?.message || "Something went wrong";
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.message || "Something went wrong";
       toast({
         description: errorMessage,
         variant: "destructive",
@@ -110,66 +102,57 @@ export default function Onlinedoctor() {
         <Table className="w-[3000px]">
           <TableHeader>
             <TableRow className="border border-primary bg-primary">
-            <TableHead className="border-2 border-blue-400">Please enter date for the previous day</TableHead>
-              <TableHead className="border-2 border-blue-400" colSpan={2}>Doctor</TableHead>
               <TableHead className="border-2 border-blue-400">
-              Interakt
+                Please enter date for the previous day
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              INTL - LEADS
+              <TableHead className="border-2 border-blue-400" colSpan={2}>
+                Doctor
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                NEW PATIENT
+              </TableHead>
+              <TableHead className="border-2 border-blue-400">
+                OLD PATIENT
               </TableHead>
 
-              <TableHead className="border-2 border-blue-400" >INTL - NATIONAL</TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              INTL - INTERNATIONAL
+              <TableHead className="border-2 border-blue-400">
+                NATIONAL FEES
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >NATIONAL - FEES</TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              INTERNATIONAL - FEES
+              <TableHead className="border-2 border-blue-400">
+                INTERNATIONAL - FEES
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              NATIONAL - MED
+
+              <TableHead className="border-2 border-blue-400">MAIL</TableHead>
+              <TableHead className="border-2 border-blue-400">VIDEO</TableHead>
+              <TableHead className="border-2 border-blue-400">BLOG</TableHead>
+
+              <TableHead className="border-2 border-blue-400">
+                CASE HISTORY
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              INTERNATIONAL - MED
+              <TableHead className="border-2 border-blue-400">
+                ONLINE CONSULTATION{" "}
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              MAIL
-              </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              VIDEO
-              </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              FB - REPLY
-              </TableHead>
-              <TableHead className="border-2 border-blue-400" >FB - Conversion </TableHead>
-              <TableHead className="border-2 border-blue-400" >INT - REPLY</TableHead>
-              <TableHead className="border-2 border-blue-400" >INT - Conversion</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            <TableRow >
-            <TableCell className="border-2 border-blue-400">
-                  <FormField
-                    control={form.control}
-                    name="date"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            className="border-foreground"
-                            {...field}
-                            
-                          />
-                        </FormControl>
+            <TableRow>
+              <TableCell className="border-2 border-blue-400">
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input className="border-foreground" {...field} />
+                      </FormControl>
 
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TableCell>
-              <TableCell className="border-2 border-blue-400"  colSpan={2}>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </TableCell>
+              <TableCell className="border-2 border-blue-400" colSpan={2}>
                 <FormField
                   control={form.control}
                   name="task1"
@@ -186,16 +169,16 @@ export default function Onlinedoctor() {
                           <SelectContent>
                             <SelectGroup>
                               <SelectItem value="Dr.Abha">Dr.Abha</SelectItem>
-                              <SelectItem value="Dr.Sonal">
-                              Dr.Sonal
+                              <SelectItem value="Dr.Sonal">Dr.Sonal</SelectItem>
+                              <SelectItem value="Dr.Pratima">
+                                Dr.Pratima
                               </SelectItem>
-                              <SelectItem value="Dr.Pratima">Dr.Pratima</SelectItem>
                               <SelectItem value="Dr.Priti">Dr.Priti</SelectItem>
                               <SelectItem value="Dr.Ram Parvesh">
                                 Dr.Ram Parvesh
                               </SelectItem>
                               <SelectItem value="Jeni Grace G">
-                              Jeni Grace G
+                                Jeni Grace G
                               </SelectItem>
                             </SelectGroup>
                           </SelectContent>
@@ -206,7 +189,7 @@ export default function Onlinedoctor() {
                   )}
                 />
               </TableCell>
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task2"
@@ -216,7 +199,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -225,7 +208,7 @@ export default function Onlinedoctor() {
                   )}
                 />
               </TableCell>
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task3"
@@ -235,7 +218,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -245,7 +228,7 @@ export default function Onlinedoctor() {
                 />
               </TableCell>
 
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task4"
@@ -255,7 +238,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -264,7 +247,7 @@ export default function Onlinedoctor() {
                   )}
                 />
               </TableCell>
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task5"
@@ -274,7 +257,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -283,7 +266,7 @@ export default function Onlinedoctor() {
                   )}
                 />
               </TableCell>
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task6"
@@ -293,7 +276,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -302,7 +285,7 @@ export default function Onlinedoctor() {
                   )}
                 />
               </TableCell>
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task7"
@@ -312,7 +295,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -322,7 +305,7 @@ export default function Onlinedoctor() {
                 />
               </TableCell>
 
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task8"
@@ -332,7 +315,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -341,7 +324,7 @@ export default function Onlinedoctor() {
                   )}
                 />
               </TableCell>
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task9"
@@ -351,7 +334,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 
@@ -360,7 +343,7 @@ export default function Onlinedoctor() {
                   )}
                 />
               </TableCell>
-              <TableCell className="border-2 border-blue-400" >
+              <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
                   name="task10"
@@ -370,102 +353,7 @@ export default function Onlinedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TableCell>
-              <TableCell className="border-2 border-blue-400" >
-                <FormField
-                  control={form.control}
-                  name="task11"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="border-foreground"
-                          {...field}
-                          type="number"
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TableCell>
-              <TableCell className="border-2 border-blue-400" >
-                <FormField
-                  control={form.control}
-                  name="task12"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="border-foreground"
-                          {...field}
-                          type="number"
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TableCell>
-              <TableCell className="border-2 border-blue-400" >
-                <FormField
-                  control={form.control}
-                  name="task13"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="border-foreground"
-                          {...field}
-                          type="number"
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TableCell>
-              <TableCell className="border-2 border-blue-400" >
-                <FormField
-                  control={form.control}
-                  name="task14"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="border-foreground"
-                          {...field}
-                          type="number"
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TableCell>
-              <TableCell className="border-2 border-blue-400" >
-                <FormField
-                  control={form.control}
-                  name="task15"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="border-foreground"
-                          {...field}
-                          type="number"
+                       
                         />
                       </FormControl>
 

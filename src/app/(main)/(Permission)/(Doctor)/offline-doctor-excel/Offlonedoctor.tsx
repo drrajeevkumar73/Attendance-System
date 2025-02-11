@@ -47,19 +47,20 @@ export default function Offlonedoctor() {
     resolver: zodResolver(doctorOfflineSchema),
     defaultValues: {
       date:"",
-      task1: "",
-      task2: "",
-      task3: "",
-      task4: "",
-      task5: "",
-      task6: "",
-      task7: "",
-      task8: "",
-      task9: "",
-      task10: "",
-      task11: "",
-      task12: "",
-      task13: "",
+       task1: "",
+        task2: "",
+        task3: "",
+        
+        task4: "",
+        task7: "",
+        task8: "",
+        task9: "",
+        task10: "",
+        task11: "",
+      
+        task12: "",
+      
+        task13: "",
     },
   });
   const [ispending, setispending] = useState(false);
@@ -69,18 +70,19 @@ export default function Offlonedoctor() {
       const { data } = await axios.post("/api/offline-doctor-excel", {
         date: value.date,
         task1: value.task1,
-        task2: value.task2,
-        task3: value.task3,
-        task4: value.task4,
-        task5: value.task5,
-        task6: value.task6,
-        task7: value.task7,
-        task8: value.task8,
-        task9: value.task9,
-        task10: value.task10,
-        task11: value.task11,
-        task12: value.task12,
-        task13: value.task13,
+        task2:value.task2,
+        task3:value.task3,
+     
+        task4:value.task4,
+        task7:value.task7,
+        task8:value.task8,
+        task9:value.task9,
+        task10:value.task10,
+        task11:value.task11,
+      
+        task12:value.task12,
+      
+        task13:value.task13,
       });
       form.reset();
       toast({
@@ -111,12 +113,9 @@ export default function Offlonedoctor() {
               <TableHead className="border-2 border-blue-400">
                 OLD PATIENT
               </TableHead>
-
+             
               <TableHead className="border-2 border-blue-400">FEES</TableHead>
-              <TableHead className="border-2 border-blue-400">
-                COUNTER MEDICINE{" "}
-              </TableHead>
-              <TableHead className="border-2 border-blue-400">LAB</TableHead>
+             
               <TableHead className="border-2 border-blue-400">
                 WHATSAPP
               </TableHead>
@@ -207,7 +206,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -226,7 +225,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -236,6 +235,7 @@ export default function Offlonedoctor() {
                 />
               </TableCell>
 
+           
               <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
@@ -246,45 +246,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TableCell>
-              <TableCell className="border-2 border-blue-400">
-                <FormField
-                  control={form.control}
-                  name="task5"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="border-foreground"
-                          {...field}
-                          type="number"
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TableCell>
-              <TableCell className="border-2 border-blue-400">
-                <FormField
-                  control={form.control}
-                  name="task6"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="border-foreground"
-                          {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -303,7 +265,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -312,7 +274,6 @@ export default function Offlonedoctor() {
                   )}
                 />
               </TableCell>
-
               <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
@@ -323,7 +284,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -332,6 +293,7 @@ export default function Offlonedoctor() {
                   )}
                 />
               </TableCell>
+
               <TableCell className="border-2 border-blue-400">
                 <FormField
                   control={form.control}
@@ -342,7 +304,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -361,7 +323,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -380,7 +342,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -399,7 +361,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -418,7 +380,7 @@ export default function Offlonedoctor() {
                         <Input
                           className="border-foreground"
                           {...field}
-                          type="number"
+                         
                         />
                       </FormControl>
 
@@ -427,6 +389,7 @@ export default function Offlonedoctor() {
                   )}
                 />
               </TableCell>
+             
             </TableRow>
           </TableBody>
         </Table>
