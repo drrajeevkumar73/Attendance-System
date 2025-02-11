@@ -151,6 +151,28 @@ export const receptiomSchema = z.object({
 
 export type ReceptopValue = z.infer<typeof receptiomSchema>;
 
+
+
+export const hdSchema = z.object({
+  date: z.string().trim(),
+  task1: requiredString,
+  task2: z.string().trim(),
+  task3: z.string().trim(),
+  task4: z.string().trim(),
+  task5: z.string().trim(),
+  task6: z.string().trim(),
+  task7: z.string().trim(),
+  task8: z.string().trim(),
+  task9: z.string().trim(),
+  task10: z.string().trim(),
+  task11: z.string().trim(),
+  task12: z.string().trim(),
+  task13: z.string().trim(),
+});
+
+export type HdValue = z.infer<typeof hdSchema>;
+
+
 export const medicenSchema = z.object({
   date: z.string().trim(),
   task1: requiredString,

@@ -31,6 +31,8 @@ import { useToast } from "@/hooks/use-toast";
 import {
   DoctorOffineValue,
   doctorOfflineSchema,
+  hdSchema,
+  HdValue,
   MediceneValue,
   medicenSchema,
   receptiomSchema,
@@ -43,8 +45,8 @@ import { useForm } from "react-hook-form";
 
 export default function Hdexcel() {
   const { toast } = useToast();
-  const form = useForm<DoctorOffineValue>({
-    resolver: zodResolver(doctorOfflineSchema),
+  const form = useForm<HdValue>({
+    resolver: zodResolver(hdSchema),
     defaultValues: {
       date:"",
       task1: "",
@@ -63,7 +65,7 @@ export default function Hdexcel() {
     },
   });
   const [ispending, setispending] = useState(false);
-  const submithandler = async (value: DoctorOffineValue) => {
+  const submithandler = async (value: HdValue) => {
     try {
       setispending(true);
       const { data } = await axios.post("/api/hd-od-excel", {

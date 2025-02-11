@@ -106,11 +106,11 @@ export default function Vewdata() {
           />
         </form>
       </Form>
-      <Button onClick={handlerRow}>Row</Button>
+      <Button onClick={handlerRow} className="mt-[20px] ">Collapse</Button>
       <div
         className={`${roe ? "" : "overflow-auto lg:w-[800px] 2xl:w-[1100px]"}`}
       >
-        <Table  className={`${roe ? "w-[2000px]" : ""}`}>
+        <Table  className={`${roe ? "w-[2000px]" : ""} mt-[20px]`}>
         <TableHeader>
               <TableRow className="border border-primary bg-primary">
                 <TableHead className="border-2 border-blue-400">
