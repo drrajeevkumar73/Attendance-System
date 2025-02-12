@@ -504,8 +504,8 @@ export default function SearchData() {
             Doctor: v.task1,
             "NEW PATIENT": v.task2,
             "OLD PATIENT": v.task3,
-            "TOTAL PATIENT": Number(v.task2)+Number(v.task3),
-            "FEES":v.task4,
+            "TOTAL PATIENT": Number(v.task2) + Number(v.task3),
+            FEES: v.task4,
             WHATSAPP: v.task7,
             " FOLLOW UP CALL": v.task8,
             ARTICLE: v.task9,
@@ -535,16 +535,16 @@ export default function SearchData() {
             Doctor: v.task1,
             "NEW PATIENT": v.task2,
             "  OLD PATIENT": v.task3,
-            "TOTAL PATIENT": Number(v.task2)+Number(v.task3),
+            "TOTAL PATIENT": Number(v.task2) + Number(v.task3),
             " NATIONAL FEES": v.task4,
             "INTERNATIONAL FEES": v.task5,
-            " TOTAL FEES": Number(v.task4)+Number(v.task5),
-            "MAIL": v.task6,
-            "VIDEO": v.task7,
-            "BLOG": v.task8,
+            " TOTAL FEES": Number(v.task4) + Number(v.task5),
+            MAIL: v.task6,
+            VIDEO: v.task7,
+            BLOG: v.task8,
             " CASE HISTORY": v.task9,
             "ONLINE CONSULTATION": v.task10,
-            
+
             Time: formatRelativeTime(v.createdAt),
           }));
 
@@ -1414,9 +1414,9 @@ export default function SearchData() {
                       <TableHead className="border-2">OLD PATIENT</TableHead>
 
                       <TableHead className="border-2">TOTAL PATIENT</TableHead>
-                      <TableHead className="border-2">NATIONAL  FEES</TableHead>
+                      <TableHead className="border-2">NATIONAL FEES</TableHead>
                       <TableHead className="border-2">
-                        INTERNATIONAL  FEES
+                        INTERNATIONAL FEES
                       </TableHead>
                       <TableHead className="border-2">TOTAL FEES</TableHead>
                       <TableHead className="border-2">MAIL</TableHead>

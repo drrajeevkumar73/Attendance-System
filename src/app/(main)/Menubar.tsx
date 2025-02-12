@@ -76,10 +76,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/vewexceldeta" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/vewexceldeta"}>Veiw Excel Data</Link>
+                <Link href={"/vewexceldeta"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "RECEPTIONS" ? (
@@ -93,10 +93,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/vewdata-reception" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/vewdata-reception"}>Veiw Excel Data</Link>
+                <Link href={"/vewdata-reception"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "MEDICINE COUNTER" ? (
@@ -110,10 +110,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/vew-medicene" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/vew-medicene"}>Veiw Excel Data</Link>
+                <Link href={"/vew-medicene"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "SHOP RANCHI" ? (
@@ -127,10 +127,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/ranchi-shop-vew-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/ranchi-shop-vew-data"}>Veiw Excel Data</Link>
+                <Link href={"/ranchi-shop-vew-data"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "DOCTOR" ? (
@@ -144,10 +144,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/offline-vew-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Offline Doctor Veiw Data"
+                title="Offline Doctor View Data"
                 asChild
               >
-                <Link href={"/offline-vew-excel"}>Offline Doctor Veiw</Link>
+                <Link href={"/offline-vew-excel"}>Offline Doctor View</Link>
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/online-doctor-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
@@ -158,10 +158,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/online-vew-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Online Doctor Veiw Data"
+                title="Online Doctor View Data"
                 asChild
               >
-                <Link href={"/online-vew-excel"}>Online Doctor Veiw</Link>
+                <Link href={"/online-vew-excel"}>Online Doctor View</Link>
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/platforms-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
@@ -172,10 +172,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/plateform-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Online Doctor Veiw Data"
+                title="Online Doctor View Data"
                 asChild
               >
-                <Link href={"/plateform-vew"}>Veiw Platforms</Link>
+                <Link href={"/plateform-vew"}>View Platforms</Link>
               </Button>
             </>
           ) : user.dipartment === "HD / OD" ? (
@@ -189,10 +189,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/hdod-excel-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/hdod-excel-vew"}>Veiw Excel Data</Link>
+                <Link href={"/hdod-excel-vew"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "ECART" ? (
@@ -206,10 +206,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/vew-exel-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/vew-exel-data"}>Veiw Excel Data</Link>
+                <Link href={"/vew-exel-data"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "DESIGNER" ? (
@@ -223,10 +223,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/designer-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/designer-vew"}>Veiw Excel Data</Link>
+                <Link href={"/designer-vew"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "MIXER" ? (
@@ -240,10 +240,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/mixer-vew-data" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/mixer-vew-data"}>Veiw Excel Data</Link>
+                <Link href={"/mixer-vew-data"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "ACCOUNTANT" ? (
@@ -257,10 +257,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/account-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/account-vew"}>Veiw Excel Data</Link>
+                <Link href={"/account-vew"}>View Excel Data</Link>
               </Button>
             </>
           ) : user.dipartment === "DIGITAL" ? (
@@ -274,10 +274,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/digital-vewexceldeta" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/digital-vewexceldeta"}>Veiw Excel Data</Link>
+                <Link href={"/digital-vewexceldeta"}>View Excel Data</Link>
               </Button>
             </>
           ) :user.dipartment === "INVENTORY" ? (
@@ -291,10 +291,10 @@ export default function Menubar({ className }: MenuBarProps) {
               </Button>
               <Button
                 className={`flex items-center justify-start gap-3 ${pathname == "/inventry-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
-                title="Veiw Excel Data"
+                title="View Excel Data"
                 asChild
               >
-                <Link href={"/inventry-vew"}>Veiw Excel Data</Link>
+                <Link href={"/inventry-vew"}>View Excel Data</Link>
               </Button>
             </>
           ) : (
@@ -358,7 +358,20 @@ export default function Menubar({ className }: MenuBarProps) {
             <Link href={"/retinghistory"}>Rating History</Link>
           </Button>
 
-      
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/manager-excel" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Manager"
+            asChild
+          >
+            <Link href={"/manager-excel"}>Manager Excel</Link>
+          </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/manager-vew" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Manager View Data"
+            asChild
+          >
+            <Link href={"/manager-vew"}>Manager View Data</Link>
+          </Button>
          
           <Button
             className={`flex items-center justify-start gap-3 ${pathname == "/attendance-dashboard" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
