@@ -363,6 +363,18 @@ export async function POST(req: NextRequest) {
             createdAt: "desc",
           },
         });
+        const palformdoctor = await prisma.platformdoctorshop.findMany({
+          where: {
+            userId: decoid,
+            createdAt: {
+              gte: startDate,
+              lt: endDate,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
 
         return NextResponse.json({
           success: true,
@@ -370,6 +382,7 @@ export async function POST(req: NextRequest) {
           data: [{ name: "offline or online" }],
           dataOff: d,
           dataOn: done,
+          dataplatform:palformdoctor
         });
       }
       if (user?.dipartment === "DIGITAL") {

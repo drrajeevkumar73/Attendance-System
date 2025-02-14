@@ -84,6 +84,7 @@ export default function SearchData() {
     data: [],
     dataOf: [],
     dataOn: [],
+    dataPlatform: [],
   });
   const [late, setatendec]: any = useState([]);
   const [s, sets] = useState(true);
@@ -146,18 +147,21 @@ export default function SearchData() {
             data: response.data.data,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
+            dataPlatform: response.data.dataplatform,
           });
           setTelecallerData({
             dipartment: response.data.dipartment,
             data: response.data.data.Telecaller,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
+            dataPlatform: response.data.dataplatform,
           });
           setDigitalData({
             dipartment: response.data.dipartment,
             data: response.data.data.Digital,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
+            dataPlatform: response.data.dataplatform,
           });
         } else if (task === "Attendance") {
           const response = await axios.post("/api/alldetausingUsernam", {
@@ -274,12 +278,14 @@ export default function SearchData() {
           data: response.data.data,
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
+          dataPlatform: response.data.dataplatform,
         });
         setTelecallerData({
           dipartment: response.data.dipartment,
           data: response.data.data.Telecaller,
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
+          dataPlatform: response.data.dataplatform,
         });
 
         setDigitalData({
@@ -287,6 +293,7 @@ export default function SearchData() {
           data: response.data.data.Digital,
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
+          dataPlatform: response.data.dataplatform,
         });
       } else if (selectedTask === "Attendance") {
         const response = await axios.post("/api/alldetausingUsernam", {
@@ -312,6 +319,10 @@ export default function SearchData() {
 
   const onileHanlder = () => {
     setof(0);
+  };
+
+  const onileHanlder3 = () => {
+    setof(3);
   };
   const [indexsex, seindexsec] = useState(0);
   const handlechange = () => {
@@ -529,7 +540,7 @@ export default function SearchData() {
 
           // Write to file
           XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
-        } else {
+        } else if (of === 2) {
           const excelData = tabelex?.dataOn.map((v: any) => ({
             Date: formatRelativeMonthDate(v.createdAt),
             Doctor: v.task1,
@@ -544,6 +555,37 @@ export default function SearchData() {
             BLOG: v.task8,
             " CASE HISTORY": v.task9,
             "ONLINE CONSULTATION": v.task10,
+
+            Time: formatRelativeTime(v.createdAt),
+          }));
+
+          // Create worksheet
+          const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+          // Create workbook
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            `${tabelex.deipartment}`,
+          );
+
+          // Write to file
+          XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
+        } else if (of === 3) {
+          const excelData = tabelex?.dataOn.map((v: any) => ({
+            Date: formatRelativeMonthDate(v.createdAt),
+            Doctor: v.task1,
+            "INTELITICKS:- LEAD": v.task2,
+            "INTELITICKS:- NATIONAL CHAT": v.task3,
+            "INTELITICKS:- INTERNATIONAL CHAT": v.sask4,
+            "INTELITICKS:- CONVERSION": v.task5,
+            "FB:- LEAD": v.task6,
+            "FB:- REPLY": v.task7,
+            "FB:- CONVERSION": v.task8,
+            "INTERKART:- LEAD": v.task9,
+            "INTERKART:- REPLY": v.task10,
+            " INTERKART:-  CONVERSION": v.task11,
 
             Time: formatRelativeTime(v.createdAt),
           }));
@@ -1322,18 +1364,26 @@ export default function SearchData() {
         ) : tabelex.dipartment === "Doctor" ? (
           <div className="mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]">
             <div className="space-y-6">
-              <Button
-                onClick={ofileHanlder}
-                className={` ${of === 1 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
-              >
-                Offline
-              </Button>{" "}
-              <Button
-                onClick={onileHanlder}
-                className={` ${of === 0 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
-              >
-                Online
-              </Button>
+              <div className="flex gap-5">
+                <Button
+                  onClick={ofileHanlder}
+                  className={` ${of === 1 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
+                >
+                  Offline
+                </Button>{" "}
+                <Button
+                  onClick={onileHanlder}
+                  className={` ${of === 0 ? "bg-blue-400 hover:bg-blue-400" : ""}`}
+                >
+                  Online
+                </Button>
+                <Button
+                  onClick={onileHanlder3}
+                  className={` ${of === 3 ? "bg-blue-400 hover:bg-blue-400" : ""} `}
+                >
+                  Platforms
+                </Button>
+              </div>
               <div className={` ${of === 1 ? "block" : "hidden"}`}>
                 <Table className="w-[2300px]">
                   <TableHeader>
@@ -1472,6 +1522,126 @@ export default function SearchData() {
                           <TableCell className="border-2">{v.task10}</TableCell>
 
                           <TableCell className="border-2">
+                            {formatRelativeTime(v.createdAt)}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    ))
+                  )}
+                </Table>
+              </div>
+              <div className={`${of === 3 ? "block" : "hidden"}`}>
+                <Table className="w-[3000px]">
+                  <TableHeader>
+                    <TableRow className="border border-primary bg-primary">
+                      <TableHead className="border-2 border-blue-400">
+                        Date
+                      </TableHead>
+                      <TableHead className="border-2 border-blue-400">
+                        Doctor
+                      </TableHead>
+                      <TableHead
+                        colSpan={4}
+                        className="border-2 border-blue-400"
+                      >
+                        <p className="mt-3 text-center">INTELITICKS</p>
+                        <p className="mt-2 w-full border border-blue-500"></p>
+                        <div className="flex items-center justify-around py-2">
+                          <p className="">LEAD</p>
+                          <p className="">NATIONAL CHAT</p>
+                          <p className="">INTERNATIONAL CHAT</p>
+                          <p className="">CONVERSION</p>
+                        </div>
+                      </TableHead>
+
+                      <TableHead
+                        colSpan={3}
+                        className="border-2 border-blue-400"
+                      >
+                        <p className="mt-3 text-center">FB</p>
+                        <p className="mt-2 w-full border border-blue-500"></p>
+                        <div className="flex items-center justify-around py-2">
+                          <p className="">LEAD</p>
+                          <p className="">REPLY</p>
+                          <p className="">CONVERSION</p>
+                        </div>
+                      </TableHead>
+                      <TableHead
+                        colSpan={3}
+                        className="border-2 border-blue-400"
+                      >
+                        <p className="mt-3 text-center">INTERKART</p>
+                        <p className="mt-2 w-full border border-blue-500"></p>
+                        <div className="flex items-center justify-around py-2">
+                          <p className="">LEAD</p>
+                          <p className="">REPLY</p>
+                          <p className="">CONVERSION</p>
+                        </div>
+                      </TableHead>
+                      <TableHead className="border-2 border-blue-400">
+                        Time
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+
+                  {loading ? (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell colSpan={3} className="">
+                          <Loader className="mx-auto animate-spin" />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ) : tabelex?.dataPlatform?.length === 0 ? (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell colSpan={3} className="">
+                          No Data Found
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ) : (
+                    tabelex?.dataPlatform?.map((v: any, i: any) => (
+                      <TableBody className="border border-primary" key={i}>
+                        <TableRow>
+                          <TableCell className="border-2 border-blue-400 font-medium">
+                            {formatRelativeMonthDate(v.createdAt)}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task1}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task2}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task3}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task4}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task5}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task6}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {" "}
+                            {v.task7}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task8}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task9}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task10}
+                          </TableCell>
+                          <TableCell className="border-2 border-blue-400">
+                            {v.task11}
+                          </TableCell>
+                          <TableCell className="w-[200px] border-2 border-blue-400 text-right">
                             {formatRelativeTime(v.createdAt)}
                           </TableCell>
                         </TableRow>

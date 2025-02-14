@@ -107,119 +107,118 @@ export default function Vewdata() {
         </form>
       </Form>
       <Button onClick={handlerRow}>Row</Button>
-      <div className={`${roe?" overflow-auto mx-auto":"2xl:w-[1100px] lg:w-[800px] overflow-auto mx-auto"}`}>
-      <Table className={`${roe ? "" : "w-[3000px]"}`}>
-        <TableHeader>
-        <TableRow className="border border-primary bg-primary">
-        <TableHead className="border-2 border-blue-400" >Date</TableHead>
-              <TableHead className="border-2 border-blue-400" >Doctor</TableHead>
+      <div
+        className={`${roe ? "mx-auto overflow-auto" : "mx-auto overflow-auto lg:w-[800px] 2xl:w-[1100px]"}`}
+      >
+        <Table className={`${roe ? "" : "w-[3000px]"}`}>
+          <TableHeader>
+            <TableRow className="border border-primary bg-primary">
+              <TableHead className="border-2 border-blue-400">Date</TableHead>
+              <TableHead className="border-2 border-blue-400">Doctor</TableHead>
               <TableHead className="border-2 border-blue-400">
-              NEW PATIENT
+                NEW PATIENT
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-          OLD PATIENT
+              <TableHead className="border-2 border-blue-400">
+                OLD PATIENT
               </TableHead>
 
-              <TableHead className="border-2 border-blue-400" >TOTAL PATIENT</TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              NATIONAL FEES
+              <TableHead className="border-2 border-blue-400">
+                TOTAL PATIENT
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >INTERNATIONAL FEES</TableHead>
-              <TableHead className="border-2 border-blue-400" >
-             TOTAL FEES
+              <TableHead className="border-2 border-blue-400">
+                NATIONAL FEES
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-             MAIL
+              <TableHead className="border-2 border-blue-400">
+                INTERNATIONAL FEES
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              VIDEO
+              <TableHead className="border-2 border-blue-400">
+                TOTAL FEES
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              BLOG
+              <TableHead className="border-2 border-blue-400">MAIL</TableHead>
+              <TableHead className="border-2 border-blue-400">VIDEO</TableHead>
+              <TableHead className="border-2 border-blue-400">BLOG</TableHead>
+              <TableHead className="border-2 border-blue-400">
+                CASE HISTORY
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              CASE HISTORY
+              <TableHead className="border-2 border-blue-400">
+                ONLINE CONSULTATION{" "}
               </TableHead>
-              <TableHead className="border-2 border-blue-400" >
-              ONLINE CONSULTATION{" "}
-              </TableHead>
-             
-              <TableHead className="border-2 border-blue-400" >Time</TableHead>
-            </TableRow>
-        </TableHeader>
 
-        {loding ? (
-          // Loading message
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={3} className="">
-                Loading...
-              </TableCell>
+              <TableHead className="border-2 border-blue-400">Time</TableHead>
             </TableRow>
-          </TableBody>
-        ) : data?.length === 0 ? (
-          // No Data Found message
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={3} className="">
-                No Data Found
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        ) : (
-          // Data rendering
-          data?.map((v: any, i) => (
-            <TableBody className="border border-primary" key={i}>
+          </TableHeader>
+
+          {loding ? (
+            // Loading message
+            <TableBody>
               <TableRow>
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeMonthDate(v.createdAt)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task1}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task2}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task3}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {Number(v.task2)+Number(v.task3)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task4}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task5}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {Number(v.task4)+Number(v.task5)}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task6}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task7}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task8}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task9}
-                </TableCell>
-                <TableCell className="border-2 border-blue-400">
-                  {v.task10}
-                </TableCell>
-               
-
-                <TableCell className="border-2 border-blue-400">
-                  {formatRelativeTime(v.createdAt)}
+                <TableCell colSpan={3} className="">
+                  Loading...
                 </TableCell>
               </TableRow>
             </TableBody>
-          ))
-        )}
-      </Table>
+          ) : data?.length === 0 ? (
+            // No Data Found message
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3} className="">
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : (
+            // Data rendering
+            data?.map((v: any, i) => (
+              <TableBody className="border border-primary" key={i}>
+                <TableRow>
+                  <TableCell className="border-2 border-blue-400">
+                    {formatRelativeMonthDate(v.createdAt)}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task1}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task2}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task3}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {Number(v.task2) + Number(v.task3)}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task4}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task5}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {Number(v.task4) + Number(v.task5)}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task6}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task7}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task8}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task9}
+                  </TableCell>
+                  <TableCell className="border-2 border-blue-400">
+                    {v.task10}
+                  </TableCell>
+
+                  <TableCell className="border-2 border-blue-400">
+                    {formatRelativeTime(v.createdAt)}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ))
+          )}
+        </Table>
       </div>
     </>
   );
