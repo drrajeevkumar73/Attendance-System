@@ -131,6 +131,8 @@
 //     );
 //   }
 // }
+
+
 import { validateRequest } from "@/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
@@ -173,9 +175,14 @@ export async function POST(req: NextRequest) {
     const existingEntry = await prisma.useentry.findFirst({
       where: {
         userId: user.id,
-        createdAt: { gte: todayStart, lte: todayEnd },
+        statusR: "present", // Ensure only today's active entry is checked
+        createdAt: {
+          gte: todayStart,
+          lt: todayEnd,
+        },
       },
     });
+    
 
     // Check if entry already exists for the day
     if (existingEntry) {
