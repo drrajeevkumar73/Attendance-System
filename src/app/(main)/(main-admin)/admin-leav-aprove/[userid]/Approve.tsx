@@ -7,6 +7,8 @@ import axios from "axios";
 import { formatRelativeleave } from "@/lib/utils";
 import { SignatureComponent } from "@syncfusion/ej2-react-inputs";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { X } from "lucide-react";
 
 export default function Approve() {
   const { userid } = useParams();
@@ -20,16 +22,36 @@ export default function Approve() {
     helo();
   }, [userid]);
 
-  
   //approve
 
   const signObj = useRef<any | null>(null);
+  const signObj2 = useRef<any | null>(null);
+  const signObj3 = useRef<any | null>(null);
 
   const clersignature = () => {
     signObj.current?.clear();
   };
+  const clersignature2 = () => {
+    signObj2.current?.clear();
+  };
+  const clersignature3 = () => {
+    signObj3.current?.clear();
+  };
+  const { toast } = useToast();
+const [apo,seapo]=useState(false)
+  const submit = async () => {
+    await axios.post("/api/whiboxt-update", {
+      userId: userid,
+      depsing: signObj.current.signatureValue,
+      drrajeevsign: signObj2.current.signatureValue,
+      hrsign: signObj3.current.signatureValue,
+    });
+
+   alert("Signature uploaded.")
+   seapo(false)
+  };
   return (
-    <>
+    <div className="space-y-8">
       <div className="mx-auto w-[80%] space-y-3 rounded-md border bg-lime-50 p-5 shadow-lg">
         <div className="flex w-full items-center font-bold italic text-blue-500">
           <h1 className="w-[30%]">#First Pathy Homeopathy </h1>
@@ -115,13 +137,13 @@ export default function Approve() {
             <h5 className="flex items-center">
               Dept. sing{" "}
               <p className="boeds">
-                <span className="opacity-0">2023-02-20</span>
+               <Image src={data.depsing} alt="zd " width={100} height={100} />
               </p>{" "}
             </h5>
             <h5 className="flex items-center">
               Dr. Rajeev sir{" "}
               <p className="boeds">
-                <span className="opacity-0">2023-02-20</span>
+               <Image src={data.drrajeevsign} alt="zd " width={100} height={100} />
               </p>{" "}
             </h5>
           </div>
@@ -136,15 +158,22 @@ export default function Approve() {
             <h5 className="flex items-center">
               HR sing.{" "}
               <p className="boeds">
-                <span className="opacity-0">2023-02-20</span>
+              <Image src={data.hrsign} alt="zd " width={100} height={100} />
               </p>{" "}
             </h5>
           </div>
         </div>
       </div>
 
-      <div className="fixed left-0 top-0 z-[9999] flex h-screen w-full items-center justify-center bg-black/80">
-      
+     <div className="flex justify-center">
+     <Button onClick={()=>seapo(true)}>Approved Application</Button>
+     </div>
+
+      <div  className={`fixed left-0 top-0 z-[9999] min-h-screen w-full space-y-16 bg-black/80 px-3 py-[200px] ${apo?"opacity-100 visible":"opacity-0 invisible"}`}>
+     <div className="flex justify-center">
+     <X className="text-white text-center cursor-pointer" onClick={()=>seapo(false)}/>
+     </div>
+        <div className="flex h-full flex-wrap items-center justify-center gap-10 md:flex-nowrap">
           <h1 className="boeds space-y-5 text-white">
             <SignatureComponent
               ref={signObj}
@@ -153,42 +182,37 @@ export default function Approve() {
             <Button onClick={clersignature} type="button" className="w-full">
               Clear
             </Button>
-            <p className="text-white text-center"> Dept Sign</p>
+            <p className="text-center text-white"> Dept Sign</p>
           </h1>
 
           <h1 className="boeds space-y-5 text-white">
             <SignatureComponent
-              ref={signObj}
+              ref={signObj2}
               className="h-[100px] w-[200px] rounded-md border bg-gray-200 shadow-lg"
             ></SignatureComponent>
-            <Button onClick={clersignature} type="button" className="w-full">
+            <Button onClick={clersignature2} type="button" className="w-full">
               Clear
             </Button>
-            <p className="text-white text-center"> Dept Sign</p>
+            <p className="text-center text-white"> Dr Rajeev Sir</p>
           </h1>
           <h1 className="boeds space-y-5 text-white">
             <SignatureComponent
-              ref={signObj}
+              ref={signObj3}
               className="h-[100px] w-[200px] rounded-md border bg-gray-200 shadow-lg"
             ></SignatureComponent>
-            <Button onClick={clersignature} type="button" className="w-full">
+            <Button onClick={clersignature3} type="button" className="w-full">
               Clear
             </Button>
-            <p className="text-white text-center"> Dept Sign</p>
+            <p className="text-center text-white"> HR sing</p>
           </h1>
-          <h1 className="boeds space-y-5 text-white">
-            <SignatureComponent
-              ref={signObj}
-              className="h-[100px] w-[200px] rounded-md border bg-gray-200 shadow-lg"
-            ></SignatureComponent>
-            <Button onClick={clersignature} type="button" className="w-full">
-              Clear
-            </Button>
-            <p className="text-white text-center"> Dept Sign</p>
-          </h1>
-         
         </div>
-     
-    </>
+
+        <div className="flex justify-center">
+          <Button className="w-1/2 mx-auto" onClick={submit}>
+            send
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

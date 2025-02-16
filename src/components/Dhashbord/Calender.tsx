@@ -227,6 +227,17 @@ export default function Calender({ className }: classNameProps) {
     }
   };
 
+
+
+const[app,seapp]=useState("")
+  useEffect(()=>{
+  const h=async()=>{
+   const {data}=await axios.get("/api/leave-satus")
+   seapp(data)
+  }
+  h()
+  },[])
+
   const { user } = useAppSelector((state) => state.loginlice);
   if (!user) throw new Error("unauthorized");
   return (
@@ -278,6 +289,10 @@ export default function Calender({ className }: classNameProps) {
           />
         </form>
       </Form>
+
+      <div>
+        <h1 className="font-bold">{app}</h1>
+      </div>
 
       <div className="flex items-center space-x-2">
         <Switch id="airplane-mode" onClick={checkHandler} checked={lodings} />
