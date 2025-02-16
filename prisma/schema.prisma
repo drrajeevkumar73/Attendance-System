@@ -46,7 +46,7 @@ model User {
   CallLog            CallLog[]
   Digital            Digital[]
   Platformdoctorshop Platformdoctorshop[]
- 
+  Leavform           Leavform[]
 
   @@map("users")
 }
@@ -861,10 +861,31 @@ model Manegar {
   task147 String?
   task148 Boolean @default(false)
 
- 
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("manegar")
+}
+
+model Leavform {
+  id           String  @id @default(cuid())
+  userId       String
+  srno         Int
+  name1        String
+  subject      String
+  from         String?
+  to           String?
+  deueto       String?
+  comforming   String?
+  name2        String?
+  depsing      String?
+  drrajeevsign String?
+  hrsign       String?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("leavform")
 }

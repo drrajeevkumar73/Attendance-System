@@ -754,3 +754,14 @@ export const managerSchema = z.object({
 });
 
 export type MangerValue = z.infer<typeof managerSchema>;
+
+export const leavformSchema = z.object({
+  name1: requiredString,
+  subject: requiredString,
+  from: requiredString,
+  to: requiredString,
+  deueto: requiredString,
+  comforming: requiredString,
+});
+
+export type LeavFromValue = z.infer<typeof leavformSchema>;

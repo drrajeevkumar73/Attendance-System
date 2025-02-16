@@ -23,6 +23,12 @@ export function formatRelativeTime(from: Date) {
 }
 
 
+export function formatRelativeleave(from: string | Date | null | undefined) {
+  if (!from) return "Invalid Date"; // ✅ Handle undefined/null values
+  const date = new Date(from);
+  if (isNaN(date.getTime())) return "Invalid Date"; // ✅ Check invalid date
+  return format(date, "dd/MM/yy");
+}
 
 
 
