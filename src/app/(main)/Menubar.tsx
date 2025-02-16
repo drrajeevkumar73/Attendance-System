@@ -322,6 +322,13 @@ export default function Menubar({ className }: MenuBarProps) {
           >
             <Link href={"/vew-documents"}>Vew Document</Link>
           </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/leavform" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="Leave Application"
+            asChild
+          >
+            <Link href={"/leavform"}>Leave Application</Link>
+          </Button>
         </div>
 
         <Button
