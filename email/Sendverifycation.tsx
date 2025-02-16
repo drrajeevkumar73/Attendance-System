@@ -60,7 +60,7 @@ export default function LeaveApplicationEmail({
 
         <Row>
           <Button
-            href={`http://localhost:3000/admin-leav-aprove/${userid}`}
+            href={`https://attendance-system-khaki.vercel.app/admin-leav-aprove/${userid}`}
             style={{
               backgroundColor: "#007bff",
               color: "#ffffff",
