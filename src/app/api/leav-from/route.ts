@@ -2,6 +2,7 @@ import { validateRequest } from "@/auth";
 import { sendVerificationEmial } from "@/helpers/sendleavemail";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { TimeSpan, createDate } from "oslo";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
         deueto,
         comforming,
         name2:signaute,
+        expiresAt:createDate(new TimeSpan(2, "d"))
       },
     });
     const emailRes = await sendVerificationEmial(user.displayname,user.id);

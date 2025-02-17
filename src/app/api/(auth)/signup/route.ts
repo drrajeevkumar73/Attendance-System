@@ -8,7 +8,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { displayname, email, dipartment,cityR, passwordHash } = await req.json();
+    const { displayname, email, dipartment, cityR, passwordHash } =
+      await req.json();
     const data = signupSchema.parse({
       displayname,
       email,
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
           success: false,
           message: "Email is already exist",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
         displayname: data.displayname,
         email: data.email,
         dipartment: data.dipartment,
-        city:data.cityR,
+        city: data.cityR,
         passwordHash: hashP,
       },
     });
@@ -61,11 +62,13 @@ export async function POST(req: NextRequest) {
       sessionCookie.attributes,
     );
 
-    return NextResponse.json({
-      success: true,
-      message: "User register successfully",
-    },
-    { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "User register successfully",
+      },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("Error occurred:", error);
     return NextResponse.json(
@@ -73,7 +76,7 @@ export async function POST(req: NextRequest) {
         success: false,
         message: "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

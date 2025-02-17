@@ -154,14 +154,14 @@ export default function SearchData() {
             data: response.data.data.Telecaller,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
-            dataPlatform: response.data.dataplatform,
+          
           });
           setDigitalData({
             dipartment: response.data.dipartment,
             data: response.data.data.Digital,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
-            dataPlatform: response.data.dataplatform,
+          
           });
         } else if (task === "Attendance") {
           const response = await axios.post("/api/alldetausingUsernam", {
@@ -285,7 +285,7 @@ export default function SearchData() {
           data: response.data.data.Telecaller,
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
-          dataPlatform: response.data.dataplatform,
+         
         });
 
         setDigitalData({
@@ -293,7 +293,7 @@ export default function SearchData() {
           data: response.data.data.Digital,
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
-          dataPlatform: response.data.dataplatform,
+         
         });
       } else if (selectedTask === "Attendance") {
         const response = await axios.post("/api/alldetausingUsernam", {
@@ -540,7 +540,7 @@ export default function SearchData() {
 
           // Write to file
           XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
-        } else if (of === 2) {
+        } else if (of === 0) {
           const excelData = tabelex?.dataOn.map((v: any) => ({
             Date: formatRelativeMonthDate(v.createdAt),
             Doctor: v.task1,
@@ -573,12 +573,12 @@ export default function SearchData() {
           // Write to file
           XLSX.writeFile(workbook, `${pri.displayname}.xlsx`);
         } else if (of === 3) {
-          const excelData = tabelex?.dataOn.map((v: any) => ({
+          const excelData = tabelex?.dataPlatform.map((v: any) => ({
             Date: formatRelativeMonthDate(v.createdAt),
             Doctor: v.task1,
             "INTELITICKS:- LEAD": v.task2,
             "INTELITICKS:- NATIONAL CHAT": v.task3,
-            "INTELITICKS:- INTERNATIONAL CHAT": v.sask4,
+            "INTELITICKS:- INTERNATIONAL CHAT": v.task4,
             "INTELITICKS:- CONVERSION": v.task5,
             "FB:- LEAD": v.task6,
             "FB:- REPLY": v.task7,
