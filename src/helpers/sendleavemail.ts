@@ -14,7 +14,7 @@ export async function sendVerificationEmial(
   try {
     await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "dailyreport.aah@gmail.com",
+      to: "dailyreport.ahh@gmail.com",
       subject: "Leave Application Form",
       react: VerificationEmail({ username: userName,userid}),
     });
