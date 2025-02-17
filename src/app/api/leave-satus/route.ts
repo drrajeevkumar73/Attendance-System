@@ -24,7 +24,7 @@ export async function GET() {
   if (!verifyCodeExpiry) {
     return NextResponse.json("");
   }
-  if (!statu[0].hrsign && !statu[0].depsing) {
+  if (!statu[0].hrsign || !statu[0].depsing) {
     return NextResponse.json("Your Application is not approved by Admin 😔.");
   }
   return NextResponse.json(
