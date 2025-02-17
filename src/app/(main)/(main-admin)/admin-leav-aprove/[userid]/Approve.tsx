@@ -131,21 +131,24 @@ const [apo,seapo]=useState(false)
         <div className="space-y-16">
           <div className="flex items-center justify-between font-bold">
             <h1 className="boeds">
-            {data.name2 && <Image src={data.name2} alt="zd " width={100} height={100} />}
+          
+            {data.name2 ? <Image src={data.name2} alt="zd " width={100} height={100} />:<span className="opacity-0">rajeev kumar</span>}
+
             </h1>
 
             <h5 className="flex items-center">
               Dept. sing{" "}
               <p className="boeds">
-              {data.depsing && <Image src={data.depsing} alt="zd " width={100} height={100} />}
+            
+              {data.depsing ? <Image src={data.depsing} alt="zd " width={100} height={100} />:<span className="opacity-0">rajeev kumar</span>}
                
               </p>{" "}
             </h5>
             <h5 className="flex items-center">
               Dr. Rajeev sir{" "}
               <p className="boeds">
-                {data.drrajeevsign &&  <Image src={data.drrajeevsign} alt="zd " width={100} height={100} />}
-              
+
+                {data.drrajeevsign ? <Image src={data.drrajeevsign} alt="zd " width={100} height={100} />:<span className="opacity-0">rajeev kumar</span>}
               </p>{" "}
             </h5>
           </div>
@@ -160,7 +163,7 @@ const [apo,seapo]=useState(false)
             <h5 className="flex items-center">
               HR sing.{" "}
               <p className="boeds">
-              <Image src={data.hrsign} alt="zd " width={100} height={100} />
+              {data.hrsign ? <Image src={data.hrsign} alt="zd " width={100} height={100} />:<span className="opacity-0">rajeev kumar</span>}
               </p>{" "}
             </h5>
           </div>
