@@ -155,7 +155,7 @@ export default function Calender({ className }: classNameProps) {
   const [cheklofi,setchecklo]=useState(false)
   const checkHandler = async () => {
     try {
-    
+      setchecklo(true)
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
@@ -180,14 +180,14 @@ export default function Calender({ className }: classNameProps) {
             });
 
             if (isNearClinic) {
-              setchecklo(true)
+          
               const { data } = await axios.post("/api/switch");
               setlosding(data.success); // data.success agar true hai toh true set karo
               localStorage.setItem(
                 "switchStatus",
                 JSON.stringify(data.success),
               );
-              setchecklo(false)
+              
               toast({
                 title: data.message || "Request successful!",
                 variant: "default",
@@ -217,6 +217,7 @@ export default function Calender({ className }: classNameProps) {
           variant: "destructive",
         });
       }
+      setchecklo(false)
     } catch (error) {
       await axios.post("/api/not-tas", {
         statusBar: false,
