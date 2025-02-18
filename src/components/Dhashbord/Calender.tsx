@@ -152,6 +152,7 @@ export default function Calender({ className }: classNameProps) {
     setlosding( JSON.parse(savedStatus))
   }, []);
 
+  const [cheklofi,setchecklo]=useState(false)
   const checkHandler = async () => {
     try {
     
@@ -179,13 +180,14 @@ export default function Calender({ className }: classNameProps) {
             });
 
             if (isNearClinic) {
+              setchecklo(true)
               const { data } = await axios.post("/api/switch");
               setlosding(data.success); // data.success agar true hai toh true set karo
               localStorage.setItem(
                 "switchStatus",
                 JSON.stringify(data.success),
               );
-
+              setchecklo(false)
               toast({
                 title: data.message || "Request successful!",
                 variant: "default",
@@ -295,7 +297,7 @@ const[app,seapp]=useState("")
       </div>
 
       <div className="flex items-center space-x-2">
-        <Switch id="airplane-mode" onClick={checkHandler} checked={lodings} />
+        <Switch id="airplane-mode" onClick={checkHandler} checked={lodings} disabled={cheklofi}/>
         <Label htmlFor="airplane-mode"></Label>
       </div>
 
