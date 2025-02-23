@@ -16,6 +16,14 @@ export async function POST(req: NextRequest) {
     const srno = await prisma.leavform.findMany({
       where: { userId: user.id },
     });
+    const userfi=await prisma.user.findFirst({
+      where:{
+        id:user.id
+      },
+      select:{
+        email:true
+      }
+    })
 
     await prisma.leavform.create({
       data: {
@@ -72,8 +80,8 @@ export async function POST(req: NextRequest) {
 
     // ✅ Email Options
     const mailOptions = {
-      from: `"Abhi Health Care👨‍💻" <${process.env.EMAIL_USER}>`,
-      to: "hrm@rajeevclinic.com",
+      from: `"Abhi Health Care👨‍💻" <${userfi?.email}>`,
+      to: `${process.env.EMAIL_USER}`,
       subject: "Leave Application Form",
       html: emailHtml,
     };
