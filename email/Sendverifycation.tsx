@@ -13,12 +13,14 @@ import {
 
 interface LeaveApplicationEmailProps {
   username: string;
-  userid:string;
+  userid: string;
+  leflenghth: number;
 }
 
 export default function LeaveApplicationEmail({
   username,
-  userid
+  userid,
+  leflenghth,
 }: LeaveApplicationEmailProps) {
   return (
     <Html lang="en" dir="ltr">
@@ -48,9 +50,10 @@ export default function LeaveApplicationEmail({
           </Text>
         </Row>
         <Row>
-          <Text> 
-          Thank you 🌹.
-          </Text>
+          <Text>Thank you 🌹.</Text>
+        </Row>
+        <Row>
+          <Text>Total Leaves Approved by Admin This Month: {leflenghth}</Text>
         </Row>
         <Row>
           <Text>

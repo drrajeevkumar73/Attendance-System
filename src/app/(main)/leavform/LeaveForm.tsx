@@ -62,7 +62,7 @@ export default function LeaveForm() {
         comforming: value.comforming,
         signaute: signObj.current.signatureValue,
       });
-      form.reset()
+      form.reset();
 
       toast({
         variant: "default",

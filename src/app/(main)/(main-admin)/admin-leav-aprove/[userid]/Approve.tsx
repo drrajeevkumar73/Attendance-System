@@ -9,7 +9,7 @@ import { SignatureComponent } from "@syncfusion/ej2-react-inputs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { X } from "lucide-react";
-
+import { useReactToPrint } from "react-to-print";
 export default function Approve() {
   const { userid } = useParams();
   const [data, setdata] = useState<any>([]);
@@ -50,9 +50,20 @@ const [apo,seapo]=useState(false)
    alert("Signature uploaded.")
    seapo(false)
   };
+
+
+    const contentRef = useRef<HTMLDivElement>(null);
+    const reactToPrintFn = useReactToPrint({
+      contentRef,
+      documentTitle: "Intervew",
+    });
+  
+    if (!data) {
+      return <p className="text-center">No Document Found</p>;
+    }
   return (
-    <div className="space-y-8">
-      <div className="mx-auto w-[80%] space-y-3 rounded-md border bg-lime-50 p-5 shadow-lg">
+    <div className="space-y-8" >
+      <div className="mx-auto w-[80%] space-y-3 rounded-md border bg-lime-50 p-5 shadow-lg" ref={contentRef} >
         <div className="flex w-full items-center font-bold italic text-blue-500">
           <h1 className="w-[30%]">#First Pathy Homeopathy </h1>
           <h1 className="w-full text-center">II OM SAI II </h1>
@@ -170,11 +181,17 @@ const [apo,seapo]=useState(false)
         </div>
       </div>
 
-     <div className="flex justify-center">
+     <div className="flex gap-6 justify-center">
      <Button onClick={()=>seapo(true)}>Approved Application</Button>
+     <Button
+        onClick={() => reactToPrintFn()}
+
+      >
+        Print to PDF
+      </Button>
      </div>
 
-      <div  className={`fixed left-0 top-0 z-[9999] min-h-screen w-full space-y-16 bg-black/80 px-3 py-[200px] ${apo?"opacity-100 visible":"opacity-0 invisible"}`}>
+      <div  className={`fixed left-0 top-0 z-[9999] min-h-screen w-full space-y-16 bg-black/80 px-3 py-[200px] ${apo?"opacity-100 visible":"opacity-0 invisible"}`} >
      <div className="flex justify-center">
      <X className="text-white text-center cursor-pointer" onClick={()=>seapo(false)}/>
      </div>
