@@ -2,6 +2,9 @@ import { validateRequest } from "@/auth"; // Authentication middleware
 import prisma from "@/lib/prisma"; // Prisma client
 import { NextRequest, NextResponse } from "next/server"; // Next.js server types
 import moment from "moment-timezone"; // Moment.js for timezone handling
+import nodemailer from "nodemailer";
+import SendTelelcaller from "../../../../email/SendTelelcaller";
+import { render } from "@react-email/components";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 2: Parse request payload
-    const { date, task1, task2, task3, task4, task5, task6, task7,task8 } =
+    const { date, task1, task2, task3, task4, task5, task6, task7, task8 } =
       await req.json();
 
     // Set timezone to Asia/Kolkata
@@ -115,6 +118,60 @@ export async function POST(req: NextRequest) {
         createdAt,
       },
     });
+
+    const userTel = await prisma.user.findFirst({
+      where: {
+        id: user.id,
+      },
+    });
+    if (!userTel) {
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 },
+      );
+    }
+    const userdata = await prisma.telecaller.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    if (!userdata) {
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 },
+      );
+    }
+    // ✅ Nodemailer Transporter Setup for Zoho Mail
+    const transporter = nodemailer.createTransport({
+      host: "smtp.zoho.com", // ✅ Ensure it's smtp.zoho.com
+      port: 465, // ✅ SSL ke liye 465 ya TLS ke liye 587
+      secure: true, // ✅ 465 port ke liye true, 587 ke liye false
+      auth: {
+        user: process.env.EMAIL_USER, // ✅ .env se email lo
+        pass: process.env.EMAIL_PASS, // ✅ .env se App Password lo (Zoho ke app password)
+      },
+    });
+
+    const emailHtml = await render(
+      SendTelelcaller({
+        userdata: userdata,
+        username: userTel.displayname,
+      }),
+    );
+
+    // ✅ Email Options
+    const mailOptions = {
+      from: `"Abhi Health Care👨‍💻" <${process.env.EMAIL_USER}>`,
+      to: `hrm@rajeevclinic.com`,
+      subject: `${userTel?.displayname} Telecaller Data`,
+      html: emailHtml,
+    };
+
+    // ✅ Email Send karo (await lagao)
+    await transporter.sendMail(mailOptions);
 
     return NextResponse.json({
       success: true,

@@ -17,8 +17,6 @@ export async function POST(req: NextRequest) {
       where: { userId: user.id },
     });
 
-
-  
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -67,8 +65,7 @@ export async function POST(req: NextRequest) {
     };
 
     // ✅ Email Send karo (await lagao)
-    const info = await transporter.sendMail(mailOptions);
-
+    await transporter.sendMail(mailOptions);
 
     await prisma.leavform.create({
       data: {
