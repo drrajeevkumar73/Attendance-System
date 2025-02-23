@@ -16,29 +16,9 @@ export async function POST(req: NextRequest) {
     const srno = await prisma.leavform.findMany({
       where: { userId: user.id },
     });
-    const userfi=await prisma.user.findFirst({
-      where:{
-        id:user.id
-      },
-      select:{
-        email:true
-      }
-    })
 
-    await prisma.leavform.create({
-      data: {
-        userId: user.id,
-        srno: srno.length + 1,
-        name1,
-        subject,
-        from,
-        to,
-        deueto,
-        comforming,
-        name2: signaute,
-        expiresAt: createDate(new TimeSpan(2, "d")),
-      },
-    });
+
+  
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -80,8 +60,8 @@ export async function POST(req: NextRequest) {
 
     // ✅ Email Options
     const mailOptions = {
-      from: `"Abhi Health Care👨‍💻" <${userfi?.email}>`,
-      to: `${process.env.EMAIL_USER}`,
+      from: `"Abhi Health Care👨‍💻" <${process.env.EMAIL_USER}>`,
+      to: `hrm@rajeevclinic.com`,
       subject: "Leave Application Form",
       html: emailHtml,
     };
@@ -89,6 +69,21 @@ export async function POST(req: NextRequest) {
     // ✅ Email Send karo (await lagao)
     const info = await transporter.sendMail(mailOptions);
 
+
+    await prisma.leavform.create({
+      data: {
+        userId: user.id,
+        srno: srno.length + 1,
+        name1,
+        subject,
+        from,
+        to,
+        deueto,
+        comforming,
+        name2: signaute,
+        expiresAt: createDate(new TimeSpan(2, "d")),
+      },
+    });
     // ✅ Success Response
     return NextResponse.json({
       success: true,
