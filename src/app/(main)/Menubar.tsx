@@ -329,6 +329,13 @@ export default function Menubar({ className }: MenuBarProps) {
           >
             <Link href={"/leavform"}>Leave Application</Link>
           </Button>
+          <Button
+            className={`flex items-center justify-start gap-3 ${pathname == "/messages" ? "bg-yellow-400 text-black hover:bg-yellow-200" : ""}`}
+            title="messages"
+            asChild
+          >
+            <Link href={"/messages"}>Chat</Link>
+          </Button>
         </div>
 
         <Button
