@@ -59,6 +59,8 @@
     "react-signature-canvas": "^1.1.0-alpha.1",
     "react-to-print": "^3.0.4",
     "resend": "^4.1.2",
+    "stream-chat": "^8.56.1",
+    "stream-chat-react": "^12.13.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "twilio": "^5.4.1",
