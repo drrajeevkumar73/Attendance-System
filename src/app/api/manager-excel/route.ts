@@ -7,7 +7,10 @@ export async function POST(req: NextRequest) {
   try {
     // Step 2: Parse request payload
     const { date, ...tasks } = await req.json();
-
+    const { user } = await validateRequest();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
     const currentTime = moment().tz("Asia/Kolkata");
 
     // Define restricted time range (8:00 PM to 10:00 AM)
@@ -65,7 +68,7 @@ export async function POST(req: NextRequest) {
     const endOfDay = inputDate.endOf("day").toDate();
     const existingEntry = await prisma.manegar.findFirst({
       where: {
-        userId: "admin",
+        userId: user.id,
         createdAt: {
           gte: startOfDay,
           lte: endOfDay,
@@ -95,7 +98,7 @@ export async function POST(req: NextRequest) {
     // Step 6: Insert data into the database
     await prisma.manegar.create({
       data: {
-        userId: "admin",
+        userId: user?.id,
         tasks, // Store all tasks as JSON
         createdAt,
       },
