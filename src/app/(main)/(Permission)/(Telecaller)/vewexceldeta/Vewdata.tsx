@@ -122,7 +122,7 @@ export default function Vewdata() {
             </TableHead>
             <TableHead className="border-2 border-blue-400">Enquiry</TableHead>
              <TableHead className="border-2 border-blue-400">
-             Contacts
+             Connect
 
                             </TableHead>
             <TableHead className="border-2 border-blue-400">Time</TableHead>

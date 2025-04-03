@@ -122,7 +122,7 @@ export default function ExcelData() {
                   Enquiry{" "}
                 </TableHead>
                 <TableHead className="border-2 border-blue-400">
-                  Contacts
+                Connect
                 </TableHead>
               </TableRow>
             </TableHeader>
