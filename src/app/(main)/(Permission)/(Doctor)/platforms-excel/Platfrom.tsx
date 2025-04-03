@@ -10,7 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { DoctorOnlineValue, drplatformSchema, DrPlatFormValue } from "@/lib/vallidation";
+import {
+  DoctorOnlineValue,
+  drplatformSchema,
+  DrPlatFormValue,
+} from "@/lib/vallidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -56,7 +60,7 @@ export default function Platfrom() {
     },
   });
   const [ispending, setispending] = useState(false);
-  const submithandler = async (value:DrPlatFormValue) => {
+  const submithandler = async (value: DrPlatFormValue) => {
     try {
       setispending(true);
       const { data } = await axios.post("/api/drplatom-excel", {
@@ -93,7 +97,11 @@ export default function Platfrom() {
 
   return (
     <div className="mx-auto space-y-6 rounded-2xl border bg-card p-10 shadow-xl">
-      <Button type="button" className="mx-auto w-full text-center" onClick={() => seths(!hs)}>
+      <Button
+        type="button"
+        className="mx-auto w-full text-center"
+        onClick={() => seths(!hs)}
+      >
         Row
       </Button>
 
@@ -186,8 +194,8 @@ export default function Platfrom() {
                                 <SelectItem value="Dr.Ram Parvesh">
                                   Dr.Ram Parvesh
                                 </SelectItem>
-                                <SelectItem value="Jeni Grace G">
-                                  Jeni Grace G
+                                <SelectItem value="Dr.Navdha">
+                                  Dr.Navdha
                                 </SelectItem>
                               </SelectGroup>
                             </SelectContent>
