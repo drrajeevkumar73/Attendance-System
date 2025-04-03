@@ -154,14 +154,12 @@ export default function SearchData() {
             data: response.data.data.Telecaller,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
-          
           });
           setDigitalData({
             dipartment: response.data.dipartment,
             data: response.data.data.Digital,
             dataOf: response.data.dataOff,
             dataOn: response.data.dataOn,
-          
           });
         } else if (task === "Attendance") {
           const response = await axios.post("/api/alldetausingUsernam", {
@@ -285,7 +283,6 @@ export default function SearchData() {
           data: response.data.data.Telecaller,
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
-         
         });
 
         setDigitalData({
@@ -293,7 +290,6 @@ export default function SearchData() {
           data: response.data.data.Digital,
           dataOf: response.data.dataOff,
           dataOn: response.data.dataOn,
-         
         });
       } else if (selectedTask === "Attendance") {
         const response = await axios.post("/api/alldetausingUsernam", {
@@ -407,6 +403,7 @@ export default function SearchData() {
           Fees: v.task6,
           " New  Patient": v.task7,
           Enquiry: v.task8,
+          Contacts: v.contect,
           Time: formatRelativeTime(v.createdAt),
         }));
 
@@ -1120,7 +1117,7 @@ export default function SearchData() {
                   <TableHead className="border-2">Fees</TableHead>
                   <TableHead className="border-2">New Patient</TableHead>
                   <TableHead className="border-2">Enquiry</TableHead>
-                  <TableHead className="border-2">Contacts                  </TableHead>
+                  <TableHead className="border-2">Contacts </TableHead>
                   <TableHead className="border-2">Time</TableHead>
                 </TableRow>
               </TableHeader>
