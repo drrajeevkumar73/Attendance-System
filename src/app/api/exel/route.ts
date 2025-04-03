@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 2: Parse request payload
-    const { date, task1, task2, task3, task4, task5, task6, task7, task8 } =
+    const { date, task1, task2, task3, task4, task5, task6, task7, task8 ,contect} =
       await req.json();
 
     // Set timezone to Asia/Kolkata
@@ -115,6 +115,7 @@ export async function POST(req: NextRequest) {
         task6,
         task7,
         task8,
+        contect,
         createdAt,
       },
     });

@@ -46,6 +46,7 @@ export default function ExcelData() {
       task6: "",
       task7: "",
       task8: "",
+      contect: "",
     },
   });
 
@@ -66,6 +67,7 @@ export default function ExcelData() {
         task6: value.task6,
         task7: value.task7,
         task8: value.task8,
+        contect: value.contect,
       };
 
       const { data } = await axios.post("/api/exel", requestData);
@@ -118,6 +120,9 @@ export default function ExcelData() {
                 </TableHead>
                 <TableHead className="border-2 border-blue-400">
                   Enquiry{" "}
+                </TableHead>
+                <TableHead className="border-2 border-blue-400">
+                  Contacts
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -273,6 +278,25 @@ export default function ExcelData() {
                   <FormField
                     control={form.control}
                     name="task8"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="border-foreground"
+                            {...field}
+                            type="number"
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TableCell>
+                <TableCell className="border-2 border-blue-400">
+                  <FormField
+                    control={form.control}
+                    name="contect"
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>

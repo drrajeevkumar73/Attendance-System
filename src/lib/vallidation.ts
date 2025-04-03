@@ -122,6 +122,7 @@ export const exelSchema = z.object({
   task6: z.string().trim(),
   task7: z.string().trim(),
   task8: z.string().trim(),
+  contect:z.string().trim(),
 });
 
 export type ExelValue = z.infer<typeof exelSchema>;

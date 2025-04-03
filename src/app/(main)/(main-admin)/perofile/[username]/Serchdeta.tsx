@@ -1120,6 +1120,7 @@ export default function SearchData() {
                   <TableHead className="border-2">Fees</TableHead>
                   <TableHead className="border-2">New Patient</TableHead>
                   <TableHead className="border-2">Enquiry</TableHead>
+                  <TableHead className="border-2">Contacts                  </TableHead>
                   <TableHead className="border-2">Time</TableHead>
                 </TableRow>
               </TableHeader>
@@ -1158,6 +1159,7 @@ export default function SearchData() {
                       <TableCell className="border-2">{v.task6}</TableCell>
                       <TableCell className="border-2">{v.task7}</TableCell>
                       <TableCell className="border-2">{v.task8}</TableCell>
+                      <TableCell className="border-2">{v.contect}</TableCell>
                       <TableCell className="border-2">
                         {formatRelativeTime(v.createdAt)}
                       </TableCell>

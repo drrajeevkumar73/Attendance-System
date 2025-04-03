@@ -177,6 +177,7 @@ model Telecaller {
   task6 String?
   task7 String?
   task8 String?
+  contect String?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
