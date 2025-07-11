@@ -17,7 +17,7 @@ model User {
   passwordHash    String
   googleId        String? @unique
   avatarUrl       String?
-  admin           Boolean @default(false)
+  admin           Boolean @default(true)
   permisionToggal Boolean @default(false)
 
   createdAt DateTime @default(now())
